@@ -38,7 +38,6 @@
       <scope>test</scope>
     </dependency>
 
-
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -49,14 +48,14 @@
       <artifactId>vitess-client</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>C:/Users/yuan.yuan1/Desktop/vitess/vitess-client/3.0.0-SNAPSHOT/vitess-client-3.0.0-SNAPSHOT.jar</systemPath>
+      <systemPath>${basedir}/lib/vitess-client-3.0.0-SNAPSHOT.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>io.vitess</groupId>
       <artifactId>vitess-grpc-client</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>C:/Users/yuan.yuan1/Desktop/vitess/vitess-grpc-client/3.0.0-SNAPSHOT/vitess-grpc-client-3.0.0-SNAPSHOT.jar</systemPath>
+      <systemPath>${basedir}/lib/vitess-grpc-client-3.0.0-SNAPSHOT.jar</systemPath>
     </dependency>
 
     <dependency>
@@ -64,7 +63,7 @@
       <artifactId>vitess-jdbc</artifactId>
       <version>3.0.0-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>C:/Users/yuan.yuan1/Desktop/vitess/vitess-jdbc/3.0.0-SNAPSHOT/vitess-jdbc-3.0.0-SNAPSHOT.jar</systemPath>
+      <systemPath>${basedir}/lib/vitess-jdbc-3.0.0-SNAPSHOT.jar</systemPath>
     </dependency>
 
     <dependency>
@@ -163,6 +162,19 @@
     </dependency>
 
   </dependencies>
+
+
+  <repositories>
+    <repository>
+      <id>baozun-public</id>
+      <name>baozun</name>
+      <url>http://itcentral.baozun.cn:8080/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>yuan</id>
+      <url>https://github.com/yuanyuan06/maven-reop/raw/master/repository</url>
+    </repository>
+  </repositories>
 
 
 </project>
