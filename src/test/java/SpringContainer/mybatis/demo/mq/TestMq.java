@@ -1,12 +1,20 @@
 package SpringContainer.mybatis.demo.mq;
 
+import com.alibaba.fastjson.JSON;
 import io.vitess.dao.*;
+import io.vitess.model.CompanyShop;
 import io.vitess.model.MqSoPackingInfoLog;
+import io.vitess.model.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import vttest.Vttest;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author YSH4807
@@ -35,6 +43,8 @@ public class TestMq {
     private MqSoServiceLineLogDao mqSoServiceLineLogDao;
     @Autowired
     private PlatformSoLogDao platformSoLogDao;
+    @Autowired
+    private TestCaseDao testCaseDao;
 
 
     @Test
@@ -44,8 +54,34 @@ public class TestMq {
             mqSoPackingInfoLog.setMemo("fd");
             mqSoPackingInfoLog.setSoLineLogId(1L);
             mqSoPackingInfoLog.setSoLogId(1L);
-            mqSoPackingInfoLog.setShopId(1L);
-        mqSoPackingInfoLogDao.insert(mqSoPackingInfoLog);
+            mqSoPackingInfoLog.setShopId(6931L);
+//        mqSoPackingInfoLogDao.insert(mqSoPackingInfoLog);
+
+//        MqSoPackingInfoLog byId = mqSoPackingInfoLogDao.findById(1L);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("shopId", 6931);
+        List<MqSoPackingInfoLog> listByQueryMap = mqSoPackingInfoLogDao.findListByQueryMap(map);
+        System.out.println(JSON.toJSONString(listByQueryMap));
+    }
+
+    @Test
+    public void getShop(){
+        CompanyShop byId = companyShopDao.findById(6931L);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("shopId", 6931L);
+        List<CompanyShop> listByQueryMap = companyShopDao.findListByQueryMap(map);
+        System.out.println(JSON.toJSONString(byId));
+    }
+
+    @Test
+    public void re(){
+        TestCase testCase = new TestCase();
+            testCase.setMessage("121");
+            testCase.setPage(12L);
+            testCase.setTimeCreatedNs(32L);
+        testCaseDao.insert(testCase);
     }
 
 }
