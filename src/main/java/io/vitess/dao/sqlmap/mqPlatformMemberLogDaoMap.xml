@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.MqPlatformMemberLogDao">
+    <resultMap id="TmqPlatformMemberLogResult" type="io.vitess.model.DefaultTransTempleteDetail">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqPlatformMemberLogColumns">
+        <![CDATA[
+	        	id as id,
+	        	version as version,
+	        	create_time as createTime,
+	        	login_name as loginName,
+	        	real_name as realName,
+	        	gender as gender,
+	        	birthday as birthday,
+	        	telephone as telephone,
+	        	mobile as mobile,
+	        	email as email,
+	        	country as country,
+	        	province as province,
+	        	city as city,
+	        	zip_code as zipCode,
+	        	address as address,
+	        	vip_code as vipCode,
+	        	DISTRICT as district,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.DefaultTransTempleteDetail"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_platform_member_log (
+		        id,
+		        	version ,
+		        	create_time ,
+		        	login_name ,
+		        	real_name ,
+		        	gender ,
+		        	birthday ,
+		        	telephone ,
+		        	mobile ,
+		        	email ,
+		        	country ,
+		        	province ,
+		        	city ,
+		        	zip_code ,
+		        	address ,
+		        	vip_code ,
+		        	DISTRICT ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{loginName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{realName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{gender,javaType=String,jdbcType=VARCHAR} ,
+		        	#{birthday,javaType=String,jdbcType=VARCHAR} ,
+		        	#{telephone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{mobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{email,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vipCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+
+    <update id="update" parameterType="io.vitess.model.DefaultTransTempleteDetail">
+        <![CDATA[
+	        UPDATE t_mq_platform_member_log SET
+		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        create_time = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        login_name = #{loginName,javaType=String,jdbcType=VARCHAR} ,
+		        real_name = #{realName,javaType=String,jdbcType=VARCHAR} ,
+		        gender = #{gender,javaType=String,jdbcType=VARCHAR} ,
+		        birthday = #{birthday,javaType=String,jdbcType=VARCHAR} ,
+		        telephone = #{telephone,javaType=String,jdbcType=VARCHAR} ,
+		        mobile = #{mobile,javaType=String,jdbcType=VARCHAR} ,
+		        email = #{email,javaType=String,jdbcType=VARCHAR} ,
+		        country = #{country,javaType=String,jdbcType=VARCHAR} ,
+		        province = #{province,javaType=String,jdbcType=VARCHAR} ,
+		        city = #{city,javaType=String,jdbcType=VARCHAR} ,
+		        zip_code = #{zipCode,javaType=String,jdbcType=VARCHAR} ,
+		        address = #{address,javaType=String,jdbcType=VARCHAR} ,
+		        vip_code = #{vipCode,javaType=String,jdbcType=VARCHAR} ,
+		        DISTRICT = #{district,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT}
+	        WHERE
+		        id = #{id}
+	    ]]>
+    </update>
+    <delete id="delete" parameterType="java.lang.Long">
+        <![CDATA[
+	        delete from t_mq_platform_member_log where
+		        id = #{id}
+	    ]]>
+    </delete>
+
+    <delete id="deleteByIds" parameterType="list">
+
+        delete from t_mq_platform_member_log
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}				</foreach>
+
+    </delete>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmqPlatformMemberLogResult" flushCache="false">
+        select <include refid="tmqPlatformMemberLogColumns" />
+        <![CDATA[
+			    from t_mq_platform_member_log
+		        where
+		        id = #{id}
+		    ]]>
+    </select>
+    <select id="getByIds" parameterType="list"  resultMap="TmqPlatformMemberLogResult" flushCache="false">
+        select <include refid="tmqPlatformMemberLogColumns" />
+        from t_mq_platform_member_log
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}				</foreach>
+    </select>
+    <sql id="tmqPlatformMemberLogDynamicWhere">
+        <!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+        <where>
+
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+
+            <if test="version!=null">
+                and version = #{version}
+            </if>
+
+            <if test="createTime!=null">
+                and create_time = #{createTime}
+            </if>
+
+            <if test="loginName!=null">
+                and login_name = #{loginName}
+            </if>
+
+            <if test="realName!=null">
+                and real_name = #{realName}
+            </if>
+
+            <if test="gender!=null">
+                and gender = #{gender}
+            </if>
+
+            <if test="birthday!=null">
+                and birthday = #{birthday}
+            </if>
+
+            <if test="telephone!=null">
+                and telephone = #{telephone}
+            </if>
+
+            <if test="mobile!=null">
+                and mobile = #{mobile}
+            </if>
+
+            <if test="email!=null">
+                and email = #{email}
+            </if>
+
+            <if test="country!=null">
+                and country = #{country}
+            </if>
+
+            <if test="province!=null">
+                and province = #{province}
+            </if>
+
+            <if test="city!=null">
+                and city = #{city}
+            </if>
+
+            <if test="zipCode!=null">
+                and zip_code = #{zipCode}
+            </if>
+
+            <if test="address!=null">
+                and address = #{address}
+            </if>
+
+            <if test="vipCode!=null">
+                and vip_code = #{vipCode}
+            </if>
+
+            <if test="district!=null">
+                and DISTRICT = #{district}
+            </if>
+
+            <if test="shopId!=null">
+                and SHOP_ID = #{shopId}
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="getCount" resultType="long">
+        select count(*) from t_mq_platform_member_log
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_mq_platform_member_log
+        <include refid="tmqPlatformMemberLogDynamicWhere"/>
+    </select>
+
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_mq_platform_member_log
+        <include refid="tmqPlatformMemberLogDynamicWhere"/>
+    </select>
+
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmqPlatformMemberLogResult">
+        select <include refid="tmqPlatformMemberLogColumns" />
+        from t_mq_platform_member_log
+        <include refid="tmqPlatformMemberLogDynamicWhere"/>
+
+    </select>
+
+    <select id="findListByQueryMap" resultMap="TmqPlatformMemberLogResult">
+        select <include refid="tmqPlatformMemberLogColumns" />
+        from t_mq_platform_member_log
+        <include refid="tmqPlatformMemberLogDynamicWhere"/>
+
+    </select>
+
+    <select id="findListByParam" resultMap="TmqPlatformMemberLogResult">
+        select <include refid="tmqPlatformMemberLogColumns" />
+        from t_mq_platform_member_log
+        <include refid="tmqPlatformMemberLogDynamicWhere"/>
+
+    </select>
+
+
+</mapper>

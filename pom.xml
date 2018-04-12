@@ -27,6 +27,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.2</version>
+    </dependency>
+
     <!--spring start-->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -144,9 +150,32 @@
       <version>1.16.20</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>taobao</groupId>
+      <artifactId>taobao-sdk-java-online_standard</artifactId>
+      <version>20170614</version>
+    </dependency>
+
   </dependencies>
 
     <build>
+
+      <resources>
+        <resource>
+          <directory>src/main/java</directory>
+          <includes>
+            <include>**/*.xml</include>
+          </includes>
+        </resource>
+      </resources>
+
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
