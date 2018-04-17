@@ -8,11 +8,13 @@ import io.vitess.constants.PlatformConstants;
 import io.vitess.model.MqSoLog;
 import io.vitess.model.PlatformSoLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author YSH4807
  * @date 2018/4/11 10:44
  */
+@Service("mqService")
 public class MqServiceImpl implements MqService {
 
     @Autowired

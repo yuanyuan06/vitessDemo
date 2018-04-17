@@ -265,8 +265,6 @@ public class CompanyShop implements Serializable {
     private Boolean isApplySalesMode;
     /** 店铺平台类型 */
     private String platformType;
-    /** 发票形式：false 纸质发票；true 电子发票 */
-    private Boolean invoiceKind;
     /** 是否菜鸟仓发货 */
     private Boolean isCaiNiao;
     /** 店铺是否开启库存共享 */

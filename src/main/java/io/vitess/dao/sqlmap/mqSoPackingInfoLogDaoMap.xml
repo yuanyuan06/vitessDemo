@@ -22,7 +22,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoPackingInfoLog" flushCache="true">
+    <insert id="insert" parameterType="io.vitess.model.MqSoPackingInfoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
 		        INSERT INTO
 		        t_mq_so_packing_info_log (

@@ -37,14 +37,14 @@ public class MqSoLog implements Serializable {
      */
     private String code;
 
-    private PlatformType platformType;
+    private Integer platformType;
 
     private String platformOrderStatus;
 
     /**
      * 处理状态
      */
-    private MqSoLogStatus status;
+    private Integer status;
 
     /**
      * 处理错误信息
@@ -223,7 +223,7 @@ public class MqSoLog implements Serializable {
      */
     private BigDecimal codAmt;
 
-    private SoSpecialType specialType = SoSpecialType.DEFAULT;
+    private Integer specialType = SoSpecialType.DEFAULT.getValue();
 
     /**
      * 虚拟支付金额扩展字段1

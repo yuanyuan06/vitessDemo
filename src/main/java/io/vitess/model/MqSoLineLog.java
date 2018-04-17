@@ -1,6 +1,8 @@
 package io.vitess.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,14 +22,21 @@ public class MqSoLineLog implements Serializable {
      * PK
      */
     private Long id;
+    private Long platformSkuId;
 
     private Date version;
 
-    /**
-     * 条码(供应商到颜色尺码)
-     */
-    @Deprecated
+    private String skuComboRemark;
     private String barCode;
+
+    private BigDecimal lineTotal;
+    private BigDecimal lineUnitPrice;
+    private BigDecimal finalTotalActual;
+    private BigDecimal finalUnitPrice;
+    private BigDecimal isPrezzie;
+    private BigDecimal fqgNum;
+    private BigDecimal isFqgSfee;
+    private BigDecimal couponFee;
 
     private String extentionCode;
 
@@ -87,7 +96,7 @@ public class MqSoLineLog implements Serializable {
      */
     private String extProp1;
 
-    private Long soLog;
+    private Long soLogId;
 
     /**
      * 平台来源
@@ -109,10 +118,6 @@ public class MqSoLineLog implements Serializable {
      */
     private String platformWhCode;
 
-    /**
-     * 是否为赠品
-     */
-    private Boolean isPrezzie;
 
     /** 商家的预计发货时间 */
     private String estConTime;

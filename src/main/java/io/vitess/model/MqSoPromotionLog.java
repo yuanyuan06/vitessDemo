@@ -24,6 +24,7 @@ public class MqSoPromotionLog implements Serializable {
     public static Integer SO_PLATFORM_PROMOTION_SCOPE_TYPE_LINE = new Integer(2);
 
     private Long Id;
+    private Long soLogId;
 
     private Date version;
 
@@ -36,6 +37,7 @@ public class MqSoPromotionLog implements Serializable {
      * 平台订单行ID
      */
     private Long platformLineId;
+    private Long soLineLogId;
 
     /**
      * 优惠信息的名称

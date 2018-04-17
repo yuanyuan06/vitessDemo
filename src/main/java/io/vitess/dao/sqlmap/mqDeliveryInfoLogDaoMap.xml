@@ -25,7 +25,6 @@
 	        	receiver_mobile as receiverMobile,
 	        	user_name as userName,
 	        	membre_email as membreEmail,
-	        	lp_code as lpCode,
 	        	so_log_id as soLogId,
 	        	given_name as givenName,
 	        	family_name as familyName,
@@ -44,29 +43,28 @@
         <![CDATA[
 		        INSERT INTO
 		        t_mq_delivery_info_log (
-		        id,
-		        	version ,
-		        	receiver ,
-		        	contact_person ,
-		        	country ,
-		        	province ,
-		        	city ,
-		        	district ,
-		        	address ,
-		        	zipcode ,
-		        	receiver_phone ,
-		        	receiver_mobile ,
-		        	user_name ,
-		        	membre_email ,
-		        	lp_code ,
-		        	so_log_id ,
-		        	given_name ,
-		        	family_name ,
-		        	trans_service_type ,
-		        	trans_time_type ,
-		        	remark ,
-		        	town ,
-		        	SHOP_ID
+		       id,
+version ,
+receiver ,
+contact_person ,
+country ,
+province ,
+city ,
+district ,
+address ,
+zipcode ,
+receiver_phone ,
+receiver_mobile ,
+user_name ,
+membre_email ,
+so_log_id ,
+given_name ,
+family_name ,
+trans_service_type ,
+trans_time_type ,
+remark ,
+town ,
+SHOP_ID
 		        ) VALUES (
 		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
 		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
@@ -82,7 +80,6 @@
 		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
 		        	#{userName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{membreEmail,javaType=String,jdbcType=VARCHAR} ,
-		        	#{lpCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{givenName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{familyName,javaType=String,jdbcType=VARCHAR} ,
@@ -113,7 +110,6 @@
 		        receiver_mobile = #{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
 		        user_name = #{userName,javaType=String,jdbcType=VARCHAR} ,
 		        membre_email = #{membreEmail,javaType=String,jdbcType=VARCHAR} ,
-		        lp_code = #{lpCode,javaType=String,jdbcType=VARCHAR} ,
 		        so_log_id = #{soLogId,javaType=Long,jdbcType=BIGINT} ,
 		        given_name = #{givenName,javaType=String,jdbcType=VARCHAR} ,
 		        family_name = #{familyName,javaType=String,jdbcType=VARCHAR} ,
@@ -217,9 +213,7 @@
                 and membre_email = #{membreEmail}
             </if>
 
-            <if test="lpCode!=null">
-                and lp_code = #{lpCode}
-            </if>
+
 
             <if test="soLogId!=null">
                 and so_log_id = #{soLogId}

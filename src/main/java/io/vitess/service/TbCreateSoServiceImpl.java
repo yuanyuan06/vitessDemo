@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
  * @author YSH4807
  * @date 2018/4/11 11:00
  */
+@Service("tbCreateSoService")
 public class TbCreateSoServiceImpl implements TbCreateSoService  {
 
     @Autowired
@@ -52,7 +54,7 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
 
     @Override
     public MqSoLog convertTradeToMqSo(com.taobao.api.domain.Trade tbTrade, Long shopId) throws Exception {
-        CompanyShop shopInfo = companyShopDao.findShopInfoByShopId(shopId);
+        CompanyShop shopInfo = companyShopDao.findById(shopId);
         MqSoLog soLog = new MqSoLog();
         soLog.setShopId(shopId);
         soLog.setRemark(tbTrade.getBuyerMessage());	 // 买家备注
@@ -78,7 +80,7 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
         mqSoLogDao.insert(soLog);
         // insert mqline
         for (MqSoLineLog slLog : slLogs) {
-            slLog.setSoLog(soLog.getId());
+            slLog.setSoLogId(soLog.getId());
             mqSoLineLogDao.insert(slLog);
             MqSoPackingInfoLog mqSoPackingInfoLog = slLog.getMqSoPackingInfoLog();
             if(mqSoPackingInfoLog != null){
@@ -136,7 +138,7 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
     private void constructMqSo(com.taobao.api.domain.Trade tbTrade, MqSoLog soLog){
         soLog.setCode(tbTrade.getTid().toString());
         soLog.setShopId(soLog.getShopId());
-        soLog.setStatus(MqSoLogStatus.MQ_SO_STATUS_WAITING);
+        soLog.setStatus(MqSoLogStatus.MQ_SO_STATUS_WAITING.getValue());
         soLog.setCreateTime(Calendar.getInstance().getTime());
         soLog.setOuterCreateTime(tbTrade.getCreated());
         soLog.setPaymentTime(tbTrade.getPayTime());
@@ -159,7 +161,7 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
         soLog.setSource(tbTrade.getTradeFrom()); // 订单平台来源
         soLog.setIsLgtype(tbTrade.getIsLgtype());
         soLog.setPlatformOrderType(tbTrade.getType());
-        soLog.setPlatformType(PlatformType.TAOBAO_PLATFORM);
+        soLog.setPlatformType(PlatformType.TAOBAO_PLATFORM.getValue());
         soLog.setPlatformOrderStatus(tbTrade.getStatus());
         soLog.setAlipayId(tbTrade.getAlipayId());
         soLog.setCreditCardFee(tbTrade.getCreditCardFee());
@@ -277,7 +279,7 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
 
             soLineLog.setPlatformSkuName(tbLine.getTitle() == null ? "" : tbLine.getTitle().trim());
             soLineLog.setPlatformLineId(tbLine.getOid() == null ? null : tbLine.getOid().toString());
-            soLineLog.setSoLog(soLog.getId());
+            soLineLog.setSoLogId(soLog.getId());
             soLineLog.setPlatformSource(tbLine.getOrderFrom()); // 订单行平台来源
             soLineLog.setPlatformWhCode(tbLine.getStoreCode()); // 增加[平台分仓编码]
             // 商家预计发货时间
@@ -334,10 +336,10 @@ public class TbCreateSoServiceImpl implements TbCreateSoService  {
 //		if(platformTypeFlag[3]){																			                                                    // cj 集货订单
         if(platformTypeFlag[3] || Integer.valueOf(4).equals(shopInfo.getIsCaiNiao())){																			// cj 集货订单
             soLog.setIsPlatformDelivery(Boolean.TRUE);
-            soLog.setSpecialType(SoSpecialType.WLB_COLLECT_ORDER);
+            soLog.setSpecialType(SoSpecialType.WLB_COLLECT_ORDER.getValue());
         }else if(platformTypeFlag[0] || platformTypeFlag[1] || platformTypeFlag[2] || Integer.valueOf(2).equals(shopInfo.getIsCaiNiao())){						// 非集货, 全店物流宝
             soLog.setIsPlatformDelivery(Boolean.TRUE);
-            soLog.setSpecialType(SoSpecialType.WLB_ORDER);// 物流宝订单
+            soLog.setSpecialType(SoSpecialType.WLB_ORDER.getValue());// 物流宝订单
         }
     }
 

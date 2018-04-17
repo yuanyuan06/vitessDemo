@@ -18,7 +18,6 @@
 	        	BZ_SESSION_KEY as bzSessionKey,
 	        	COMPANY as company,
 	        	CREATE_TIME as createTime,
-	        	PAYMENT_TYPE as paymentType,
 	        	FENXIAO_NAME as fenxiaoName,
 	        	INDUSTRY as industry,
 	        	INNER_SHOP_CODE as innerShopCode,
@@ -134,7 +133,6 @@
 	        	WH_CUSTOMER_CODE as whCustomerCode,
 	        	IS_APPLY_SALES_MODE as isApplySalesMode,
 	        	PLATFORM_TYPE as platformType,
-	        	INVOICE_KIND as invoiceKind,
 	        	IS_CAI_NIAO as isCaiNiao,
 	        	IS_SHARE_INVENTORY as isShareInventory,
 	        	OWNER_CODE as ownerCode,
@@ -379,7 +377,6 @@
 		        	#{bzSessionKey,javaType=String,jdbcType=VARCHAR} ,
 		        	#{company,javaType=String,jdbcType=VARCHAR} ,
 		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
-		        	#{paymentType,javaType=Integer,jdbcType=INTEGER} ,
 		        	#{fenxiaoName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{industry,javaType=String,jdbcType=VARCHAR} ,
 		        	#{innerShopCode,javaType=String,jdbcType=VARCHAR} ,
@@ -495,7 +492,6 @@
 		        	#{whCustomerCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{isApplySalesMode,javaType=Boolean,jdbcType=BIT} ,
 		        	#{platformType,javaType=String,jdbcType=VARCHAR} ,
-		        	#{invoiceKind,javaType=Boolean,jdbcType=BIT} ,
 		        	#{isCaiNiao,javaType=Boolean,jdbcType=BIT} ,
 		        	#{isShareInventory,javaType=Boolean,jdbcType=BIT} ,
 		        	#{ownerCode,javaType=String,jdbcType=VARCHAR} ,
@@ -562,7 +558,6 @@
 		        BZ_SESSION_KEY = #{bzSessionKey,javaType=String,jdbcType=VARCHAR} ,
 		        COMPANY = #{company,javaType=String,jdbcType=VARCHAR} ,
 		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
-		        PAYMENT_TYPE = #{paymentType,javaType=Integer,jdbcType=INTEGER} ,
 		        FENXIAO_NAME = #{fenxiaoName,javaType=String,jdbcType=VARCHAR} ,
 		        INDUSTRY = #{industry,javaType=String,jdbcType=VARCHAR} ,
 		        INNER_SHOP_CODE = #{innerShopCode,javaType=String,jdbcType=VARCHAR} ,
@@ -678,7 +673,6 @@
 		        WH_CUSTOMER_CODE = #{whCustomerCode,javaType=String,jdbcType=VARCHAR} ,
 		        IS_APPLY_SALES_MODE = #{isApplySalesMode,javaType=Boolean,jdbcType=BIT} ,
 		        PLATFORM_TYPE = #{platformType,javaType=String,jdbcType=VARCHAR} ,
-		        INVOICE_KIND = #{invoiceKind,javaType=Boolean,jdbcType=BIT} ,
 		        IS_CAI_NIAO = #{isCaiNiao,javaType=Boolean,jdbcType=BIT} ,
 		        IS_SHARE_INVENTORY = #{isShareInventory,javaType=Boolean,jdbcType=BIT} ,
 		        OWNER_CODE = #{ownerCode,javaType=String,jdbcType=VARCHAR} ,
@@ -797,9 +791,6 @@
         and CREATE_TIME = #{createTime}
       </if>
 
-      <if test="paymentType!=null">
-        and PAYMENT_TYPE = #{paymentType}
-      </if>
 
       <if test="fenxiaoName!=null">
         and FENXIAO_NAME = #{fenxiaoName}
@@ -1259,10 +1250,6 @@
 
       <if test="platformType!=null">
         and PLATFORM_TYPE = #{platformType}
-      </if>
-
-      <if test="invoiceKind!=null">
-        and INVOICE_KIND = #{invoiceKind}
       </if>
 
       <if test="isCaiNiao!=null">

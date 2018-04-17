@@ -50,19 +50,20 @@ public class TestMq {
     @Test
     public void tetd(){
         MqSoPackingInfoLog mqSoPackingInfoLog = new MqSoPackingInfoLog();
-            mqSoPackingInfoLog.setId(1L);
             mqSoPackingInfoLog.setMemo("fd");
             mqSoPackingInfoLog.setSoLineLogId(1L);
             mqSoPackingInfoLog.setSoLogId(1L);
             mqSoPackingInfoLog.setShopId(6931L);
-//        mqSoPackingInfoLogDao.insert(mqSoPackingInfoLog);
+        mqSoPackingInfoLogDao.insert(mqSoPackingInfoLog);
+        System.out.println(JSON.toJSONString(mqSoPackingInfoLog));
+
 
 //        MqSoPackingInfoLog byId = mqSoPackingInfoLogDao.findById(1L);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("shopId", 6931);
-        List<MqSoPackingInfoLog> listByQueryMap = mqSoPackingInfoLogDao.findListByQueryMap(map);
-        System.out.println(JSON.toJSONString(listByQueryMap));
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("shopId", 6931);
+//        List<MqSoPackingInfoLog> listByQueryMap = mqSoPackingInfoLogDao.findListByQueryMap(map);
+//        System.out.println(JSON.toJSONString(listByQueryMap));
     }
 
     @Test
@@ -82,6 +83,7 @@ public class TestMq {
             testCase.setPage(12L);
             testCase.setTimeCreatedNs(32L);
         testCaseDao.insert(testCase);
+        System.out.println(JSON.toJSONString(testCase));
     }
 
 }

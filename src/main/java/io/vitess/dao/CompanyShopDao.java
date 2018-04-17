@@ -8,5 +8,5 @@ import io.vitess.model.CompanyShop;
  */
 public interface CompanyShopDao extends BaseDao<CompanyShop, Long>{
 
-   CompanyShop findShopInfoByShopId(Long shopId);
+//   CompanyShop findShopInfoByShopId(Long shopId);
 }
