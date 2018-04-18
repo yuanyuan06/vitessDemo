@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.MqPlatformMemberLog;
+import io.vitess.model.mq.MqPlatformMemberLog;
 
 /**
  * @author YSH4807

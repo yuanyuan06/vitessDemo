@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.CompanyShopDao">
-  <resultMap id="TmaTbShopInfoResult" type="io.vitess.model.CompanyShop">
+  <resultMap id="TmaTbShopInfoResult" type="io.vitess.model.mq.CompanyShop">
   </resultMap>
 
   <!-- 用于select查询公用抽取的列 -->
@@ -188,7 +188,7 @@
   </sql>
 
   <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-  <insert id="insert" parameterType="io.vitess.model.CompanyShop"
+  <insert id="insert" parameterType="io.vitess.model.mq.CompanyShop"
 
           flushCache="true">
     <![CDATA[
@@ -549,7 +549,7 @@
   </insert>
 
 
-  <update id="update" parameterType="io.vitess.model.CompanyShop">
+  <update id="update" parameterType="io.vitess.model.mq.CompanyShop">
     <![CDATA[
 	        UPDATE t_ma_tb_shop_info SET
 		        APP_KEY = #{appKey,javaType=String,jdbcType=VARCHAR} ,

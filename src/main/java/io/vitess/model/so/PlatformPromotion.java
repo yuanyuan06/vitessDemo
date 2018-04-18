@@ -1,26 +1,26 @@
-package io.vitess.model;
+package io.vitess.model.so;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-@TableName("t_mq_so_promotion_log")
-public class MqSoPromotionLog extends SuperEntity {
+@TableName("t_td_platform_promotion")
+public class PlatformPromotion extends SuperEntity {
 
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = 5525280967155374388L;
+    private static final long serialVersionUID = -5822931172364105726L;
     
-    public static Integer SO_PLATFORM_PROMOTION_SCOPE_TYPE_ORDER = new Integer(1); //整单金额促销
-    public static Integer SO_PLATFORM_PROMOTION_SCOPE_TYPE_LINE = new Integer(2);  //单行金额促销
-
-	@TableField("VERSION")
-    private Date version;
-
+    private Long id;
+    
+    /** 销售订单ID，关联SALES_ORDER_ID */
+    @TableField("SALES_ORDER_ID")
+    private SalesOrder salesOrder;
+    
+    /** 销售订单明细ID，关联SALES_ORDER_LINE_ID */
+    @TableField("SALES_ORDER_LINE_ID")
+    private SalesOrderLine salesOrderLine;
+    
     /**
      * 平台订单号
      */
@@ -32,7 +32,7 @@ public class MqSoPromotionLog extends SuperEntity {
      */
     @TableField("PLATFORM_LINE_ID")
     private Long platformLineId;
-
+    
     /**
      * 优惠信息的名称
      */
@@ -69,7 +69,7 @@ public class MqSoPromotionLog extends SuperEntity {
     @TableField("DESCRIPTION")
     private String description;
     
-    /**+
+    /**
      * 优惠id，(由营销工具id、优惠活动id和优惠详情id组成，结构为：营销工具id-优惠活动id_优惠详情id，如mjs-123024_211143）
      */
     @TableField("PROMOTION_ID")
@@ -83,13 +83,7 @@ public class MqSoPromotionLog extends SuperEntity {
     private Integer scopeType;
     
     //店铺ID
-	@TableField("SHOP_ID")
+    @TableField("SHOP_ID")
     private Long shopId;
 
-	@TableField("SO_LINE_LOG_ID")
-    private Long soLineLog;
-
-    @TableField("SO_LOG_ID")
-    private Long soLog;
-    
 }

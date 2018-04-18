@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqSoPackingInfoLogDao">
-    <resultMap id="TmqSoPackingInfoLogResult" type="io.vitess.model.MqSoPackingInfoLog">
+    <resultMap id="TmqSoPackingInfoLogResult" type="io.vitess.model.mq.MqSoPackingInfoLog">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -22,7 +22,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoPackingInfoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoPackingInfoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
 		        INSERT INTO
 		        t_mq_so_packing_info_log (
@@ -47,7 +47,7 @@
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.MqSoPackingInfoLog">
+    <update id="update" parameterType="io.vitess.model.mq.MqSoPackingInfoLog">
         <![CDATA[
 	        UPDATE t_mq_so_packing_info_log SET
 		        MEMO = #{memo,javaType=String,jdbcType=VARCHAR} ,

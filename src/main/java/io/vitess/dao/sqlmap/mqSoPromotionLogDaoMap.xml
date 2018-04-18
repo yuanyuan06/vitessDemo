@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqSoPromotionLogDao">
-    <resultMap id="TmqSoPromotionLogResult" type="io.vitess.model.MqSoPromotionLog">
+    <resultMap id="TmqSoPromotionLogResult" type="io.vitess.model.mq.MqSoPromotionLog">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -30,7 +30,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoPromotionLog"
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoPromotionLog"
 
             flushCache="true">
         <![CDATA[
@@ -73,7 +73,7 @@
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.MqSoPromotionLog">
+    <update id="update" parameterType="io.vitess.model.mq.MqSoPromotionLog">
         <![CDATA[
 	        UPDATE t_mq_so_promotion_log SET
 		        PLATFORM_LINE_ID = #{platformLineId,javaType=Long,jdbcType=BIGINT} ,

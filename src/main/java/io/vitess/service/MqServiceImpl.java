@@ -3,10 +3,9 @@ package io.vitess.service;
 import com.taobao.api.internal.util.TaobaoUtils;
 import com.taobao.api.response.TradeFullinfoGetResponse;
 import io.vitess.dao.PlatformSoLogDao;
-import io.vitess.dao.MqSoLogDao;
 import io.vitess.constants.PlatformConstants;
-import io.vitess.model.MqSoLog;
-import io.vitess.model.PlatformSoLog;
+import io.vitess.model.mq.MqSoLog;
+import io.vitess.model.mq.PlatformSoLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

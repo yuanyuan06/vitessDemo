@@ -1,7 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.dao.MqSoLogDao;
-import io.vitess.model.MqSoLog;
+import io.vitess.model.mq.MqSoLog;
 
 /**
  * @author YSH4807

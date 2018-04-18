@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqSoLineLogDao">
-    <resultMap id="TmqSoLineLogResult" type="io.vitess.model.MqSoLineLog">
+    <resultMap id="TmqSoLineLogResult" type="io.vitess.model.mq.MqSoLineLog">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -56,7 +56,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoLineLog"
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLineLog"
 
             flushCache="true">
         <![CDATA[
@@ -149,7 +149,7 @@ COUPON_FEE
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.MqSoLineLog">
+    <update id="update" parameterType="io.vitess.model.mq.MqSoLineLog">
         <![CDATA[
 	        UPDATE t_mq_so_line_log SET
 		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,

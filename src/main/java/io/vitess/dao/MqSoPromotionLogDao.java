@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.MqSoPromotionLog;
+import io.vitess.model.mq.MqSoPromotionLog;
 
 /**
  * @author YSH4807

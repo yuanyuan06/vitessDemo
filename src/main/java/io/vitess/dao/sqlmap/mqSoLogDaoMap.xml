@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqSoLogDao">
-    <resultMap id="TmqSoLogResult" type="io.vitess.model.MqSoLog">
+    <resultMap id="TmqSoLogResult" type="io.vitess.model.mq.MqSoLog">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -64,7 +64,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoLog"
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog"
 
             flushCache="true">
         <![CDATA[
@@ -175,7 +175,7 @@ OMNICHANNEL_PARAM
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.MqSoLog">
+    <update id="update" parameterType="io.vitess.model.mq.MqSoLog">
         <![CDATA[
 	        UPDATE t_mq_so_log SET
 		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,

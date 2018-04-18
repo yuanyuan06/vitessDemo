@@ -2,15 +2,14 @@ package SpringContainer.mybatis.demo.mq;
 
 import com.alibaba.fastjson.JSON;
 import io.vitess.dao.*;
-import io.vitess.model.CompanyShop;
-import io.vitess.model.MqSoPackingInfoLog;
+import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.mq.MqSoPackingInfoLog;
 import io.vitess.model.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import vttest.Vttest;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.MqDeliveryInfoLog;
+import io.vitess.model.mq.MqDeliveryInfoLog;
 
 /**
  * @author YSH4807

@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.PlatformSoLog;
+import io.vitess.model.mq.PlatformSoLog;
 
 /**
  * @author YSH4807

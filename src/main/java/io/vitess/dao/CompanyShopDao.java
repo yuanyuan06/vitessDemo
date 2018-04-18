@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.CompanyShop;
+import io.vitess.model.mq.CompanyShop;
 
 /**
  * @author YSH4807

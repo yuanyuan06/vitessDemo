@@ -9,7 +9,7 @@ import io.vitess.constants.Constants;
 import io.vitess.constants.PlatformConstants;
 import io.vitess.dao.*;
 import io.vitess.enums.*;
-import io.vitess.model.*;
+import io.vitess.model.mq.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;

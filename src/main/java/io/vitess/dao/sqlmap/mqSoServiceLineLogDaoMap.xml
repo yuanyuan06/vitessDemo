@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqSoServiceLineLogDao">
-    <resultMap id="TmqSoServiceLineLogResult" type="io.vitess.model.MqSoServiceLineLog">
+    <resultMap id="TmqSoServiceLineLogResult" type="io.vitess.model.mq.MqSoServiceLineLog">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -26,7 +26,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.MqSoServiceLineLog"
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoServiceLineLog"
 
             flushCache="true">
         <![CDATA[
@@ -61,7 +61,7 @@
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.MqSoServiceLineLog">
+    <update id="update" parameterType="io.vitess.model.mq.MqSoServiceLineLog">
         <![CDATA[
 	        UPDATE t_mq_so_service_line_log SET
 		        SO_LOG_ID = #{soLogId,javaType=Long,jdbcType=BIGINT} ,

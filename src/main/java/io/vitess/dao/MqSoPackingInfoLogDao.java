@@ -1,6 +1,6 @@
 package io.vitess.dao;
 
-import io.vitess.model.MqSoPackingInfoLog;
+import io.vitess.model.mq.MqSoPackingInfoLog;
 
 /**
  * @author YSH4807

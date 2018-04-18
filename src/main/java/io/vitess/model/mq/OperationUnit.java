@@ -13,7 +13,7 @@
  * 
  */
 
-package io.vitess.model;
+package io.vitess.model.mq;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
