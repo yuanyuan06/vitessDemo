@@ -1,34 +1,53 @@
 package io.vitess.model;
 
-import io.vitess.enums.MqSoPackingInfoLevel;
-import io.vitess.enums.PackageType;
-import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+import io.vitess.common.SuperEntity;
 
 /**
- * @author YSH4807
- * @date 2018/4/11 11:05
+ * 
+ * 包装信息
+ * 
  */
+@TableName("t_mq_so_packing_info_log")
+public class MqSoPackingInfoLog extends SuperEntity {
 
-@Data
-public class MqSoPackingInfoLog implements Serializable {
+	private static final long serialVersionUID = 7561168602691151990L;
+    
+    /**
+     * 包装类型级别(整单级别/商品行级别)
+     */
+    @TableField("PI_LEVEL")
+//    private MqSoPackingInfoLevel piLevel;
+    private Integer piLevel;
 
     /**
-     * ID
+     * 包装类型
      */
-    private Long id;
-
-    private String memo;
-    /** piLevel */
-    private Integer piLevel;
-    /** type */
+    @TableField("TYPE")
+//    private PackageType type;
     private Integer type;
-    /** soLineLogId */
-    private Long soLineLogId;
-    /** soLogId */
-    private Long soLogId;
-    /** 店铺id */
+
+    /**
+     * 备注
+     */
+    @TableField("MEMO")
+    private String memo;
+    
+    //店铺ID
+    @TableField("SHOP_ID")
     private Long shopId;
+    
+    /**
+     * 相关订单
+     */
+    @TableField("SO_LOG_ID")
+    private Long mqSoLog;
+    
+    /**
+     * 相关订单行
+     */
+    @TableField("SO_LINE_LOG_ID")
+    private Long mqSoLineLog;
+    
 }

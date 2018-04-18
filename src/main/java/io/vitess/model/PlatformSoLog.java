@@ -1,25 +1,30 @@
 package io.vitess.model;
 
-import lombok.Data;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+import io.vitess.common.SuperEntity;
 
-import java.io.Serializable;
+@TableName("t_so_platform_so_log")
+public class PlatformSoLog extends SuperEntity {
 
-/**
- * @author YSH4807
- * @date 2018/4/11 10:58
- */
+    /**
+	 * 
+	 */
+    private static final long serialVersionUID = 5866845488423813437L;
 
-@Data
-public class PlatformSoLog implements Serializable {
-
+    @TableField("ID")
     private Long id;
 
+    @TableField("CODE")
     private String code;
 
+    @TableField("SHOP_ID")
     private Long shopId;
 
+    @TableField("MQ_SO_LOG_ID")
     private Long mqSoLogId;
 
+    @TableField("SOURCE_MSG")
     private String sourceMsg;
 
 }

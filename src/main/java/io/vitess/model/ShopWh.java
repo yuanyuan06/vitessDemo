@@ -1,74 +1,88 @@
 package io.vitess.model;
 
-import lombok.Data;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.Version;
+import io.vitess.common.SuperEntity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author YSH4807
- * @date 2018/4/11 11:19
+ * 店铺绑定的仓库
+ * 
+ * @author fanht
+ * 
  */
-@Data
-public class ShopWh implements Serializable {
+@TableName("t_ma_shop_wh")
+public class ShopWh extends SuperEntity {
+    private static final long serialVersionUID = -3096402703545912438L;
 
-    private Long id;
-    //columns START
-    /** createTime */
-    private java.util.Date createTime;
-    /** lastModifyTime */
-    private java.util.Date lastModifyTime;
-    /** version */
-    private Integer version;
-    /** whCode */
+    /**
+     *仓库编码
+     */
+    @TableField("WH_CODE")
     private String whCode;
-    /** whName */
+
+    /**
+     * 仓库名称
+     */
+    @TableField("WH_NAME")
     private String whName;
-    /** shopId */
-    private Long shopId;
-    /** isDefault */
-    private Integer isDefault;
-    /** 是否平台默认发货仓库, 0:否，1:是 */
-    private Integer isPlatformDefault;
-    /** 是否默认的退货仓库，0:否，1:是 */
-    private Integer isRtnDefault;
-    /** deliveryAddressDetail */
-    private String deliveryAddressDetail;
-    /** consignName */
-    private String consignName;
-    /** consignPhone */
-    private String consignPhone;
-    /** province */
-    private String province;
-    /** city */
-    private String city;
-    /** area */
-    private String area;
-    /** town */
-    private String town;
-    /** 仓储系统标示 */
-    private String systemName;
-    /** 仓库系统CODE */
+    
+    /**
+     * 关联店铺
+     */
+    @TableField("SHOP_ID")
+    private CompanyShop shop;
+
+    /**
+     * 是否默认发货仓库
+     */
+    @TableField("IS_DEFAULT")
+    private Boolean isDefault = false;
+    
+    /**
+     * 是否平台默认发货仓库
+     */
+    @TableField("IS_PLATFORM_DEFAULT")
+    private Boolean isPlatformDefault = false;
+    
+    /**
+     * 是否默认的退货仓库
+     */
+    @TableField("IS_RTN_DEFAULT")
+    private Boolean isRtnDefault = false;
+    
+    /**
+     * VERSION
+     */
+    @Version
+    private int version;
+
+    /**
+     * 创建时间
+     */
+    @TableField("CREATE_TIME")
+    private Date createTime;
+
+    /**
+     * 最近修改时间
+     */
+    @TableField("LAST_MODIFY_TIME")
+    private Date lastModifyTime;
+    
+    /**
+     * 
+     * @Description:  仓库系统CODE
+     * @author zhiyong.shi
+     * 2017年3月16日
+     */
+    @TableField("SYSTEM_CODE")
     private String systemCode;
-    /** 依次过仓优先级 */
-    private Integer oneByOneToWhLevel;
-    /** 仓库是否支持预包装 */
-    private Integer isPrePackage;
-    /** 是否校验快递 */
-    private Integer isTrackingNo;
-    /** 地址 */
-    private String address;
-    /** 联系人 */
-    private String receiver;
-    /** 联系电话 */
-    private String receiverPhone;
-    /** 区 */
-    private String district;
-    /** 手机 */
-    private String mobile;
-    /** 邮编 */
-    private String zipCode;
-    /** 是否调用快递服务 */
-    private Integer isInvokeDeliveryService;
-    //columns END
+    /**
+     * @author xin.feng
+     * 仓库是否支持预包装业务
+     */
+    @TableField("IS_PRE_PACKAGE")
+    private Boolean isPrePackage;
 }

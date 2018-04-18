@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqDeliveryInfoLogDao">
-    <resultMap id="TmqDeliveryInfoLogResult" type="io.vitess.model.DefaultTransTemplete">
+    <resultMap id="TmqDeliveryInfoLogResult" type="io.vitess.model.base.DefaultTransTemplete">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -37,7 +37,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.DefaultTransTemplete"
+    <insert id="insert" parameterType="io.vitess.model.base.DefaultTransTemplete"
 
             flushCache="true">
         <![CDATA[
@@ -94,7 +94,7 @@ SHOP_ID
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.DefaultTransTemplete">
+    <update id="update" parameterType="io.vitess.model.base.DefaultTransTemplete">
         <![CDATA[
 	        UPDATE t_mq_delivery_info_log SET
 		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,

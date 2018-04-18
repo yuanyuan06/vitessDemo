@@ -1,66 +1,137 @@
 package io.vitess.model;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+import io.vitess.common.SuperEntity;
 import io.vitess.constants.Constants;
-import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author YSH4807
- * @date 2018/4/11 11:20
- */
-@Data
-public class MqDeliveryInfoLog implements Serializable {
+@TableName("t_mq_delivery_info_log")
+public class MqDeliveryInfoLog extends SuperEntity {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7082656645969758992L;
 
 
+    @TableField("VERSION")
+    private Date version;
 
-    private Long id;
-
-    //columns START
-    /** version */
-    private java.util.Date version;
-    /** receiver */
+    /**
+     * 收货人
+     */
+    @TableField("RECEIVER")
     private String receiver;
-    /** contactPerson */
+
+    /**
+     * 数量
+     */
+    @TableField("CONTACT_PERSON")
     private String contactPerson;
-    /** country */
+
+    /**
+     * 国家
+     */
+    @TableField("COUNTRY")
     private String country;
-    /** province */
+
+    /**
+     * 省
+     */
+    @TableField("PROVINCE")
     private String province;
-    /** city */
+
+    /**
+     * 市
+     */
+    @TableField("CITY")
     private String city;
-    /** district */
+
+    /**
+     * 区
+     */
+    @TableField("DISTRICT")
     private String district;
-    /** address */
+
+    /**
+     * 地址
+     */
+    @TableField("ADDRESS")
     private String address;
-    /** zipcode */
-    private String zipcode;
-    /** receiverPhone */
+
+    /**
+     * 邮编
+     */
+    @TableField("ZIPCODE")
+    private String zipCode;
+
+    /**
+     * 收货人电话
+     */
+    @TableField("RECEIVER_PHONE")
     private String receiverPhone;
-    /** receiverMobile */
+
+    /**
+     * 收货人手机
+     */
+    @TableField("RECEIVER_MOBILE")
     private String receiverMobile;
-    /** userName */
+
+    /**
+     * 会员名
+     */
+    @Deprecated
+    @TableField("USER_NAME")
     private String userName;
-    /** membreEmail */
-    private String membreEmail;
-    /** lpCode */
+
+    /**
+     * 会员邮箱
+     */
+    @Deprecated
+    @TableField("MEMBRE_EMAIL")
+    private String memberEmail;
+
+    /**
+     * 物流商编码
+     */
+    @TableField("LP_CODE")
     private String lpCode;
-    /** soLogId */
-    private Long soLogId;
-    /** givenName */
+
+    @TableField("given_name")
     private String givenName;
-    /** familyName */
+
+    @TableField("family_name")
     private String familyName;
-    /** transServiceType */
-    private Integer transServiceType;
-    /** transTimeType */
-    private Integer transTimeType;
-    /** remark */
-    private String remark;
-    /** town */
-    private String town;
-    /** 店铺id */
+    
+    /**
+     * 运送方式(快递附加服务)
+     * 1:普通
+     * 4:空运
+     * 6:陆运
+     * 7:特惠
+     */
+    @TableField("TRANS_SERVICE_TYPE")
+    private Integer transServiceType = Constants.TRANS_SERVICE_TYPE_NORMAL;
+    
+    /**
+     * 快递时间限制（快递附加服务）
+     * 1：普通
+     * 5：当日
+     * 6：次日
+     */
+    @TableField("TRANS_TIME_TYPE")
+    private Integer transTimeType = Constants.TRANS_TIME_TYPE_NORMAL;
+    
+    //店铺ID
+    @TableField("SHOP_ID")
     private Long shopId;
+
+    /**
+     * 
+     */
+    @TableField("SO_LOG_ID")
+    private Long soLog;
 
 }

@@ -5,7 +5,7 @@
 
 
 <mapper namespace="io.vitess.dao.MqPlatformMemberLogDao">
-    <resultMap id="TmqPlatformMemberLogResult" type="io.vitess.model.DefaultTransTempleteDetail">
+    <resultMap id="TmqPlatformMemberLogResult" type="io.vitess.model.base.DefaultTransTempleteDetail">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -33,7 +33,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.DefaultTransTempleteDetail"
+    <insert id="insert" parameterType="io.vitess.model.base.DefaultTransTempleteDetail"
 
             flushCache="true">
         <![CDATA[
@@ -82,7 +82,7 @@
     </insert>
 
 
-    <update id="update" parameterType="io.vitess.model.DefaultTransTempleteDetail">
+    <update id="update" parameterType="io.vitess.model.base.DefaultTransTempleteDetail">
         <![CDATA[
 	        UPDATE t_mq_platform_member_log SET
 		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
