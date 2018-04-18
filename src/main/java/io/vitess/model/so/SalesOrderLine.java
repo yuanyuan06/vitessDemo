@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.OrderLineType;
+import io.vitess.model.base.Sku;
 
 import java.math.BigDecimal;
 import java.util.Date;

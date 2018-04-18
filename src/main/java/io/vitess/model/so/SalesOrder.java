@@ -3,7 +3,6 @@ package io.vitess.model.so;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
-import com.taobao.api.domain.Trade;
 import io.vitess.common.SuperEntity;
 import io.vitess.common.User;
 import io.vitess.constants.Constants;

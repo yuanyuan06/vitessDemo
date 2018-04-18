@@ -1,4 +1,4 @@
-package io.vitess.model.so;
+package io.vitess.enums;
 
 import java.util.ArrayList;
 import java.util.List;
