@@ -8,10 +8,12 @@
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="jdbcUrl" value="jdbc:vitess://10.88.27.50:15991/horizontal_sharding/seq" />
+        <property name="jdbcUrl" value="jdbc:vitess://10.88.27.50:15991/horizontal_sharding" />
     </bean>
 
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+
+        <property name="mapperLocations" value="classpath*:io/vitess/dao/mq/sqlmap/*Map.xml"/>
         <property name="dataSource" ref="dataSource"/>
         <!-- 配置实体扫描路径，多个package可以用分号; 逗号, 分隔， 支持通配符*-->
         <!-- com.a.b.entity;com.a.c.entity;com.d.*.entity-->
@@ -57,7 +59,7 @@
         <!--主键Sequence-->
         <property name="keyGenerator" ref="keyGenerator"/>
         <!-- 公共字段填充处理器 -->
-        <property name="metaObjectHandler" ref="myMetaObjectHandler"/>
+        <!--<property name="metaObjectHandler" ref="myMetaObjectHandler"/>-->
         <!--数据库关键字转义符，'desc', "desc" 2.1-gamma+不需要制定-->
         <!--<property name="identifierQuote" value="'" />-->
     </bean>
@@ -66,12 +68,12 @@
     <bean id="keyGenerator" class="com.baomidou.mybatisplus.incrementer.OracleKeyGenerator"/>
 
     <!-- 自定义处理器 -->
-    <bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />
+    <!--<bean id="myMetaObjectHandler" class="com.baomidou.test.MyMetaObjectHandler" />-->
     <!-- 逻辑删除Sql注入器-->
     <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"/>
 
     <!-- 配置mybatis 扫描mapper接口的路径, 相当于注解@MapperScan，@MapperScan("com.baomidou.mybatisplus.test.h2.entity.mapper")-->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.baomidou.mybatisplus.test.h2.entity.mapper"/>
+        <property name="basePackage" value="io.vitess.dao"/>
     </bean>
 </beans>

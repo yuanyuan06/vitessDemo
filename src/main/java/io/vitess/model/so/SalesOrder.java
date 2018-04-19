@@ -9,11 +9,13 @@ import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.enums.*;
 import io.vitess.model.mq.CompanyShop;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @TableName("t_td_sales_order")
 public class SalesOrder extends SuperEntity{
 

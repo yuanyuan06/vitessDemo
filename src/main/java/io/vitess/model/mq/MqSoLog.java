@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.SoSpecialType;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @TableName("t_mq_so_log")
 public class MqSoLog extends SuperEntity {
     private static final long serialVersionUID = 6640950308239023560L;

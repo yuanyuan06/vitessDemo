@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.mq.MqSoLogDao">
+
+
+    <update id="updateStatusAndErrorMsgById"></update>
+    <update id="updateStatusAndErrorMsgByCode"></update>
+
+
+    <select id="findMqSoLogByIdShopId" resultType="io.vitess.model.mq.MqSoLog"></select>
+
+
+    <select id="findMqSoForCreateSo" resultType="java.lang.Long"></select>
+
+    <select id="findSoLogInfo" resultType="io.vitess.model.mq.MqSoLog">
+        select
+          l.id id,l.code code,l.create_time createTime,l.outer_create_time outerCreateTime,l.status status,l.error_msg errorMsg
+        from
+          t_mq_so_log l
+        <where>
+            <if test="shopId != null and shopId != '' ">
+                and l.shop_id = #{shopId}
+            </if>
+
+            <if test="code != null and code != '' ">
+                and l.code = #{code}
+            </if>
+
+            <if test="startCreateTime != null and startCreateTime != '' ">
+                and l.startCreateTime = #{startCreateTime}
+            </if>
+
+            <if test="status != null and status != '' ">
+                and l.status = #{status}
+            </if>
+
+            <if test="error_msg != null and error_msg != '' ">
+                and l.error_msg like concat('%',#{error_msg},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findSoLogId" resultType="java.lang.Long">
+
+
+    </select>
+</mapper>

@@ -3,10 +3,12 @@ package io.vitess.model.mq;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @TableName("t_mq_so_line_log")
 public class MqSoLineLog extends SuperEntity {
 

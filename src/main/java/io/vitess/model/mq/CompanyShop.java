@@ -8,6 +8,7 @@ import io.vitess.constants.SysWmsStatus;
 import io.vitess.enums.CompanyShopManagerMode;
 import io.vitess.enums.SkuSplitType;
 import io.vitess.model.base.DefaultTransTemplete;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author fanht
  * 
  */
+@Data
 @TableName("t_ma_tb_shop_info")
 public class CompanyShop extends SuperEntity {
 

@@ -3,6 +3,7 @@ package io.vitess.model.mq;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
  * @author fanht
  *
  */
+@Data
 @TableName("t_mq_so_service_line_log")
 public class MqSoServiceLineLog extends SuperEntity {
 

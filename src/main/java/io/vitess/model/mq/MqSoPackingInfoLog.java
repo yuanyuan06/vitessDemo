@@ -3,12 +3,14 @@ package io.vitess.model.mq;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 /**
  * 
  * 包装信息
  * 
  */
+@Data
 @TableName("t_mq_so_packing_info_log")
 public class MqSoPackingInfoLog extends SuperEntity {
 

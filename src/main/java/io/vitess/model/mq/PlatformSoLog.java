@@ -3,7 +3,9 @@ package io.vitess.model.mq;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
+@Data
 @TableName("t_so_platform_so_log")
 public class PlatformSoLog extends SuperEntity {
 

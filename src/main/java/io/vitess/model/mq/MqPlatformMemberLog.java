@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 @TableName("t_mq_platform_member_log")
 public class MqPlatformMemberLog extends SuperEntity {
 

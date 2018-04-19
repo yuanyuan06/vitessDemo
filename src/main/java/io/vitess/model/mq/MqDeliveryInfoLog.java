@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.constants.Constants;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 @TableName("t_mq_delivery_info_log")
 public class MqDeliveryInfoLog extends SuperEntity {
 

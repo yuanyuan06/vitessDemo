@@ -19,7 +19,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath*:io/vitess/dao/sqlmap/*Map.xml" />
+        <property name="mapperLocations" value="classpath*:io/vitess/dao/mq/sqlmap/*Map.xml" />
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -32,4 +32,5 @@
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 
+    <import resource="mp.xml"/>
 </beans>

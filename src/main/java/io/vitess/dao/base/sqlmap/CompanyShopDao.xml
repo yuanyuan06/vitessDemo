@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.base.CompanyShopDao">
+
+    <select id="findShopListGeneralOrder" resultType="io.vitess.model.mq.CompanyShop">
+            SELECT
+                info.id,
+                info.inner_shop_code,
+                info.shop_id,
+                shop.NAME AS ouName
+            FROM
+                t_au_operation_unit shop,
+                t_ma_tb_shop_info info
+            <where>
+                info.ou_id = shop.id
+                AND info.life_cycle_status = 1
+                AND info.IS_MQ_SO = 0
+            </where>
+
+    </select>
+</mapper>
