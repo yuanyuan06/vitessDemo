@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.PaymentType;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 
+@Data
 @TableName("t_td_sales_order_payment_info")
 public class SalesOrderPaymentInfo extends SuperEntity{
 
@@ -35,4 +37,12 @@ public class SalesOrderPaymentInfo extends SuperEntity{
 	@TableField("PAYMENT_ACCOUNT")
 	private String paymentAccount;
 
+	@TableField("SALES_ORDER_ID")
+	private SalesOrder salesOrder;
+
+	@TableField("IS_COMPLETED")
+	private Integer isCompleted;
+
+	@TableField("shopId")
+	private Long shopId;
 }

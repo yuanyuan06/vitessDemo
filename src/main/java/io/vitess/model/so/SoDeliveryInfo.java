@@ -4,13 +4,49 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.constants.Constants;
+import io.vitess.enums.TransTimeType;
+import lombok.Data;
 
+@Data
 @TableName("t_td_so_delivery_info")
 public class SoDeliveryInfo extends SuperEntity {
 
     private static final long serialVersionUID = 6490463075316045036L;
+    @TableField("SALES_ORDER_ID")
+    private SalesOrder salesOrder;
+
+    @TableField("COUNTRY")
+    private String country;
+
+    @TableField("PROVINCE")
+    private String province;
+
+    @TableField("CITY")
+    private String city;
+
+    @TableField("DISTRICT")
+    private String district;
+
+    @TableField("ADDRESS")
+    private String address;
+
+    @TableField("ZIPCODE")
+    private String zipcode;
+
     @TableField("CONTACT_PERSON")
     private String contactPerson;
+
+    @TableField("RECEIVER")
+    private String receiver;
+
+    @TableField("RECEIVER_PHONE")
+    private String receiverPhone;
+
+    @TableField("RECEIVER_MOBILE")
+    private String receiverMobile;
+
+    @TableField("MEMBER_EMAIL")
+    private String memberEmail;
 
     @TableField("TRANS_EXP_CODE")
     private String transExpCode;
@@ -32,6 +68,12 @@ public class SoDeliveryInfo extends SuperEntity {
 
     @TableField("TRANS_SERVICE_TYPE")
     private Integer transServiceType = Constants.TRANS_SERVICE_TYPE_NORMAL;
+
+    @TableField("TRANS_TIME_TYPE")
+    private TransTimeType transTimeType;
+
+    @TableField("REMARK")
+    private String remark;
 
     @TableField("COUNTRY_EN")
     private String countryEn;

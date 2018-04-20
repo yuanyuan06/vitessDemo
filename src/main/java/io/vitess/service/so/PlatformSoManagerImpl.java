@@ -1,51 +1,29 @@
 package io.vitess.service.so;
 
-import com.jumbo.Constants;
-import com.jumbo.dao.baseinfo.SpecifySkuAppointmentDao;
-import com.jumbo.dao.platform.*;
-import com.jumbo.dao.promotion.ComBoSkuDao;
-import com.jumbo.dao.sales.route.OrderLocationMappingDao;
-import com.jumbo.exception.BusinessException;
-import com.jumbo.exception.ErrorCode;
-import com.jumbo.model.baseinfo.*;
-import com.jumbo.model.baseinfo.enums.SpecialSkuType;
-import com.jumbo.model.platform.*;
-import com.jumbo.model.promotion.ComboSku;
-import com.jumbo.model.promotion.ComboSkuDetail;
-import com.jumbo.model.route.OrderLocationMapping;
-import com.jumbo.model.sales.*;
-import com.jumbo.model.sales.enums.*;
-import com.jumbo.tmalloms.manager.baseinfo.SkuManager;
-import com.jumbo.tmalloms.manager.baseinfo.SpecialSkuManager;
-import com.jumbo.tmalloms.manager.promotion.PlatformPromotionManager;
-import com.jumbo.tmalloms.manager.promotion.PromotionManager;
-import com.jumbo.tmalloms.manager.sales.SalesOrderManager;
-import com.jumbo.tmalloms.manager.sales.SalesOrderSplitManager;
-import com.jumbo.tmalloms.manager.sales.SalesOrderStoreSplitManager;
-import com.jumbo.tmalloms.manager.sales.SoServiceLineManager;
-import com.jumbo.tmalloms.manager.sms.SmsDataParamManager;
-import com.jumbo.util.NumberUtils;
-import com.jumbo.workflow.taskfactory.SalesOrderTaskFactory;
 import io.vitess.command.SalesOrderCommand;
+import io.vitess.command.SalesOrderLineCommand;
+import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;
+import io.vitess.constants.SalesModelToTOMS;
+import io.vitess.constants.SysWmsStatus;
+import io.vitess.dao.base.ComBoSkuDao;
+import io.vitess.dao.base.ComboSkuDetailDao;
 import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.base.SpecifySkuAppointmentDao;
-import io.vitess.dao.base.WorkTaskDao;
 import io.vitess.dao.mq.*;
+import io.vitess.dao.so.OrderLocationMappingDao;
 import io.vitess.dao.so.TradeDao;
 import io.vitess.enums.*;
-import io.vitess.model.base.Sku;
-import io.vitess.model.base.SkuAppointment;
-import io.vitess.model.mq.CompanyShop;
-import io.vitess.model.mq.MqDeliveryInfoLog;
-import io.vitess.model.mq.MqPlatformMemberLog;
-import io.vitess.model.mq.MqSoLog;
-import io.vitess.model.so.OrderMember;
-import io.vitess.model.so.Trade;
+import io.vitess.model.base.*;
+import io.vitess.model.mq.*;
+import io.vitess.model.so.*;
 import io.vitess.service.BaseManagerImpl;
-import loxia.dao.support.BeanPropertyRowMapperExt;
+import io.vitess.service.BusinessException;
+import io.vitess.service.common.PromotionManager;
+import io.vitess.service.common.SkuManager;
+import io.vitess.service.common.SpecialSkuManager;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,14 +70,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	
 	@Autowired
 	private SpecifySkuAppointmentDao specifySkuAppointmentDao;
-	@Autowired
-	private WorkTaskDao workTaskDao;
 
 	@Autowired
 	private PromotionManager promotionManager;
-
-	@Autowired
-	private SalesOrderTaskFactory factory;
 
 	@Autowired
 	private MqSoPackingInfoLogDao mqSoPackingInfoLogDao;
@@ -113,8 +86,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	@Autowired
 	private SoServiceLineManager soServiceLineManager;
 	
-	@Autowired
-	private SmsDataParamManager smsDataParamManager;
+//	@Autowired
+//	private SmsDataParamManager smsDataParamManager;
 	
 	@Autowired
 	private PlatformPromotionManager platformPromotionManager;
@@ -125,7 +98,10 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	@Autowired
 	private SalesOrderStoreSplitManager salesOrderStoreSplitManager;
 	
-	
+	@Autowired
+	private ComboSkuDetailDao comboSkuDetailDao;
+
+
 	//eticket：电子凭证订单fanht
 	private String PLATFORM_TRADE_TYPE_ETICKET = "eticket";
 	// 各种校验
@@ -216,9 +192,17 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	}
 	
 	private void copySoLogProperties(SalesOrderCommand soCmd, MqSoLog soLog) {
-	    soCmd.setExtVc1(NumberUtils.calcExtVc(soLog.getExtVc1()));
-	    soCmd.setExtVc2(NumberUtils.calcExtVc(soLog.getExtVc2()));
-        soCmd.setExtVc3(NumberUtils.calcExtVc(soLog.getExtVc3()));
+	    soCmd.setExtVc1(calcExtVc(soLog.getExtVc1()));
+	    soCmd.setExtVc2(calcExtVc(soLog.getExtVc2()));
+        soCmd.setExtVc3(calcExtVc(soLog.getExtVc3()));
+	}
+
+	private BigDecimal calcExtVc(BigDecimal vc) {
+		if (vc == null) {
+			return BigDecimal.ZERO;
+		}
+
+		return vc.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_DOWN);
 	}
 	
 	private void createTbSoFromMqSoLog(CompanyShop shop, MqSoLog soLog, MqDeliveryInfoLog deliveryInfoLog, SalesOrderType orderType, Map<String, String> sourceMap){
@@ -445,21 +429,21 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		trade.setOrderCount(1);
 		
 		if (shop.getSkuSplitType() != null 
-				&& (SkuSplitType.NO_SPLIT_BY_SKU_DEFAULT_WH.getValue() == shop.getSkuSplitType().getValue() 
-					|| SkuSplitType.SPLIT_BY_SKU_DEFAULT_WH.getValue() == shop.getSkuSplitType().getValue() 
-					|| SkuSplitType.SPLIT_BY_SKU_NUM.getValue() == shop.getSkuSplitType().getValue() 
-					|| SkuSplitType.O2O_SALES_SERVICE_TYPE.getValue() == shop.getSkuSplitType().getValue()
-					|| SkuSplitType.DESIGNATED_WH_BY_SKU.getValue() == shop.getSkuSplitType().getValue()
+				&& (SkuSplitType.NO_SPLIT_BY_SKU_DEFAULT_WH.getValue() == shop.getSkuSplitType()
+					|| SkuSplitType.SPLIT_BY_SKU_DEFAULT_WH.getValue() == shop.getSkuSplitType()
+					|| SkuSplitType.SPLIT_BY_SKU_NUM.getValue() == shop.getSkuSplitType()
+					|| SkuSplitType.O2O_SALES_SERVICE_TYPE.getValue() == shop.getSkuSplitType()
+					|| SkuSplitType.DESIGNATED_WH_BY_SKU.getValue() == shop.getSkuSplitType()
 			)) {
 			//订单需要拆分fanht
 			List<SalesOrderCommand> _socList = null;
-			if (SkuSplitType.SPLIT_BY_SKU_NUM.getValue() == shop.getSkuSplitType().getValue()) {
+			if (SkuSplitType.SPLIT_BY_SKU_NUM.getValue() == shop.getSkuSplitType()){
 				//按商品数量拆
 				_socList = salesOrderSplitManager.splitTradeBySkuNum(shop, soCmd);
-			} else if (shop.getIsO2OShop() != null && shop.getIsO2OShop() && (soCmd.getIsO2oOrder() != null && soCmd.getIsO2oOrder()) && SkuSplitType.O2O_SALES_SERVICE_TYPE.getValue() == shop.getSkuSplitType().getValue()) {
+			} else if (shop.getIsO2OShop() != null && shop.getIsO2OShop() && (soCmd.getIsO2oOrder() != null && soCmd.getIsO2oOrder()) && SkuSplitType.O2O_SALES_SERVICE_TYPE.getValue() == shop.getSkuSplitType()) {
 				//按O2O订单服务类型拆
 				_socList = salesOrderSplitManager.splitTradeByO2oSalesServiceType(shop, soCmd);
-			} else if(SkuSplitType.DESIGNATED_WH_BY_SKU.getValue() == shop.getSkuSplitType().getValue()){
+			} else if(SkuSplitType.DESIGNATED_WH_BY_SKU.getValue() == shop.getSkuSplitType()){
 				_socList = salesOrderSplitManager.splitOrderDesignatedWhBySku(shop, soCmd);
 			}else {
 				//按店铺SKU默认仓拆分订单；按SKU指定仓库
@@ -468,7 +452,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			
 			trade.setIsSplit(_socList.size() > 1 ? Constants.YES : Constants.NO);
 			trade.setOrderCount( _socList.size());
-			tradeDao.save(trade);
+			tradeDao.insert(trade);
 			
 			// 销售模式设置为第一个订单行的第一个商品
 			SalesMode salesMode = salesOrderManager.retainSalesModeByShopAndProduct(soCmd.getSoLineCommandList().get(0).getSku().getProduct().getSalesModesStr(), shop.getSalesModesStr());
@@ -491,9 +475,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			if (Constants.YES.equals(trade.getIsSplit())) {
 				String platformOrderCodes = "{" + org.apache.commons.lang3.StringUtils.join(platformOrderCodeNs, "/") + "}";
 				String skuListStr = "{" + org.apache.commons.lang3.StringUtils.join(soLineSkuList, "/") + "}";
-				smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
+//				smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
 			}
-		}else if(SkuSplitType.SPLIT_BY_STORE.getValue() == shop.getSkuSplitType().getValue()){
+		}else if(SkuSplitType.SPLIT_BY_STORE.getValue() == shop.getSkuSplitType()){
 			// 新增全渠道订单按照门店CODE拆单
 			List<SalesOrderCommand> _socList = null;
 			//如果开启全渠道开关且淘宝全渠道标示有数据，此时需要查看是否要拆单
@@ -506,7 +490,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				//订单不用拆分fanht
 				trade.setIsSplit(Constants.NO);
 				trade.setOrderCount(1);
-				trade = tradeDao.save(trade);
+				tradeDao.insert(trade);
 				
 				soCmd.setTrade(trade);
 				soCmd.setPlatformOrderCodeN(platformOrderCode);
@@ -531,7 +515,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			List<SalesOrderCommand> _socList = salesOrderManager.splitTrade(soCmd);
 			trade.setIsSplit(_socList.size() > 1 ? Constants.YES : Constants.NO);
 			trade.setOrderCount(_socList.size());
-			trade = tradeDao.save(trade);
+			tradeDao.insert(trade);
 
 			List<String> platformOrderCodeNs = new ArrayList<String>();
 			List<String> soLineSkuList = new ArrayList<String>();
@@ -550,7 +534,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			if (Constants.YES.equals(trade.getIsSplit())) {
 				String platformOrderCodes = "{" + org.apache.commons.lang3.StringUtils.join(platformOrderCodeNs, "/") + "}";
 				String skuListStr = "{" + org.apache.commons.lang3.StringUtils.join(soLineSkuList, "/") + "}";
-				smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
+//				smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
 			}
 		}else if(shop.getIsShippingMethods()){
 			//按照配送方式拆单
@@ -562,7 +546,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			//订单不用拆分fanht
 			trade.setIsSplit(Constants.NO);
 			trade.setOrderCount(1);
-			trade = tradeDao.save(trade);
+			tradeDao.insert(trade);
 			soCmd.setTrade(trade);
 			soCmd.setPlatformOrderCodeN(platformOrderCode);
 			// 销售模式设置为第一个订单行的第一个商品 TODO 这个东西没啥用fanht
@@ -591,7 +575,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
                             List<SalesOrderCommand> _socList) {
 		trade.setIsSplit(_socList.size() > 1 ? Constants.YES : Constants.NO);
 		trade.setOrderCount( _socList.size());
-		tradeDao.save(trade);
+		tradeDao.insert(trade);
 		List<String> platformOrderCodeNs = new ArrayList<String>();
 		List<String> soLineSkuList = new ArrayList<String>();
 		for (int i = 1; i <= _socList.size(); i++) {
@@ -609,16 +593,15 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		if (Constants.YES.equals(trade.getIsSplit())) {
 			String platformOrderCodes = "{" + org.apache.commons.lang3.StringUtils.join(platformOrderCodeNs, "/") + "}";
 			String skuListStr = "{" + org.apache.commons.lang3.StringUtils.join(soLineSkuList, "/") + "}";
-			smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
+//			smsDataParamManager.splitOrderSms(shop, trade.getPlatformOrderCode(), platformOrderCodes, skuListStr, _socList.size(), org.springframework.util.StringUtils.hasText(mobile) ? mobile : phone, Constants.AUTO);
 		}
 	}
-	
+
 	/**
 	 * 给订单行打标
-	 * @param shopMode
-	 * @param skuMode
+	 * @param shopModel
+	 * @param skuModel
 	 * @param line
-	 * @return
 	 */
 	private void markeSoLineModel(String[] shopModel, String[] skuModel, SalesOrderLine line){
 		for(String str: shopModel){
@@ -647,10 +630,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	 * 校验淘宝订单当前状态是否符合创建oms订单条件
 	 * 淘宝普通/分销/经销/o2o
 	 * @param platformStatus
-	 * @param shopId
+	 * @param shop
 	 * @param platefrom
-	 * @param isLgType
-	 *        taobao订单属性[是否保障速递] 如果为true，则为保障速递订单，使用线下联系发货接口发货 如果未false，则该订单非保障速递，根据卖家设置的订单流转规则可使用物流宝或者常规物流发货
+	 * @param soLog
 	 * @return
 	 */
 	private boolean validateStatusForMqSoLog(String platformStatus, CompanyShop shop, int platefrom, MqSoLog soLog){
@@ -743,20 +725,21 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		}
 		return results;
 	}
-	
+
 	/**
 	 * 构建组合商品订单行信息
 	 * @param comboSku
 	 * @param soLineLog
 	 * @param rQty
 	 * @param shopId
-	 * @param piList
+	 * @param index
 	 * @return
 	 */
 	private List<SalesOrderLineCommand> constructCmboSkuSoLine(ComboSku comboSku, MqSoLineLog soLineLog, Integer rQty, Long shopId, Integer index){
 		List<SalesOrderLineCommand> solCmdList = new ArrayList<SalesOrderLineCommand>();
 		// 根据extentionCode找到对应的组合comBoSku,根据comBoSku.getId()找到对应的comBoSkuLine信息,然后将comBoSkuLine解析成soLine
-		List<ComboSkuDetail> cbLine = comboSku.getComboSkuDetailList();
+
+		List<ComboSkuDetail> cbLine = comboSkuDetailDao.findDetailByComBoId(comboSku.getId());
 		//有金额的组合商品行
 		List<ComboSkuDetail> havePriceList = new ArrayList<ComboSkuDetail>();
 		//没用金额的组合商品行
@@ -827,14 +810,13 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		
 		return soLineCmd;
 	}
-	
+
 	/**
 	 * 构建订单行明细
 	 * 通用部分
 	 * @param solCmd
 	 * @param sku
 	 * @param soLineLog
-	 * @param linePackingInfoList
 	 * @param rQty
 	 * @return
 	 */
@@ -904,7 +886,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		Boolean isEticketActualSku = Boolean.FALSE;
 		
 		if (soLog.getSpecialType() != null) {
-			soSpecialType = soLog.getSpecialType();
+			soSpecialType = SoSpecialType.valueOf(soLog.getSpecialType());
 		}
 		//如果预约订单有数据，则为预约订单类型
 		if(skuAppointment!=null){
@@ -952,8 +934,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				soSpecialType =  SoSpecialType.PRE_PACKAGE_ORDER;
 				//预包装的订单才需要查找库位
 				OrderLocationMapping location = orderLocationMappingDao.findByBusinessType(shop.getId(), null, SoSpecialType.PRE_SALES_ORDER.getValue());
-				if (null != location)
-				soCmd.setWhLocationCode(location.getLocationCode());
+				if (null != location){
+					soCmd.setWhLocationCode(location.getLocationCode());
+				}
 			} else {
 				soSpecialType =  SoSpecialType.PRE_SALES_ORDER;
 			}
@@ -965,7 +948,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	
 	private List<SalesOrderLineCommand> constructSoLine(MqSoLog soLog, CompanyShop shop){
 		String errorMsg = null;
-		Collection<MqSoLineLog> soLineLogs = mqSoLineLogDao.getMqMqSoLineLogsBySoLogId(soLog.getId(),shop.getId(), new BeanPropertyRowMapperExt<MqSoLineLog>(MqSoLineLog.class));
+		Collection<MqSoLineLog> soLineLogs = mqSoLineLogDao.getMqMqSoLineLogsBySoLogId(soLog.getId(),shop.getId());
 		if (soLineLogs == null || soLineLogs.isEmpty()) {
 			errorMsg = "创建订单出错：订单行不存在";
 			mqSoLogDao.updateStatusAndErrorMsgById(soLog.getId(), soLog.getShopId(), null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
@@ -1053,7 +1036,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	private List<SalesOrderLinePackage> ckGiftBoxPackage(Long shopId, int i, String comb){
 		List<SalesOrderLinePackage> piList = new ArrayList<SalesOrderLinePackage>();
 		SalesOrderLinePackage packingInfo = new SalesOrderLinePackage();
-			packingInfo.setPackageType(PackageType.CK_GIFT_BOX);
+			packingInfo.setPackageType(PackageType.CK_GIFT_BOX.getValue());
 			packingInfo.setRemark(comb+ "-"+ (i+1));
 			packingInfo.setShopId(shopId);
 			piList.add(packingInfo);

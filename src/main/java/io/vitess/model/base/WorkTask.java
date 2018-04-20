@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
 import io.vitess.common.User;
 import io.vitess.common.WorkFlow;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author Benjamin
  * 
  */
+@Data
 @TableName("t_wf_workflow_task")
 public class WorkTask extends SuperEntity {
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author fanht
  *
  */
-
+@Data
 @TableName("t_ma_def_trans_template")
 public class DefaultTransTemplete extends SuperEntity{
 

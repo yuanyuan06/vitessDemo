@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author sjk
  * 
  */
+@Data
 @TableName("t_ma_transportator")
 public class Transportator extends SuperEntity {
     private static final long serialVersionUID = -7812676025062855078L;

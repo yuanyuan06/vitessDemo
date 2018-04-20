@@ -10,4 +10,8 @@
           o.packageName = #{packageName}
 
     </select>
+    <select id="findByCategoryCodeAndKey" resultType="io.vitess.model.base.ChooseOption">
+
+
+    </select>
 </mapper>

@@ -15,4 +15,6 @@ public interface CompanyShopManager {
      * @return
      */
     CompanyShop findShopInfoByShopId(Long shopId);
+
+    CompanyShop getByOuId(Long ouid);
 }

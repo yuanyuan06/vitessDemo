@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.OrderLineType;
 import io.vitess.model.base.Sku;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @TableName("t_td_sales_order_line")
 public class SalesOrderLine extends SuperEntity{
 

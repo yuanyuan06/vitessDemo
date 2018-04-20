@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author fanht
  * 
  */
+@Data
 @TableName("t_ma_shop_wh")
 public class ShopWh extends SuperEntity {
     private static final long serialVersionUID = -3096402703545912438L;

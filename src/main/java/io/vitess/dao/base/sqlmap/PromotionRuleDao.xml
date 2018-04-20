@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.base.PromotionRuleDao">
+    <update id="updateUsedGiftTimesByRuleIdAndTimes"></update>
+    <select id="getPromotionRuleLevelIsExits" resultType="io.vitess.model.base.PromotionRule"></select>
+    <select id="findPromotionRulById" resultType="java.lang.Integer"></select>
+    <select id="findAllRuleList" resultType="io.vitess.model.base.PromotionRule"></select>
+    <select id="findRuleList" resultType="io.vitess.model.base.PromotionRule"></select>
+    <select id="getPromotionRulByProId" resultType="io.vitess.command.PromotionRuleCommand"></select>
+</mapper>

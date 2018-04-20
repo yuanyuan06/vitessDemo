@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 /**
  * 物流模板明细
  * @author fanht
  *
  */
+@Data
 @TableName("t_ma_def_trans_temp_detail")
 public class DefaultTransTempleteDetail extends SuperEntity {
     private static final long serialVersionUID = -6405589590181418021L;

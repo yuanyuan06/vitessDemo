@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.model.mq.CompanyShop;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * @date 2014年7月1日 下午3:32:28
  * @since
  */
+@Data
 @TableName("t_td_trade")
 public class Trade extends SuperEntity {
     

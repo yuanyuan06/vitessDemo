@@ -1,10 +1,11 @@
 package io.vitess.command;
 
-import com.jumbo.model.promotion.PromotionGift;
-import com.jumbo.model.promotion.PromotionType;
-import com.jumbo.util.PropertyUtil;
+import io.vitess.common.PropertyUtil;
+import io.vitess.enums.PromotionType;
+import io.vitess.model.base.PromotionGift;
+import io.vitess.model.so.PlatformPromotion;
 import io.vitess.model.so.SalesOrderLine;
-import loxia.utils.PropListCopyable;
+import io.vitess.model.so.SalesOrderLinePackage;
 
 import java.util.Date;
 import java.util.List;

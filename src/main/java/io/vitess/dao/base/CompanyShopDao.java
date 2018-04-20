@@ -19,4 +19,6 @@ import java.util.Map;
 public interface CompanyShopDao extends BaseMapper<CompanyShop> {
 
     List<CompanyShop> findShopListGeneralOrder();
+
+    CompanyShop getByOuId(Long ouid);
 }

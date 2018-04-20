@@ -2,8 +2,10 @@ package io.vitess.model.so;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.oracle.webservices.internal.api.databinding.DatabindingMode;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.TaskProcessStatus;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -14,7 +16,7 @@ import java.util.Date;
  * @author hailiang.jiang
  * @date 2014年12月18日 下午2:54:09
  */
-
+@Data
 @TableName("t_td_so_appointment_to_wh_task")
 public class SoAppointmentToWhTask extends SuperEntity {
 

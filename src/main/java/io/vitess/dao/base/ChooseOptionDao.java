@@ -21,8 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 public interface ChooseOptionDao extends BaseMapper<ChooseOption> {
 
+
+
+    ChooseOption findByCategoryCodeAndKey( String categoryCode,  String key);
+
+
+
     List<ChooseOption> findListByPackageName( String packageName);
+
 }

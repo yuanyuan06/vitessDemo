@@ -12,4 +12,10 @@ import io.vitess.model.so.SalesOrder;
  * @since 2018-04-19
  */
 public interface SalesOrderDao extends BaseMapper<SalesOrder> {
+
+    SalesOrder findSoByCodeShopId(String code,  Long shopId);
+
+    void updateSuspendReasonType(Long soId,  Long shopId,  Integer suspendReasonType);
+
+
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.base.PromotionActivityDao">
+    <select id="findPromotionActivityByName" resultType="io.vitess.model.base.PromotionActivity"></select>
+    <select id="findPromotionActivityById" resultType="io.vitess.model.base.PromotionActivity"></select>
+    <select id="findPromotionByIdShopId" resultType="io.vitess.model.base.PromotionActivity"></select>
+    <select id="findPromotionActivityByNameExitId" resultType="io.vitess.model.base.PromotionActivity"></select>
+    <select id="findAllPromotionActivityForShopAndTime"
+            resultType="io.vitess.command.PromotionActivityCommand2"></select>
+    <select id="findAllPromotionActivity" resultType="io.vitess.command.PromotionActivityCommand2"></select>
+</mapper>

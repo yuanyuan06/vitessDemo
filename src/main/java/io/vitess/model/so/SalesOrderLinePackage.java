@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.PackageType;
+import lombok.Data;
 
+
+@Data
 @TableName("t_td_sales_order_line_package")
 public class SalesOrderLinePackage extends SuperEntity {
 
@@ -16,8 +19,9 @@ public class SalesOrderLinePackage extends SuperEntity {
     @TableField("SALES_ORDER_LINE_ID")
     private SalesOrderLine salesOrderLine;
 
-    @TableField("loxia.dao.support.GenericEnumUserType")
-    private PackageType packageType;
+    @TableField("PACKAGE_TYPE")
+//    private PackageType packageType;
+    private Integer packageType;
 
     @TableField("REMARK")
     private String remark;

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.SkuSpecialType;
+import lombok.Data;
 
 /**
  * SKU
@@ -11,6 +12,7 @@ import io.vitess.enums.SkuSpecialType;
  * @author fanht
  * 
  */
+@Data
 @TableName("t_ma_inv_sku")
 public class Sku extends SuperEntity {
     private static final long serialVersionUID = 2960655395582098457L;

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.PromotionType;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
  * 
  */
 
+@Data
 @TableName("t_ma_promotion_apply_log")
 public class SoPromotionApplyLog extends SuperEntity{
 	private static final long serialVersionUID = 5397094333207917229L;

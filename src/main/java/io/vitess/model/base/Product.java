@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.ProductType;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author fanht
  * 
  */
+@Data
 @TableName("t_ma_sku")
 public class Product extends SuperEntity{
 	private static final long serialVersionUID = 5469350702688787492L;

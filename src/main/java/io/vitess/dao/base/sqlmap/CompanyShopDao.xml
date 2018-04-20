@@ -18,4 +18,5 @@
             </where>
 
     </select>
+    <select id="getByOuId" resultType="io.vitess.model.mq.CompanyShop"></select>
 </mapper>

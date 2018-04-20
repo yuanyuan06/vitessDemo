@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.so.VmiTimedPromotionDao">
+    <update id="updateGiftQuota"></update>
+    <select id="findVmiPromotionList" resultType="io.vitess.model.so.VmiTimedPromotion"></select>
+    <select id="findVmiPromotionList2" resultType="io.vitess.model.so.VmiTimedPromotion"></select>
+</mapper>
