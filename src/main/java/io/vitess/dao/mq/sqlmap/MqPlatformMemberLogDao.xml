@@ -1,5 +1,107 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.mq.MqPlatformMemberLogDao">
-    <select id="findMqPlatformMemberLog" resultType="io.vitess.model.mq.MqPlatformMemberLog"></select>
+
+    <resultMap id="TmqDeliveryInfoLogResult" type="io.vitess.model.mq.MqPlatformMemberLog">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqDeliveryInfoLogColumns">
+        <![CDATA[
+	        	id as id,
+	        	version as version,
+	        	receiver as receiver,
+	        	contact_person as contactPerson,
+	        	country as country,
+	        	province as province,
+	        	city as city,
+	        	district as district,
+	        	address as address,
+	        	zipcode as zipcode,
+	        	receiver_phone as receiverPhone,
+	        	receiver_mobile as receiverMobile,
+	        	user_name as userName,
+	        	membre_email as membreEmail,
+	        	lp_code as lpCode,
+	        	so_log_id as soLogId,
+	        	given_name as givenName,
+	        	family_name as familyName,
+	        	trans_service_type as transServiceType,
+	        	trans_time_type as transTimeType,
+	        	remark as remark,
+	        	town as town,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <select id="findMqPlatformMemberLog" resultType="io.vitess.model.mq.MqPlatformMemberLog">
+        select * from t_mq_platform_member_log t
+               	<where>
+                    <if test="id != null and id != ''">
+                      and t.id = #{id}
+                    </if>
+                    <if test="shopId != null and shopId != ''">
+               	      and t.SHOP_ID = #{shopId}
+                    </if>
+                </where>
+    </select>
+
+
+    <insert id="insert" parameterType="io.vitess.model.mq.MqPlatformMemberLog"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_delivery_info_log (
+		        id,
+		        	version ,
+		        	receiver ,
+		        	contact_person ,
+		        	country ,
+		        	province ,
+		        	city ,
+		        	district ,
+		        	address ,
+		        	zipcode ,
+		        	receiver_phone ,
+		        	receiver_mobile ,
+		        	user_name ,
+		        	membre_email ,
+		        	lp_code ,
+		        	so_log_id ,
+		        	given_name ,
+		        	family_name ,
+		        	trans_service_type ,
+		        	trans_time_type ,
+		        	remark ,
+		        	town ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        	#{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{userName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{membreEmail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{lpCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{givenName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{familyName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transServiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transTimeType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{town,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
 </mapper>

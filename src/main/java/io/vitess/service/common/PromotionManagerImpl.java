@@ -190,14 +190,14 @@ public class PromotionManagerImpl implements PromotionManager{
                         Sku sku = null;
                         if(proGiftCommand.getBindId().equals(NO_SKU_GIFT_TYPE)){
                         	//如果是赠品是商品的时候map的key就是商品Id 
-                        	 product =productDao.selectById(giftProductId);
+                        	 product =productDao.findById(giftProductId);
                              //根据赠品表商品ID随机取一条SKU信息放入订单明细
 	                         sku = skuDao.findByProductId(giftProductId);
 	                         soline.setGiftType(NO_SKU_GIFT_TYPE);
                         }else{
                         	//根据sku具体ID 去sku表查询sku明细数据 如果赠品是sku的时候 需要从map中获取商品ID 加入商品价格
-                        	 product = productDao.selectById(proGiftCommand.getProductID());
-	                         sku = skuDao.selectById(giftProductId);
+                        	 product = productDao.findById(proGiftCommand.getProductID());
+	                         sku = skuDao.findById(giftProductId);
 	                         soline.setGiftType(IS_SKU_GIFT_TYPE);
                         }
                         if (null != sku) {

@@ -1,6 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.mq.MqSoPromotionLogDao">
-    <select id="findBySoLogIdAndType" resultType="io.vitess.model.mq.MqSoPromotionLog"></select>
-    <select id="queryPlatformPromotionsByParam" resultType="io.vitess.model.mq.MqSoPromotionLog"></select>
+
+
+
+    <resultMap id="TmqSoPromotionLogResult" type="io.vitess.model.mq.MqSoPromotionLog">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqSoPromotionLogColumns">
+        <![CDATA[
+	        	ID as id,
+	        	PLATFORM_LINE_ID as platformLineId,
+	        	PROMOTION_NAME as promotionName,
+	        	GIFT_ITEM_NAME as giftItemName,
+	        	GIFT_ITEM_ID as giftItemId,
+	        	DISCOUNT_FEE as discountFee,
+	        	GIFT_ITEM_NUM as giftItemNum,
+	        	PLATFORM_ORDER_CODE as platformOrderCode,
+	        	VERSION as version,
+	        	SO_LINE_LOG_ID as soLineLogId,
+	        	SO_LOG_ID as soLogId,
+	        	DESCRIPTION as description,
+	        	PROMOTION_ID as promotionId,
+	        	SCOPE_TYPE as scopeType,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoPromotionLog"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_so_promotion_log (
+		        id,
+		        	PLATFORM_LINE_ID ,
+		        	PROMOTION_NAME ,
+		        	GIFT_ITEM_NAME ,
+		        	GIFT_ITEM_ID ,
+		        	DISCOUNT_FEE ,
+		        	GIFT_ITEM_NUM ,
+		        	PLATFORM_ORDER_CODE ,
+		        	VERSION ,
+		        	SO_LINE_LOG_ID ,
+		        	SO_LOG_ID ,
+		        	DESCRIPTION ,
+		        	PROMOTION_ID ,
+		        	SCOPE_TYPE ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{platformLineId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{promotionName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{giftItemName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{giftItemId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{discountFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{giftItemNum,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{platformOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{soLineLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} ,
+		        	#{promotionId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{scopeType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+    <select id="findBySoLogIdAndType" resultType="io.vitess.model.mq.MqSoPromotionLog">
+        select *
+        from t_mq_so_promotion_log as ba
+        where ba.SO_LOG = #{soLogId} and ba.SCOPE_TYPE = #{scopeType} and ba.shop_Id = #{SHOP_ID}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoPromotionLogResult" flushCache="false">
+        select <include refid="tmqSoPromotionLogColumns" />
+        <![CDATA[
+			    from t_mq_so_promotion_log
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

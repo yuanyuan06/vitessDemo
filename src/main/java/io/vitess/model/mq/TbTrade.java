@@ -10,8 +10,8 @@ import java.util.Date;
  * @author fanht
  * 
  */
-@Data
 //@TableName("t_top_tb_trade")
+@Data
 public class TbTrade extends SuperEntity{
 
     private static final long serialVersionUID = -9099901955418076253L;
@@ -93,5 +93,4 @@ public class TbTrade extends SuperEntity{
 
     private Integer noPayStatus = 0;
     private Date noPayProcessTime;
-
 }

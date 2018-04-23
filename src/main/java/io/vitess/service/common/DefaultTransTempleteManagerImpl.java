@@ -39,7 +39,7 @@ public class DefaultTransTempleteManagerImpl implements DefaultTransTempleteMana
 
 	@Override
 	public DefaultTransTemplete findDefaultTransTemplete(Long tempId) {
-		return defaultTransTempleteDao.selectById(tempId);
+		return defaultTransTempleteDao.findById(tempId);
 	}
 	
     @Override

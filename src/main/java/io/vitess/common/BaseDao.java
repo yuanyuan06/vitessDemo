@@ -10,5 +10,5 @@ public interface BaseDao<T> {
 
     void insert(T t);
 
-    T selectById(Serializable pk);
+    T findById(Serializable pk);
 }

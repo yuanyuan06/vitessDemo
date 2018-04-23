@@ -42,7 +42,7 @@ public class SoServiceLineManagerImpl extends BaseManagerImpl implements SoServi
 	
 	@Override
 	public SoServiceLine getByPrimaryKey(Long pkId) {
-		return soServiceLineDao.selectById(pkId);
+		return soServiceLineDao.findById(pkId);
 	}
 
 	@Override

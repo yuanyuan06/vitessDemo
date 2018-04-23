@@ -19,7 +19,4 @@ import java.util.Map;
 public interface MqSoPromotionLogDao extends BaseDao<MqSoPromotionLog> {
 
     List<MqSoPromotionLog> findBySoLogIdAndType(Long soLogId, Integer scopeType, Long shopId);
-
-    List<MqSoPromotionLog> queryPlatformPromotionsByParam(Map<String, Object> map, RowMapper<MqSoPromotionLog> rowMapper);
-
 }

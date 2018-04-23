@@ -23,6 +23,6 @@ public class CompanyShopManagerImpl implements CompanyShopManager {
     @Cacheable(value="findShopInfoByShopId",key="#shopId")
 	@Override
 	public CompanyShop findShopInfoByShopId(Long shopId) {
-		return companyShopDao.selectById(shopId);
+		return companyShopDao.findById(shopId);
 	}
 }

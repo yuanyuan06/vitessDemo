@@ -1,5 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.mq.MqSoPackingInfoLogDao">
-    <select id="findBySoLineLogIdAndLevel" resultType="io.vitess.model.mq.MqSoPackingInfoLog"></select>
+
+
+    <resultMap id="TmqSoPackingInfoLogResult" type="io.vitess.model.mq.MqSoPackingInfoLog">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqSoPackingInfoLogColumns">
+        <![CDATA[
+	        	ID as id,
+	        	MEMO as memo,
+	        	PI_LEVEL as piLevel,
+	        	TYPE as type,
+	        	SO_LINE_LOG_ID as soLineLogId,
+	        	SO_LOG_ID as soLogId,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoPackingInfoLog"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_so_packing_info_log (
+		        id,
+		        	MEMO ,
+		        	PI_LEVEL ,
+		        	TYPE ,
+		        	SO_LINE_LOG_ID ,
+		        	SO_LOG_ID ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{memo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{piLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{type,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{soLineLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+
+    <select id="findBySoLineLogIdAndLevel" resultType="io.vitess.model.mq.MqSoPackingInfoLog">
+        select *
+          from t_mq_so_packing_info_log as c
+         <where>
+             <if test="soLineLogId != null and soLineLogId != ''">
+                  and c.MQ_SO_LINE_LOG=#{soLineLogId}
+             </if>
+             <if test="level != null and level != ''">
+                  and c.piLevel=#{level}
+             </if>
+             <if test="shopId != null and shopId != ''">
+                  and c.shopId = #{shopId}
+             </if>
+
+         </where>
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoPackingInfoLogResult" flushCache="false">
+        select <include refid="tmqSoPackingInfoLogColumns" />
+        <![CDATA[
+			    from t_mq_so_packing_info_log
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

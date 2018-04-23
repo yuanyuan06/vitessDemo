@@ -1,5 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.mq.MqSoServiceLineLogDao">
-    <select id="findMqSoServiceLineLogList" resultType="io.vitess.model.mq.MqSoServiceLineLog"></select>
+
+    <resultMap id="TmqSoServiceLineLogResult" type="io.vitess.model.mq.MqSoServiceLineLog">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqSoServiceLineLogColumns">
+        <![CDATA[
+	        	ID as id,
+	        	SO_LOG_ID as soLogId,
+	        	PLATFORM_LINE_ID as platformLineId,
+	        	SERVICE_ID as serviceId,
+	        	QTY as qty,
+	        	UNIT_PRICE as unitPrice,
+	        	TOTAL_ACTUAL as totalActual,
+	        	PAYMENT as payment,
+	        	TITLE as title,
+	        	TMSER_SPU_CODE as tmserSpuCode,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoServiceLineLog"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_so_service_line_log (
+		        id,
+		        	SO_LOG_ID ,
+		        	PLATFORM_LINE_ID ,
+		        	SERVICE_ID ,
+		        	QTY ,
+		        	UNIT_PRICE ,
+		        	TOTAL_ACTUAL ,
+		        	PAYMENT ,
+		        	TITLE ,
+		        	TMSER_SPU_CODE ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{platformLineId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{serviceId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{qty,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{unitPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalActual,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{payment,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{title,javaType=String,jdbcType=VARCHAR} ,
+		        	#{tmserSpuCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+
+    <select id="findMqSoServiceLineLogList" resultType="io.vitess.model.mq.MqSoServiceLineLog">
+        select t from t_mq_so_service_line_log t
+               	where t.SO_LOG = #{soLogId}
+               	and t.SHOP_ID = #{shopId}
+    </select>
+
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoServiceLineLogResult" flushCache="false">
+        select <include refid="tmqSoServiceLineLogColumns" />
+        <![CDATA[
+			    from t_mq_so_service_line_log
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

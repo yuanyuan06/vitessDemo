@@ -11,9 +11,9 @@
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="jdbcUrl" value="jdbc:mysql://qdm208431549.my3w.com:3306/qdm208431549_db?" />
-        <property name="user" value="qdm208431549" />
-        <property name="password" value="yy632000046" />
+        <property name="jdbcUrl" value="${jdbcUrl}" />
+        <property name="user" value="${user}" />
+        <property name="password" value="${password}" />
     </bean>
 
     <bean  id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

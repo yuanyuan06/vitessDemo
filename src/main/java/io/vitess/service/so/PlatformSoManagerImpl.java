@@ -125,7 +125,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		CompanyShop shop = null;
 
 		//当前订单所属店铺是否存在
-		if (shopId == null || (shop = companyShopDao.selectById(shopId)) == null) {
+		if (shopId == null || (shop = companyShopDao.findById(shopId)) == null) {
 			errorMsg = "创建订单出错：所属店铺不存在，店铺Id[ " + shopId + " ]";
 			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
 			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);

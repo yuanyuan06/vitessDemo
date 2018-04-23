@@ -581,7 +581,7 @@ public class PromotionCashManagerImpl extends BaseManagerImpl implements Promoti
 					}
 					String categoryCode = "";
 					if (null != data.getProductCategoryTag().getId()) {
-						ProductCategoryTag pct = productCategoryTagDao.selectById(data.getProductCategoryTag().getId());
+						ProductCategoryTag pct = productCategoryTagDao.findById(data.getProductCategoryTag().getId());
 						if (null != pct) {
 							categoryCode = pct.getCode();
 						}

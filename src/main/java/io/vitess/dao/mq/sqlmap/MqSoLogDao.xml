@@ -3,15 +3,309 @@
 <mapper namespace="io.vitess.dao.mq.MqSoLogDao">
 
 
-    <update id="updateStatusAndErrorMsgById">
+    <resultMap id="TmqSoLogResult" type="io.vitess.model.mq.MqSoLog">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmqSoLogColumns">
+        <![CDATA[
+	        	id as id,
+	        	version as version,
+	        	shop_id as shopId,
+	        	code as code,
+	        	create_time as createTime,
+	        	outer_create_time as outerCreateTime,
+	        	payment_time as paymentTime,
+	        	payment_type as paymentType,
+	        	is_needed_invoice as isNeededInvoice,
+	        	invoice_title as invoiceTitle,
+	        	invoice_content as invoiceContent,
+	        	lp_code as lpCode,
+	        	actual_trans_fee as actualTransFee,
+	        	total_actual as totalActual,
+	        	remark as remark,
+	        	error_msg as errorMsg,
+	        	status as status,
+	        	account as account,
+	        	member_email as memberEmail,
+	        	delivery_remark as deliveryRemark,
+	        	is_member_order as isMemberOrder,
+	        	coupon_code as couponCode,
+	        	coupon_type as couponType,
+	        	coupon_discount_fee as couponDiscountFee,
+	        	is_needed_packing as isNeededPacking,
+	        	gc_amt as gcAmt,
+	        	sgc_amt as sgcAmt,
+	        	source as source,
+	        	oms_shop_id as omsShopId,
+	        	total_point_used as totalPointUsed,
+	        	platform_line_id as platformLineId,
+	        	total_outer_point as totalOuterPoint,
+	        	total_inner_point as totalInnerPoint,
+	        	total_vc as totalVc,
+	        	ext_prop1 as extProp1,
+	        	platform_order_type as platformOrderType,
+	        	seller_memo as sellerMemo,
+	        	bpc_amt as bpcAmt,
+	        	card_no as cardNo,
+	        	is_lg_type as isLgType,
+	        	platform_order_status as platformOrderStatus,
+	        	platform_type as platformType,
+	        	alipay_account as alipayAccount,
+	        	alipay_no as alipayNo,
+	        	direction as direction,
+	        	msg_batch_id as msgBatchId,
+	        	store_code as storeCode,
+	        	title_remark as titleRemark,
+	        	service_item_fee as serviceItemFee,
+	        	nike_service_level_code_type as nikeServiceLevelCodeType,
+	        	slip_code1 as slipCode1,
+	        	slip_code2 as slipCode2,
+	        	error_count as errorCount,
+	        	pay_discount as payDiscount,
+	        	total_discount as totalDiscount,
+	        	is_prezzie as isPrezzie,
+	        	is_platform_delivery as isPlatformDelivery,
+	        	cod_amt as codAmt,
+	        	special_type as specialType,
+	        	ext_vc1 as extVc1,
+	        	ext_vc2 as extVc2,
+	        	ext_vc3 as extVc3,
+	        	ALIPAY_ID as alipayId,
+	        	CREDIT_CARD_FEE as creditCardFee,
+	        	no_pay_status as noPayStatus,
+	        	ORDER_TAX_FEE as orderTaxFee,
+	        	IS_BUNDLE as isBundle,
+	        	CUSTOMIZATION_MEMO as customizationMemo,
+	        	CROSS_BONDED_DECLARE as crossBondedDeclare,
+	        	OMNICHANNEL_PARAM as omnichannelParam,
+	        	INVOICE_KIND as invoiceKind,
+	        	BUYER_TAX_NO as buyerTaxNo,
+	        	STEP_TRADE_STATUS as stepTradeStatus,
+	        	STEP_PAID_FEE as stepPaidFee,
+	        	ALLOCATION_TYPE as allocationType,
+	        	BUSINESS_TYPE as businessType
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_mq_so_log (
+		        id,
+		        	version ,
+		        	shop_id ,
+		        	code ,
+		        	create_time ,
+		        	outer_create_time ,
+		        	payment_time ,
+		        	payment_type ,
+		        	is_needed_invoice ,
+		        	invoice_title ,
+		        	invoice_content ,
+		        	lp_code ,
+		        	actual_trans_fee ,
+		        	total_actual ,
+		        	remark ,
+		        	error_msg ,
+		        	status ,
+		        	account ,
+		        	member_email ,
+		        	delivery_remark ,
+		        	is_member_order ,
+		        	coupon_code ,
+		        	coupon_type ,
+		        	coupon_discount_fee ,
+		        	is_needed_packing ,
+		        	gc_amt ,
+		        	sgc_amt ,
+		        	source ,
+		        	oms_shop_id ,
+		        	total_point_used ,
+		        	platform_line_id ,
+		        	total_outer_point ,
+		        	total_inner_point ,
+		        	total_vc ,
+		        	ext_prop1 ,
+		        	platform_order_type ,
+		        	seller_memo ,
+		        	bpc_amt ,
+		        	card_no ,
+		        	is_lg_type ,
+		        	platform_order_status ,
+		        	platform_type ,
+		        	alipay_account ,
+		        	alipay_no ,
+		        	direction ,
+		        	msg_batch_id ,
+		        	store_code ,
+		        	title_remark ,
+		        	service_item_fee ,
+		        	nike_service_level_code_type ,
+		        	slip_code1 ,
+		        	slip_code2 ,
+		        	error_count ,
+		        	pay_discount ,
+		        	total_discount ,
+		        	is_prezzie ,
+		        	is_platform_delivery ,
+		        	cod_amt ,
+		        	special_type ,
+		        	ext_vc1 ,
+		        	ext_vc2 ,
+		        	ext_vc3 ,
+		        	ALIPAY_ID ,
+		        	CREDIT_CARD_FEE ,
+		        	no_pay_status ,
+		        	ORDER_TAX_FEE ,
+		        	IS_BUNDLE ,
+		        	CUSTOMIZATION_MEMO ,
+		        	CROSS_BONDED_DECLARE ,
+		        	OMNICHANNEL_PARAM ,
+		        	INVOICE_KIND ,
+		        	BUYER_TAX_NO ,
+		        	STEP_TRADE_STATUS ,
+		        	STEP_PAID_FEE ,
+		        	ALLOCATION_TYPE ,
+		        	BUSINESS_TYPE
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{outerCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{paymentTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{paymentType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isNeededInvoice,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{invoiceTitle,javaType=String,jdbcType=VARCHAR} ,
+		        	#{invoiceContent,javaType=String,jdbcType=VARCHAR} ,
+		        	#{lpCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{actualTransFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalActual,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{errorMsg,javaType=String,jdbcType=VARCHAR} ,
+		        	#{status,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{account,javaType=String,jdbcType=VARCHAR} ,
+		        	#{memberEmail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{deliveryRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isMemberOrder,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{couponCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{couponType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{couponDiscountFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isNeededPacking,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{gcAmt,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{sgcAmt,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{source,javaType=String,jdbcType=VARCHAR} ,
+		        	#{omsShopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{totalPointUsed,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{platformLineId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{totalOuterPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalInnerPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalVc,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{extProp1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{platformOrderType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{sellerMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{bpcAmt,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{cardNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isLgType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{platformOrderStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{platformType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{alipayAccount,javaType=String,jdbcType=VARCHAR} ,
+		        	#{alipayNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{direction,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{msgBatchId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{storeCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{titleRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{serviceItemFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{nikeServiceLevelCodeType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{slipCode1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{slipCode2,javaType=String,jdbcType=VARCHAR} ,
+		        	#{errorCount,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{payDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isPrezzie,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isPlatformDelivery,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{codAmt,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{specialType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{extVc1,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{extVc2,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{extVc3,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{alipayId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{creditCardFee,javaType=String,jdbcType=VARCHAR} ,
+		        	#{noPayStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{orderTaxFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isBundle,javaType=Boolean,jdbcType=BIT} ,
+		        	#{customizationMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{crossBondedDeclare,javaType=Boolean,jdbcType=BIT} ,
+		        	#{omnichannelParam,javaType=String,jdbcType=VARCHAR} ,
+		        	#{invoiceKind,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{buyerTaxNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{stepTradeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{stepPaidFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{allocationType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{businessType,javaType=Integer,jdbcType=INTEGER}
+		        )
+		    ]]>
+
+    </insert>
 
 
-    </update>
 
 
-    <select id="findMqSoLogByIdShopId" resultType="io.vitess.model.mq.MqSoLog"></select>
+    <select id="findMqSoLogByIdShopId" resultType="io.vitess.model.mq.MqSoLog">
+        select * from t_mq_so_log as c
+        <where>
+            <if test="id != null and id != ''">
+                and c.id=#{id}
+            </if>
+            <if test="shopId != null and shopId != ''">
+                and c.shopId = #{shopId}
+            </if>
+        </where>
+    </select>
 
 
     <select id="findMqSoForCreateSo" resultType="java.lang.Long"></select>
+
+
+    <update id="updateStatusAndErrorMsgById">
+            update t_mq_so_log
+            <set>
+                <if test="createTime != null and createTime != ''">
+                  create_time = #{createTime},
+                </if>
+
+                <if test="status != null and status != ''">
+                    STATUS = #{status},
+                </if>
+
+                <if test="errorCount != null and errorCount != ''">
+                    ERROR_COUNT = #{errorCount},
+                </if>
+
+                <if test="errorMsg != null and errorMsg != ''">
+                    ERROR_MSG = #{errorMsg}
+                </if>
+            </set>
+            <where>
+                <if test="id != null and id != ''">
+                    and id = #{id}
+                </if>
+                <if test="shopId != null and shopId != ''">
+                    AND shop_id = #{shopId}
+                </if>
+            </where>
+    </update>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoLogResult" flushCache="false">
+        select <include refid="tmqSoLogColumns" />
+            from t_mq_so_log
+            where
+            id = #{id}
+    </select>
 
 </mapper>

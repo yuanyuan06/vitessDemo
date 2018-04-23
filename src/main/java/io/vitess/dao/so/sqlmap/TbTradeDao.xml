@@ -1,6 +1,141 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.so.TbTradeDao">
+
+
+	<sql id="ttopTbTradeColumns">
+		<![CDATA[
+	        	ID as id,
+	        	CONFIRM_TIME as confirmTime,
+	        	CONTENT as content,
+	        	COUNTER as counter,
+	        	CREATE_TIME as createTime,
+	        	DESCRIPTION as description,
+	        	ERROR_CODE as errorCode,
+	        	ERROR_MESSAGE as errorMessage,
+	        	FULLINFO_GET_TIME as fullinfoGetTime,
+	        	FULLINFO_STATUS as fullinfoStatus,
+	        	JDP_MODIFIED as jdpModified,
+	        	LAST_CALL_TIME as lastCallTime,
+	        	LOAD_TIME as loadTime,
+	        	NEXT_RUN_TIME as nextRunTime,
+	        	NOTIFY_TRADE_STATUS as notifyTradeStatus,
+	        	SHOP_ID as shopId,
+	        	STATUS as status,
+	        	STEP_TRADE_STATUS as stepTradeStatus,
+	        	SYNC_COUNTER as syncCounter,
+	        	SYNC_STATUS as syncStatus,
+	        	SYNC_TIME as syncTime,
+	        	TID as tid,
+	        	TRADE_CREATE_TIME as tradeCreateTime,
+	        	TRADE_PAY_TIME as tradePayTime,
+	        	TRADE_TYPE as tradeType,
+	        	VERSION as version,
+	        	OMS_SHOP_ID as omsShopId,
+	        	NO_PAY_STATUS as noPayStatus,
+	        	NO_PAY_PROCESS_TIME as noPayProcessTime
+	    ]]>
+	</sql>
+
+	<resultMap id="TtopTbTradeResult" type="io.vitess.model.mq.TbTrade">
+	</resultMap>
+
+
+
     <update id="updateTbTrade"></update>
-    <select id="findTbTradeNotSync" resultType="io.vitess.model.mq.TbTrade"></select>
+
+
+    <select id="findTbTradeNotSync" resultType="io.vitess.model.mq.TbTrade">
+		SELECT
+		t.*
+		FROM
+		t_top_tb_trade t,
+		t_ma_tb_shop_info i
+		WHERE
+		t.SHOP_ID = i.ID
+		AND i.IS_AUTO_ORDER = 1
+		AND t.`STATUS` = 1
+		AND t.SYNC_STATUS = 0
+		AND t.SYNC_COUNTER &lt; 4
+		ORDER BY
+		t.ID
+		LIMIT 6000
+	</select>
+
+
+
+    <insert id="insert" parameterType="io.vitess.model.mq.TbTrade" flushCache="true">
+		        INSERT INTO
+					t_top_tb_trade (
+					id,
+		        	CONFIRM_TIME,
+		        	CONTENT,
+		        	COUNTER,
+		        	CREATE_TIME,
+		        	DESCRIPTION,
+		        	ERROR_CODE,
+		        	ERROR_MESSAGE,
+		        	FULLINFO_GET_TIME,
+		        	FULLINFO_STATUS,
+		        	JDP_MODIFIED,
+		        	LAST_CALL_TIME,
+		        	LOAD_TIME,
+		        	NEXT_RUN_TIME,
+		        	NOTIFY_TRADE_STATUS,
+		        	SHOP_ID,
+		        	STATUS,
+		        	STEP_TRADE_STATUS,
+		        	SYNC_COUNTER,
+		        	SYNC_STATUS,
+		        	SYNC_TIME,
+		        	TID,
+		        	TRADE_CREATE_TIME,
+		        	TRADE_PAY_TIME,
+		        	TRADE_TYPE,
+		        	VERSION,
+		        	OMS_SHOP_ID,
+		        	NO_PAY_STATUS,
+		        	NO_PAY_PROCESS_TIME
+		        ) VALUES (
+		            #{id,javaType=java.lang.Long,jdbcType=BIGINT},
+		        	#{confirmTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{content,javaType=String,jdbcType=LONGVARCHAR},
+		        	#{counter,javaType=Integer,jdbcType=INTEGER},
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{description,javaType=String,jdbcType=VARCHAR},
+		        	#{errorCode,javaType=String,jdbcType=VARCHAR},
+		        	#{errorMessage,javaType=String,jdbcType=VARCHAR},
+		        	#{fullInfoGetTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{fullInfoStatus,javaType=String,jdbcType=VARCHAR},
+		        	#{jdpModified,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{lastCallTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{loadTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{nextRunTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{notifyTradeStatus,javaType=String,jdbcType=VARCHAR},
+		        	#{shopId,javaType=Long,jdbcType=BIGINT},
+		        	#{status,javaType=Integer,jdbcType=INTEGER},
+		        	#{stepTradeStatus,javaType=String,jdbcType=VARCHAR},
+		        	#{syncCounter,javaType=Integer,jdbcType=INTEGER},
+		        	#{syncStatus,javaType=Integer,jdbcType=INTEGER},
+		        	#{syncTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{tid,javaType=Long,jdbcType=BIGINT},
+		        	#{tradeCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{tradePayTime,javaType=java.util.Date,jdbcType=TIMESTAMP},
+		        	#{tradeType,javaType=String,jdbcType=VARCHAR},
+		        	#{version,javaType=String,jdbcType=VARCHAR},
+		        	#{omsShopId,javaType=Long,jdbcType=BIGINT},
+		        	#{noPayStatus,javaType=Integer,jdbcType=TINYINT},
+		        	#{noPayProcessTime,javaType=java.util.Date,jdbcType=TIMESTAMP}
+		        )
+    </insert>
+
+
+
+
+	<select id="findById" parameterType="java.lang.Long" resultMap="TtopTbTradeResult" flushCache="false">
+		select <include refid="ttopTbTradeColumns" />
+			    from t_top_tb_trade
+		        where
+		        ID = #{id}
+	</select>
 </mapper>
