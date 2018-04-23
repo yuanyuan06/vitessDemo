@@ -8,7 +8,7 @@ import io.vitess.model.base.WorkTask;
 import java.util.List;
 
 public interface TaskFactory<S> {
-	
+
 	/**
 	 * 创建工作流
 	 * @param workFlowCode

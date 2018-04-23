@@ -22,4 +22,10 @@ public interface ShopWhDao extends BaseMapper<ShopWh> {
     ShopWh findShopWhByShopIdAndWhCode( Long shopId, String whCode);
 
 
+    ShopWh findDefaultByShopId(Long shopId,  boolean isDefault);
+
+    ShopWh findPlatformDefaultWhByShopId(Long shopId,  boolean isDefault);
+
+    List<ShopWh> findShopWhList(Long shopId);
+    
 }

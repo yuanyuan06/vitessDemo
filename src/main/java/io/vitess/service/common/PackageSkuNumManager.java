@@ -27,18 +27,4 @@ public interface PackageSkuNumManager extends BaseManager {
 	 */
 	PackageSkuNum findPackageSkuNum(CompanyShop shop, String extCode) throws BusinessException;
 	
-	
-	/**
-	 * 根据shopId, extCode查询PackageSkuNum
-	 *
-	 * @methodName com.jumbo.manager.baseinfo.PackageSkuNumManager.findPackageSkuNum
-	 * @author hailiang.jiang
-	 * @date 2014年12月3日 下午3:42:05
-	 * @param shopId
-	 * @param extCode
-	 * @return
-	 * @throws BusinessException
-	 */
-	PackageSkuNum findPackageSkuNum(Long shopId, String extCode) throws BusinessException;
-	
 }

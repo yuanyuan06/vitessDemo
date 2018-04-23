@@ -55,13 +55,13 @@
     </Appenders>
 
     <Loggers>
-        <logger name="io.vitess.dao">
-            <priority value ="debug"/>
+        <logger name="io">
+            <priority value ="info"/>
             <appender-ref ref="Console" />
             <appender-ref ref="RollingFileInfo" />
         </logger>
 
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console" />
         </Root>
 

@@ -4,4 +4,6 @@
     <select id="findByProductId" resultType="io.vitess.model.base.Sku"></select>
     <select id="findSkuByExtensionCode1" resultType="io.vitess.model.base.Sku"></select>
     <select id="findSkuByExtCodeBrtCode" resultType="io.vitess.model.base.Sku"></select>
+    <select id="findByCodes" resultType="java.lang.String"></select>
+    <select id="findByCode" resultType="io.vitess.model.base.Sku"></select>
 </mapper>

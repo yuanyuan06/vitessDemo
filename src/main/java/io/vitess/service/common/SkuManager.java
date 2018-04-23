@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface SkuManager extends BaseManager {
     
-    Sku findById(Long id);
-
     Sku findByCode(String code);
     
     Sku findSkuByExtCodeBrtCode(String extCode, String brtCode, String whCustomerCode);

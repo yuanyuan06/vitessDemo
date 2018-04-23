@@ -37,15 +37,6 @@ public interface ShopWhManager extends BaseManager {
 	public ShopWh findPlatformDefaultWh(Long shopId) throws BusinessException;
 	
 	/**
-	 * 根据店铺，仓库编码获取店铺绑定仓库信息
-	 * @param shopId
-	 * @param whCode
-	 * @return
-	 * @throws BusinessException
-	 */
-	public ShopWh getWarehouse(Long shopId, String whCode) throws BusinessException;
-	
-	/**
 	 * 获取店铺关联的仓库
 	 *
 	 * @methodName com.jumbo.manager.baseinfo.ShopWhManager.findShopWhList
@@ -56,13 +47,4 @@ public interface ShopWhManager extends BaseManager {
 	 * @throws BusinessException
 	 */
 	public List<ShopWh> findShopWhList(Long shopId) throws BusinessException;
-
-	/**
-	 * 判断订单当前所选仓库判断店铺绑定仓库信息是否存在
-	 * @param whCode
-	 * @param so
-	 */
-	public void checkExist(String whCode, SalesOrder so)throws BusinessException;
-	
-	
 }

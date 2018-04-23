@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.ComBoSkuDao">
     <select id="findByCodeAndShopId" resultType="io.vitess.model.base.ComboSku">
-        select * from t_ma_combo_sku t where t.SHOP_ID = #{shopId} and t.code = #{code}
+        select * from t_ma_combo_sku t
+        <where>
+            <if test="shopId != null and shopId != ''">
+                and t.SHOP_ID = #{shopId}
+            </if>
+
+            <if test="code != null and code != ''">
+                and t.code = #{code}
+            </if>
+        </where>
     </select>
 </mapper>
