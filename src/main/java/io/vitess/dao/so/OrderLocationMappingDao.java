@@ -7,5 +7,4 @@ public interface OrderLocationMappingDao extends BaseMapper<OrderLocationMapping
 	
 	OrderLocationMapping findByBusinessType(Long shopId,  String skuCode,  Integer businessType);
 
-	OrderLocationMapping findByLocationCode(Long shopId,  String locationCode);
 }

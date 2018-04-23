@@ -24,11 +24,6 @@ import java.util.List;
 public interface ChooseOptionDao extends BaseMapper<ChooseOption> {
 
 
-
-    ChooseOption findByCategoryCodeAndKey( String categoryCode,  String key);
-
-
-
     List<ChooseOption> findListByPackageName( String packageName);
 
 }

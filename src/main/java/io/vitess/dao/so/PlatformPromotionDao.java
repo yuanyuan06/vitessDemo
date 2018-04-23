@@ -17,10 +17,6 @@ public interface PlatformPromotionDao extends BaseMapper<PlatformPromotion> {
 
     List<PlatformPromotion> findSoPlatformPromotionBySoId(Long soId,  Long shopId);
 
-    List<PlatformPromotion> findSoALLPlatformPromotionBySoId(Long soId,  Long shopId);
-
-    List<PlatformPromotion> findNotLineBySoId(Long soId,  Long shopId);
-
     List<PlatformPromotion> findBySoLineId(Long soId, Long slId,  Long shopId);
 
     List<PlatformPromotion> findBySoLineIdAndPlatformLineId(Long soId, Long platformLineId,  Long shopId);

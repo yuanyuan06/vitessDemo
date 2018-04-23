@@ -17,8 +17,6 @@ public interface TransReginTemplateDao extends BaseMapper<TransReginTemplate> {
 
     TransReginTemplate findByCode( String code);
 	
-	List<TransReginTemplate> findAllTransRegionTemplateList();
-	
 	List<TransReginTemplateCommand> findTransRegionTemplateListByShop(Long shopId, RowMapper<TransReginTemplateCommand> rowMapper);
 	
 } 

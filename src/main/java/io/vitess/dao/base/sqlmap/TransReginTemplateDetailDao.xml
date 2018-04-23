@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.TransReginTemplateDetailDao">
-    <delete id="deleteRTRD"></delete>
-    <select id="findRTRDListByDId" resultType="io.vitess.model.base.TransReginTemplateDetail"></select>
 </mapper>

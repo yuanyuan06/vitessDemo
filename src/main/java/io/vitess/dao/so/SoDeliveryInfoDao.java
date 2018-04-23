@@ -24,7 +24,6 @@ public interface SoDeliveryInfoDao extends BaseMapper<SoDeliveryInfo> {
 
     List<SalesOrderCommand> loadSoAddressByPoc(List<SalesOrderLineCommand> list, Long shopId);
 
-    void updateTrans(String transExpCode,  String transName, List<Long> soIdList, Long shopId);
 
 
 }

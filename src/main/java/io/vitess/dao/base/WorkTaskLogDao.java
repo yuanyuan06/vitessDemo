@@ -12,8 +12,4 @@ public interface WorkTaskLogDao extends BaseMapper<WorkTaskLog> {
 
     void addTaskLog(Long taskId, Long userId, String transitionCode, Integer fromNodeNo, Integer toNodeNo, Date enterTIme, Date transactionTime, String memo,  Long shopId);
 
-    List<WorkTaskLog> findTaskLogs( Long taskId,  Long shopId);
-
-    Date getLastTransactionTime( Long taskId,  Long shopId);
-
 }

@@ -434,53 +434,7 @@ public class PromotionManagerImpl implements PromotionManager{
                 so.setVmiPromotionCode("PPA5416");
             }
         }
-        
-        
-//        // 应用03类型促销
-//        List<VmiTimedPromotion> vmiTimedPromotion3List = vmiTimedPromotionDao.findVmiPromotionList2(5, "03", shopId, payTime, totalActual);
-//        VmiTimedPromotion timedPro = null;
-//        if (vmiTimedPromotion3List != null && vmiTimedPromotion3List.size() > 0) {
-//            timedPro = vmiTimedPromotion3List.iterator().next();
-//        }
-//        if (timedPro != null) {
-//            log.info("---apply vmi gift---" + so.getOmsOrderCode() + "---so total---" + totalActual);
-//            SalesOrderLineCommand li = new SalesOrderLineCommand();
-//            Product product = timedPro.getProduct();
-//            Sku sku = skuDao.findByProductId(product.getId());
-//
-//            li.setIsGift(Boolean.TRUE);
-//            li.setOrderLineType(OrderLineType.GIFT);
-//            li.setPlatformOrderLineCode("VMI促销赠品");
-//            li.setKeyProperties(sku.getKeyProperties());
-//            li.setBarCode(sku.getBarCode());
-//            li.setExtentionCode(sku.getExtensionCode1());
-//            li.setSkuCode(sku.getCode());
-//            li.setSku(sku);
-//            li.setQuantity(1);
-//            li.setSkuName(product.getName());
-//            li.setVmiDiscountCode(timedPro.getCode());
-//            li.setShopId(shopId);
-//
-//            li.setUnitPrice(BigDecimal.ZERO);
-//            li.setTotalAmount(BigDecimal.ZERO);
-//            li.setLineDiscount(BigDecimal.ZERO);
-//            li.setTotalDiscount(BigDecimal.ZERO);
-//            li.setTotalAmountAfterDiscount(BigDecimal.ZERO);
-//            li.setUnitPriceAfterDiscount(BigDecimal.ZERO);
-//            li.setVirtualAmount(BigDecimal.ZERO);
-//            li.setInvoiceTotalAmount(BigDecimal.ZERO);
-//            li.setInvoiceUnitPrice(BigDecimal.ZERO);
-//            li.setListPrice(BigDecimal.ZERO);
-//            li.setTotalPointUsed(BigDecimal.ZERO);
-//
-//            vmiPromotionSoLines.add(li);
-//            timedPro.setGiftQuota(timedPro.getGiftQuota() - 1);
-//            vmiTimedPromotionDao.save(timedPro);
-//            log.info("---end vmi gift---" + so.getOmsOrderCode() + "---so total---" + totalActual);
-//        }
-        
-        
-        
+
         // 应用03类型促销：优化可以支持多线程算法fanht
         List<VmiTimedPromotion> vmiTimedPromotion3List = vmiTimedPromotionDao.findVmiPromotionList2(5, "03", shopId, payTime, totalActual);
         VmiTimedPromotion timedPro = null;

@@ -10,7 +10,4 @@ import java.util.List;
 @Transactional
 public interface TransReginTemplateDetailDao extends BaseMapper<TransReginTemplateDetail> {
 	
-    void deleteRTRD(Long tempId);
-
-    List<TransReginTemplateDetail> findRTRDListByDId(Long tempId);
-} 
+}

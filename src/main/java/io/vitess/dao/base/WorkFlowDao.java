@@ -11,5 +11,4 @@ public interface WorkFlowDao extends BaseMapper<WorkFlow> {
 
     WorkFlow findByCode(String workFlowCode);
 
-    List<WorkFlow> findAllAvailableFlow();
 }

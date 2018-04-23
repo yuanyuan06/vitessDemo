@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.ComboSkuDetailDao">
-    <delete id="deleteForComBoSkuId"></delete>
-    <select id="findComBoSkuDetailByCodeAndShopId" resultType="io.vitess.model.base.ComboSkuDetail"></select>
+
     <select id="findDetailByComBoId" resultType="io.vitess.model.base.ComboSkuDetail"></select>
+
 </mapper>

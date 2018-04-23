@@ -112,29 +112,6 @@ public class SoManagerImpl implements SoManager {
         if ((so.getIsAutoWh() != null && so.getIsAutoWh()) || shop.getId().equals(AppleConstants.APPLE_SHOP_ID) || SoSpecialType.isWlbOrder(so.getSpecialType())) {
             return Boolean.FALSE;
         }
-
-        // 商品模式打标	验证店铺开关是否开启
-//        Boolean isApplySalesMode = shop.getIsApplySalesMode();
-//        if(isApplySalesMode != null && isApplySalesMode){
-//        	Boolean signStatus = suspendManager.signSoLineSaleModel(slList, shop);
-//        	if(!signStatus){
-//        		//so.setSuspendReasonType(SalesOrderSuspendReasonType.SALES_MODE.getValue());
-//        		salesOrderDao.updateSuspendReasonType(so.getId(), shop.getId(), SalesOrderSuspendReasonType.SALES_MODE.getValue());
-//        		return Boolean.TRUE;
-//        	}
-//        }
-
-//      /** 周期购订单预计到货时间-6天>当前日期（ 此类订单不可手动提交，仅由系统到达时间后自动提交） **/
-//      if (so.getIsCycle() != null && Constants.YES.intValue() == so.getIsCycle().intValue()) {
-//          Date estArrivalTimeDate = DateUtil.parseDate(DateUtil.formatDate(so.getEstArrivalTime(), DateUtil.PATTERN_SIMPLE), DateUtil.PATTERN_SIMPLE);
-//          Date nowDate = DateUtil.parseDate(DateUtil.formatDate(DateUtil.now(), DateUtil.PATTERN_SIMPLE), DateUtil.PATTERN_SIMPLE);
-//          if (so.getEstArrivalTime() == null || DateUtil.addDays(estArrivalTimeDate, -6).compareTo(nowDate) > 0) {
-//              so.setSuspendReasonType(SalesOrderSuspendReasonType.PURCHASE_CYCLE_ORDER.getValue());
-//              return Boolean.TRUE;
-//          }
-//      }
-
-        //SoDeliveryInfo sdi = this.soDeliveryInfoDao.findBySoIdShopId(so.getId(), shop.getId());
         //必须处理的挂起
         //电子券实物订单挂起fanht/复制的订单不用再挂起fanht/已获取送货地址的订单不用挂起
         if (checkEticketActualOrder(so, sdi)) {

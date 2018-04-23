@@ -2,5 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.mq.MqDeliveryInfoLogDao">
 
-    <select id="getMqDeliveryInfoLogsBySoLogId" resultType="io.vitess.model.mq.MqDeliveryInfoLog"></select>
+    <select id="getMqDeliveryInfoLogsBySoLogId" resultType="io.vitess.model.mq.MqDeliveryInfoLog">
+        SELECT
+				t.id,
+				t.version,
+				t.receiver,
+				t.contact_person,
+				t.country,
+				t.province,
+				t.city,
+				t.district,
+				t.address,
+				t.zipcode,
+				t.receiver_phone,
+				t.receiver_mobile,
+				t.user_name,
+				t.membre_email,
+				t.lp_code,
+				t.so_log_id
+			FROM
+				t_mq_delivery_info_log t
+			<where>
+                <if test="soLogId != null and soLogId != ''">
+				  and t.SO_LOG_ID = #{soLogId}
+                </if>
+			    <if test="shopId != null and shopId != ''">
+                  AND t.SHOP_ID = #{shopId}
+                </if>
+            </where>
+
+    </select>
 </mapper>

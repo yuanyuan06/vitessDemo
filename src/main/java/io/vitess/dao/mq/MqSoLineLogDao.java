@@ -18,11 +18,4 @@ public interface MqSoLineLogDao extends BaseMapper<MqSoLineLog> {
 
 
     List<MqSoLineLog> getMqMqSoLineLogsBySoLogId(Long soLogId, Long shopId);
-//
-    List<Long> findBySoLogIdAndExtentionCode(Long soLogId, Long shopId, String extentionCode);
-
-    void updateExtentionCodeBySoLogId(Long soLogId, Long shopId, String extentionCode,  String newExtentionCode);
-
-    void updateExtentionCodeBySoLogLineId(Long lineId,String newExtentionCode,Long shopId);
-
 }

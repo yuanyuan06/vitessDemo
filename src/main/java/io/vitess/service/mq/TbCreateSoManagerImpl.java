@@ -3,7 +3,10 @@ package io.vitess.service.mq;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.taobao.api.domain.*;
+import com.taobao.api.domain.Order;
+import com.taobao.api.domain.PromotionDetail;
+import com.taobao.api.domain.ServiceOrder;
+import com.taobao.api.domain.Trade;
 import io.vitess.constants.AppleConstants;
 import io.vitess.constants.Constants;
 import io.vitess.constants.PlatformConstants;
@@ -23,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

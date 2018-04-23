@@ -22,11 +22,6 @@ public interface MqSoLogDao extends BaseMapper<MqSoLog> {
 
     List<Long> findMqSoForCreateSo(int platformType, Long shopId, int status, Date createTime);
 
-    List<MqSoLog> findSoLogInfo(int start, int size, Long shopId,  Map<String, Object> condition);
-
-    List<Long> findSoLogId(Long shopId, String code, int status);
-
     void updateStatusAndErrorMsgById(@Param("id") Long id, @Param("shopId") Long shopId, @Param("createTime") Date createTime, @Param("status") int status, @Param("errorMsg") String errorMsg, @Param("errorCount") Integer errorCount);
 
-    int updateStatusAndErrorMsgByCode(String code, Long shopId, Date createTime, int status, String errorMsg, Integer errorCount);
 }

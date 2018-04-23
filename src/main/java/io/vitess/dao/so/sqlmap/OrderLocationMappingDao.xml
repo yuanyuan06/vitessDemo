@@ -6,7 +6,4 @@
 
     </select>
 
-    <select id="findByLocationCode" resultType="io.vitess.service.so.OrderLocationMapping">
-
-    </select>
 </mapper>

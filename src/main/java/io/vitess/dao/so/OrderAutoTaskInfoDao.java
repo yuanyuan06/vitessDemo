@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface OrderAutoTaskInfoDao extends BaseMapper<OrderAutoTaskInfo> {
 	
-    List<Long> findWaitToWhList( int queryCount,  Boolean isDirectWms);
-
 }
