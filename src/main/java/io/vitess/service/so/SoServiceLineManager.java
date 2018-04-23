@@ -11,8 +11,14 @@ import java.util.List;
 
 public interface SoServiceLineManager extends BaseManager {
 	
-	List<SoServiceLine> findSoServiceLineList(Long salesOrderId);
+	public SoServiceLine getByPrimaryKey(Long pkId);
+	
+	public List<SoServiceLine> findSoServiceLineList(Long salesOrderId);
+	
+	public List<SoServiceLineCommand> findSoServiceLineListBySoAndServiceLine(Long salesOrderId, List<Long> soServiceLineIdList, Long shopId);
+	
+	public void applySoServiceInfo(CompanyShop shop, MqSoLog soLog, SalesOrderCommand soCmd);
 
-	void applySoServiceInfo(CompanyShop shop, MqSoLog soLog, SalesOrderCommand soCmd);
+	public void countSoServiceLineMoney(SalesOrderCommand newSalesOrder, List<SoServiceLineCommand> soServiceLineCmdList);
 
 }

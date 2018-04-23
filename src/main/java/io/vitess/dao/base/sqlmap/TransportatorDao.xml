@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.TransportatorDao">
+    <select id="findAll" resultType="io.vitess.model.base.Transportator"></select>
+    <select id="findTransIsSupportCodList" resultType="io.vitess.model.base.Transportator"></select>
+    <select id="findTransAllDistinctByName" resultType="io.vitess.model.base.Transportator"></select>
+    <select id="findNameByExpCode" resultType="java.lang.String"></select>
+    <select id="findByCode" resultType="io.vitess.model.base.Transportator"></select>
+    <select id="findByName" resultType="io.vitess.model.base.Transportator"></select>
 </mapper>

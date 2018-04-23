@@ -12,4 +12,6 @@ import io.vitess.model.so.OrderMember;
  * @since 2018-04-19
  */
 public interface OrderMemberDao extends BaseMapper<OrderMember> {
+
+    OrderMember findBySoId(Long soId, Long shopId);
 }

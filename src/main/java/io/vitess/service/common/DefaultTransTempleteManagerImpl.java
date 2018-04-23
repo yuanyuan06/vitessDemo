@@ -1,8 +1,5 @@
 package io.vitess.service.common;
 
-import com.jumbo.dao.baseinfo.*;
-import com.jumbo.model.baseinfo.*;
-import com.jumbo.tmalloms.manager.system.SequenceManager;
 import io.vitess.common.DefaultTransTempleteDetailCommand;
 import io.vitess.dao.base.DefaultTransTempleteDao;
 import io.vitess.dao.base.DefaultTransTempleteDetailDao;
@@ -14,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Transactional
 @Service("defaultTransTempleteManager")
@@ -24,17 +22,18 @@ public class DefaultTransTempleteManagerImpl implements DefaultTransTempleteMana
     private DefaultTransTempleteDao defaultTransTempleteDao;
     @Autowired
     private DefaultTransTempleteDetailDao transTempleteDetailDao;
-    @Autowired
-    private SequenceManager sequenceManager;
+//    @Autowired
+//    private SequenceManager sequenceManager;
     
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String getDTTCode(DefaultTransTemplete dtt) {
-        return sequenceManager.getCode(DefaultTransTemplete.class.getName(), dtt);
+//        return sequenceManager.getCode(DefaultTransTemplete.class.getName(), dtt);
+        return UUID.randomUUID().toString();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public String getRTRCode(TransReginTemplate rtr) {
-        return sequenceManager.getCode(TransReginTemplate.class.getName(), rtr);
+        return UUID.randomUUID().toString();
     }
 
 

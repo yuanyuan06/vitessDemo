@@ -1,4 +1,4 @@
-package io.vitess.model.base;
+package io.vitess.command;
 
 import io.vitess.enums.MqSoLogStatus;
 

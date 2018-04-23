@@ -1,7 +1,11 @@
 package io.vitess.dao.so;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.vitess.command.SalesOrderCommand;
+import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.model.so.SoDeliveryInfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +16,15 @@ import io.vitess.model.so.SoDeliveryInfo;
  * @since 2018-04-19
  */
 public interface SoDeliveryInfoDao extends BaseMapper<SoDeliveryInfo> {
+
+    //已不推荐使用，请使用带shopId的
+    SoDeliveryInfo findBySoId(Long soId);
+
+    SoDeliveryInfo findBySoIdShopId(Long soId, Long shopId);
+
+    List<SalesOrderCommand> loadSoAddressByPoc(List<SalesOrderLineCommand> list, Long shopId);
+
+    void updateTrans(String transExpCode,  String transName, List<Long> soIdList, Long shopId);
+
+
 }

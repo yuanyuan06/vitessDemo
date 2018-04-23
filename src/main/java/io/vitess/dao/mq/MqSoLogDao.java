@@ -1,11 +1,8 @@
 package io.vitess.dao.mq;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import io.vitess.model.base.MqSoLogLineExchange;
 import io.vitess.model.mq.MqSoLog;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;

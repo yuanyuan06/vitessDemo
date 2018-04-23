@@ -3,6 +3,8 @@ package io.vitess.dao.so;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import io.vitess.model.so.SalesOrder;
 
+import java.util.List;
+
 /**
  * <p>
   * 订单头 Mapper 接口
@@ -17,5 +19,5 @@ public interface SalesOrderDao extends BaseMapper<SalesOrder> {
 
     void updateSuspendReasonType(Long soId,  Long shopId,  Integer suspendReasonType);
 
-
+    List<Integer> queryCheckHandCreateOrder(String platformOrderCode, Long shopId);
 }

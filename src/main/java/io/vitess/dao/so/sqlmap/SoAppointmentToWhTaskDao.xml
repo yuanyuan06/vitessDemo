@@ -3,6 +3,5 @@
 <mapper namespace="io.vitess.dao.so.SoAppointmentToWhTaskDao">
     <update id="updateProcessStatus"></update>
     <select id="findSoAppointmentToWhTaskList" resultType="java.lang.Long"></select>
-    <select id="findSoAppointmentToWhByShops" resultType="io.vitess.command.BaseSplitData"></select>
     <select id="findSoAppointmentToWhTask" resultType="io.vitess.model.so.SoAppointmentToWhTask"></select>
 </mapper>

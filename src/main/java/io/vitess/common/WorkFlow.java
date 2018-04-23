@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import io.vitess.enums.SlipType;
+import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 工作流定义
@@ -13,6 +16,7 @@ import java.util.Date;
  * @author Benjamin
  * 
  */
+@Data
 @TableName("t_wf_workflow")
 public class WorkFlow extends SuperEntity {
 
@@ -71,5 +75,8 @@ public class WorkFlow extends SuperEntity {
      */
     @TableField("LAST_MODIFY_USER_ID")
     private User lastModifyUser;
+
+    private List<WorkFlowNode> flowNodes = new ArrayList<WorkFlowNode>();
+
 
 }

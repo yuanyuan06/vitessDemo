@@ -62,15 +62,14 @@ public class WorkTask extends SuperEntity {
      * 工作流实例状态
      */
     @TableField("STATUS")
-//    private WorkTaskStatus status;
-    private Long status;
+    private Integer status;
 
     /**
      * 相关单据类型
      */
     @TableField("REF_SLIP_TYPE")
 //    private SlipType refSlipType;
-    private Long refSlipType;
+    private Integer refSlipType;
 
     /**
      * 相关单据编码

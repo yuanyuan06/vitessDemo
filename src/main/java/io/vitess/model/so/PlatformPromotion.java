@@ -3,9 +3,11 @@ package io.vitess.model.so;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
+@Data
 @TableName("t_td_platform_promotion")
 public class PlatformPromotion extends SuperEntity {
 

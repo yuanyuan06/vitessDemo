@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.vitess.dao.base.DistrictDao">
+    <select id="findCountry" resultType="io.vitess.model.base.District"></select>
+    <select id="findProvince" resultType="io.vitess.model.base.District"></select>
+    <select id="findProvinceByCountry" resultType="io.vitess.model.base.District"></select>
+    <select id="findCityList" resultType="java.lang.String"></select>
+    <select id="findCity" resultType="io.vitess.model.base.District"></select>
+    <select id="findDistrictList" resultType="java.lang.String"></select>
+    <select id="findDistrict" resultType="io.vitess.model.base.District"></select>
+</mapper>

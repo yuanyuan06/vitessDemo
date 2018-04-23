@@ -3,6 +3,7 @@ package io.vitess.model.base;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import io.vitess.enums.CommonStatus;
 import io.vitess.model.mq.CompanyShop;
 import lombok.Data;
 

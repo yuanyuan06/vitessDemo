@@ -1,4 +1,4 @@
-package io.vitess.model.base;
+package io.vitess.enums;
 
 public enum CommonStatus {
 

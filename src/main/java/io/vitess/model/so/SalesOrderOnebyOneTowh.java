@@ -3,6 +3,7 @@ package io.vitess.model.so;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author zhiyong.shi
  * 2017年6月8日
  */
+@Data
 @TableName("t_td_sales_one_by_one_to_wh")
 public class SalesOrderOnebyOneTowh extends SuperEntity {
 

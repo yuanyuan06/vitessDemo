@@ -1,7 +1,11 @@
 package io.vitess.dao.base;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.vitess.common.DefaultTransTempleteDetailCommand;
 import io.vitess.model.base.DefaultTransTempleteDetail;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,7 @@ import io.vitess.model.base.DefaultTransTempleteDetail;
  */
 public interface DefaultTransTempleteDetailDao extends BaseMapper<DefaultTransTempleteDetail> {
 
+    List<DefaultTransTempleteDetailCommand> findDTTDByTempId(Long tempId);
+
+    void deleteDTTD(Long tempId);
 }

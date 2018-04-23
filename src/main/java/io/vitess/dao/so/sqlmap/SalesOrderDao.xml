@@ -3,4 +3,5 @@
 <mapper namespace="io.vitess.dao.so.SalesOrderDao">
     <update id="updateSuspendReasonType"></update>
     <select id="findSoByCodeShopId" resultType="io.vitess.model.so.SalesOrder"></select>
+    <select id="queryCheckHandCreateOrder" resultType="java.lang.Integer"></select>
 </mapper>

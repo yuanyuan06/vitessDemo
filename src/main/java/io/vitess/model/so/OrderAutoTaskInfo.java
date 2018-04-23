@@ -3,6 +3,7 @@ package io.vitess.model.so;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author fanht
  *
  */
+@Data
 @TableName("t_td_order_autotask_info")
 public class OrderAutoTaskInfo extends SuperEntity {
 

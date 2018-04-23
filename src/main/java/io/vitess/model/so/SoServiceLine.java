@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.SoServiceType;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
  * @version: v1.0.0
  * @see
  */
+@Data
 @TableName("t_td_so_service_line")
 public class SoServiceLine extends SuperEntity {
 
@@ -59,5 +61,8 @@ public class SoServiceLine extends SuperEntity {
 
     @TableField("SHOP_ID")
     private Long shopId;
+
+    @TableField("SALES_ORDER_ID")
+    private SalesOrder salesOrder;
 
 }

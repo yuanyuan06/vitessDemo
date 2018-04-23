@@ -65,4 +65,8 @@ public class SendSoMsg extends SuperEntity {
     @TableField("EXT2")
     private String ext2;
 
+    @TableField("MSG_TYPE")
+    private String msgType;
+
+
 }
