@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaSkuDao">
+	<resultMap id="TmaSkuResult" type="io.vitess.model.sqlmap.TmaSku">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaSkuColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	BRAND_CATEGORY1 as brandCategory1,
+	        	CODE as code,
+	        	CREATE_TIME as createTime,
+	        	EN_NAME as enName,
+	        	GROSS_WEIGHT as grossWeight,
+	        	HEIGHT as height,
+	        	IS_AVAILABLE as isAvailable,
+	        	IS_GIFT as isGift,
+	        	IS_RAILWAY as isRailway,
+	        	LAST_MODIFY_TIME as lastModifyTime,
+	        	LENGTH as length,
+	        	MANUFACTURE as manufacture,
+	        	NAME as name,
+	        	NET_WEIGHT as netWeight,
+	        	PROD_CATEGORY as prodCategory,
+	        	SALES_MODES as salesModes,
+	        	SUPPLIER_SKU_CODE as supplierSkuCode,
+	        	TYPE as type,
+	        	VERSION as version,
+	        	WARRANTY_CARD_TYPE as warrantyCardType,
+	        	WIDTH as width,
+	        	BRAND_CODE as brandCode,
+	        	BRAND_NAME as brandName,
+	        	SUPPLIER_CODE as supplierCode,
+	        	SUPPLIER_NAME as supplierName,
+	        	LIST_PRICE as listPrice,
+	        	BUSINESS_REGION_TYPE as businessRegionType,
+	        	SP_TYPE as spType,
+	        	BRAND_SPECIAL_TYPE as brandSpecialType,
+	        	IS_SN_SKU as isSnSku,
+	        	SALES_MODE as salesMode,
+	        	WH_CUSTOMER_CODE as whCustomerCode,
+	        	PROD_RATE as prodRate
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaSku"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_sku (
+		        id,
+		        	BRAND_CATEGORY1 ,
+		        	CODE ,
+		        	CREATE_TIME ,
+		        	EN_NAME ,
+		        	GROSS_WEIGHT ,
+		        	HEIGHT ,
+		        	IS_AVAILABLE ,
+		        	IS_GIFT ,
+		        	IS_RAILWAY ,
+		        	LAST_MODIFY_TIME ,
+		        	LENGTH ,
+		        	MANUFACTURE ,
+		        	NAME ,
+		        	NET_WEIGHT ,
+		        	PROD_CATEGORY ,
+		        	SALES_MODES ,
+		        	SUPPLIER_SKU_CODE ,
+		        	TYPE ,
+		        	VERSION ,
+		        	WARRANTY_CARD_TYPE ,
+		        	WIDTH ,
+		        	BRAND_CODE ,
+		        	BRAND_NAME ,
+		        	SUPPLIER_CODE ,
+		        	SUPPLIER_NAME ,
+		        	LIST_PRICE ,
+		        	BUSINESS_REGION_TYPE ,
+		        	SP_TYPE ,
+		        	BRAND_SPECIAL_TYPE ,
+		        	IS_SN_SKU ,
+		        	SALES_MODE ,
+		        	WH_CUSTOMER_CODE ,
+		        	PROD_RATE 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{brandCategory1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{enName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{grossWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{height,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isAvailable,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isGift,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isRailway,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{length,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{manufacture,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{netWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{prodCategory,javaType=String,jdbcType=VARCHAR} ,
+		        	#{salesModes,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierSkuCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{type,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{warrantyCardType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{width,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{brandCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{brandName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{listPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{businessRegionType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{spType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{brandSpecialType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isSnSku,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{salesMode,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{whCustomerCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaSku">
+	    <![CDATA[
+	        UPDATE t_ma_sku SET
+		        BRAND_CATEGORY1 = #{brandCategory1,javaType=String,jdbcType=VARCHAR} ,
+		        CODE = #{code,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        EN_NAME = #{enName,javaType=String,jdbcType=VARCHAR} ,
+		        GROSS_WEIGHT = #{grossWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        HEIGHT = #{height,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        IS_AVAILABLE = #{isAvailable,javaType=Integer,jdbcType=TINYINT} ,
+		        IS_GIFT = #{isGift,javaType=Integer,jdbcType=TINYINT} ,
+		        IS_RAILWAY = #{isRailway,javaType=Integer,jdbcType=TINYINT} ,
+		        LAST_MODIFY_TIME = #{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        LENGTH = #{length,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        MANUFACTURE = #{manufacture,javaType=String,jdbcType=VARCHAR} ,
+		        NAME = #{name,javaType=String,jdbcType=VARCHAR} ,
+		        NET_WEIGHT = #{netWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        PROD_CATEGORY = #{prodCategory,javaType=String,jdbcType=VARCHAR} ,
+		        SALES_MODES = #{salesModes,javaType=String,jdbcType=VARCHAR} ,
+		        SUPPLIER_SKU_CODE = #{supplierSkuCode,javaType=String,jdbcType=VARCHAR} ,
+		        TYPE = #{type,javaType=Integer,jdbcType=TINYINT} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        WARRANTY_CARD_TYPE = #{warrantyCardType,javaType=Integer,jdbcType=INTEGER} ,
+		        WIDTH = #{width,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        BRAND_CODE = #{brandCode,javaType=String,jdbcType=VARCHAR} ,
+		        BRAND_NAME = #{brandName,javaType=String,jdbcType=VARCHAR} ,
+		        SUPPLIER_CODE = #{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        SUPPLIER_NAME = #{supplierName,javaType=String,jdbcType=VARCHAR} ,
+		        LIST_PRICE = #{listPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        BUSINESS_REGION_TYPE = #{businessRegionType,javaType=String,jdbcType=VARCHAR} ,
+		        SP_TYPE = #{spType,javaType=Integer,jdbcType=TINYINT} ,
+		        BRAND_SPECIAL_TYPE = #{brandSpecialType,javaType=Integer,jdbcType=TINYINT} ,
+		        IS_SN_SKU = #{isSnSku,javaType=Integer,jdbcType=TINYINT} ,
+		        SALES_MODE = #{salesMode,javaType=Integer,jdbcType=INTEGER} ,
+		        WH_CUSTOMER_CODE = #{whCustomerCode,javaType=String,jdbcType=VARCHAR} ,
+		        PROD_RATE = #{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_sku where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_sku 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaSkuResult" flushCache="false">
+			select <include refid="tmaSkuColumns" />
+		    <![CDATA[
+			    from t_ma_sku 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaSkuResult" flushCache="false">
+			select <include refid="tmaSkuColumns" />
+			    from t_ma_sku 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaSkuDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="brandCategory1!=null">
+					and BRAND_CATEGORY1 = #{brandCategory1}
+				</if>
+	       
+				<if test="code!=null">
+					and CODE = #{code}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="enName!=null">
+					and EN_NAME = #{enName}
+				</if>
+	       
+				<if test="grossWeight!=null">
+					and GROSS_WEIGHT = #{grossWeight}
+				</if>
+	       
+				<if test="height!=null">
+					and HEIGHT = #{height}
+				</if>
+	       
+				<if test="isAvailable!=null">
+					and IS_AVAILABLE = #{isAvailable}
+				</if>
+	       
+				<if test="isGift!=null">
+					and IS_GIFT = #{isGift}
+				</if>
+	       
+				<if test="isRailway!=null">
+					and IS_RAILWAY = #{isRailway}
+				</if>
+	       
+				<if test="lastModifyTime!=null">
+					and LAST_MODIFY_TIME = #{lastModifyTime}
+				</if>
+	       
+				<if test="length!=null">
+					and LENGTH = #{length}
+				</if>
+	       
+				<if test="manufacture!=null">
+					and MANUFACTURE = #{manufacture}
+				</if>
+	       
+				<if test="name!=null">
+					and NAME = #{name}
+				</if>
+	       
+				<if test="netWeight!=null">
+					and NET_WEIGHT = #{netWeight}
+				</if>
+	       
+				<if test="prodCategory!=null">
+					and PROD_CATEGORY = #{prodCategory}
+				</if>
+	       
+				<if test="salesModes!=null">
+					and SALES_MODES = #{salesModes}
+				</if>
+	       
+				<if test="supplierSkuCode!=null">
+					and SUPPLIER_SKU_CODE = #{supplierSkuCode}
+				</if>
+	       
+				<if test="type!=null">
+					and TYPE = #{type}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="warrantyCardType!=null">
+					and WARRANTY_CARD_TYPE = #{warrantyCardType}
+				</if>
+	       
+				<if test="width!=null">
+					and WIDTH = #{width}
+				</if>
+	       
+				<if test="brandCode!=null">
+					and BRAND_CODE = #{brandCode}
+				</if>
+	       
+				<if test="brandName!=null">
+					and BRAND_NAME = #{brandName}
+				</if>
+	       
+				<if test="supplierCode!=null">
+					and SUPPLIER_CODE = #{supplierCode}
+				</if>
+	       
+				<if test="supplierName!=null">
+					and SUPPLIER_NAME = #{supplierName}
+				</if>
+	       
+				<if test="listPrice!=null">
+					and LIST_PRICE = #{listPrice}
+				</if>
+	       
+				<if test="businessRegionType!=null">
+					and BUSINESS_REGION_TYPE = #{businessRegionType}
+				</if>
+	       
+				<if test="spType!=null">
+					and SP_TYPE = #{spType}
+				</if>
+	       
+				<if test="brandSpecialType!=null">
+					and BRAND_SPECIAL_TYPE = #{brandSpecialType}
+				</if>
+	       
+				<if test="isSnSku!=null">
+					and IS_SN_SKU = #{isSnSku}
+				</if>
+	       
+				<if test="salesMode!=null">
+					and SALES_MODE = #{salesMode}
+				</if>
+	       
+				<if test="whCustomerCode!=null">
+					and WH_CUSTOMER_CODE = #{whCustomerCode}
+				</if>
+	       
+				<if test="prodRate!=null">
+					and PROD_RATE = #{prodRate}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_sku 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_sku 
+		<include refid="tmaSkuDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_sku 
+		<include refid="tmaSkuDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaSkuResult">
+    	select <include refid="tmaSkuColumns" />
+	    from t_ma_sku 
+		<include refid="tmaSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaSkuResult">
+    	select <include refid="tmaSkuColumns" />
+	    from t_ma_sku 
+		<include refid="tmaSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaSkuResult">
+    	select <include refid="tmaSkuColumns" />
+	    from t_ma_sku 
+		<include refid="tmaSkuDynamicWhere"/>
+		
+    </select>
+
+    <select id="getByCode" resultMap="TmaSkuResult" parameterType="String">
+	    select <include refid="tmaSkuColumns"/>
+	    <![CDATA[
+	        from t_ma_sku where CODE = #{code}
+	    ]]>
+    </select>
+    
+	
+</mapper>

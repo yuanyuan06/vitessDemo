@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TsmsDataParamDao">
+	<resultMap id="TsmsDataParamResult" type="io.vitess.model.sqlmap.TsmsDataParam">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tsmsDataParamColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	SHOP_ID as shopId,
+	        	DATA_TYPE as dataType,
+	        	DATA_REMARK as dataRemark,
+	        	SMS_TYPE as smsType,
+	        	SMS_REMARK as smsRemark,
+	        	PROCESS_STATUS as processStatus,
+	        	PROCESS_RESULT as processResult,
+	        	REMARK as remark,
+	        	INPUT_TIME as inputTime,
+	        	UPDATE_TIME as updateTime
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TsmsDataParam"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_sms_data_param (
+		        id,
+		        	SHOP_ID ,
+		        	DATA_TYPE ,
+		        	DATA_REMARK ,
+		        	SMS_TYPE ,
+		        	SMS_REMARK ,
+		        	PROCESS_STATUS ,
+		        	PROCESS_RESULT ,
+		        	REMARK ,
+		        	INPUT_TIME ,
+		        	UPDATE_TIME 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{dataType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{dataRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{smsType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{smsRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{processResult,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{inputTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TsmsDataParam">
+	    <![CDATA[
+	        UPDATE t_sms_data_param SET
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        DATA_TYPE = #{dataType,javaType=Integer,jdbcType=TINYINT} ,
+		        DATA_REMARK = #{dataRemark,javaType=String,jdbcType=VARCHAR} ,
+		        SMS_TYPE = #{smsType,javaType=Integer,jdbcType=INTEGER} ,
+		        SMS_REMARK = #{smsRemark,javaType=String,jdbcType=VARCHAR} ,
+		        PROCESS_STATUS = #{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        PROCESS_RESULT = #{processResult,javaType=String,jdbcType=VARCHAR} ,
+		        REMARK = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        INPUT_TIME = #{inputTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        UPDATE_TIME = #{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_sms_data_param where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_sms_data_param 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TsmsDataParamResult" flushCache="false">
+			select <include refid="tsmsDataParamColumns" />
+		    <![CDATA[
+			    from t_sms_data_param 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TsmsDataParamResult" flushCache="false">
+			select <include refid="tsmsDataParamColumns" />
+			    from t_sms_data_param 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tsmsDataParamDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="dataType!=null">
+					and DATA_TYPE = #{dataType}
+				</if>
+	       
+				<if test="dataRemark!=null">
+					and DATA_REMARK = #{dataRemark}
+				</if>
+	       
+				<if test="smsType!=null">
+					and SMS_TYPE = #{smsType}
+				</if>
+	       
+				<if test="smsRemark!=null">
+					and SMS_REMARK = #{smsRemark}
+				</if>
+	       
+				<if test="processStatus!=null">
+					and PROCESS_STATUS = #{processStatus}
+				</if>
+	       
+				<if test="processResult!=null">
+					and PROCESS_RESULT = #{processResult}
+				</if>
+	       
+				<if test="remark!=null">
+					and REMARK = #{remark}
+				</if>
+	       
+				<if test="inputTime!=null">
+					and INPUT_TIME = #{inputTime}
+				</if>
+	       
+				<if test="updateTime!=null">
+					and UPDATE_TIME = #{updateTime}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_sms_data_param 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_sms_data_param 
+		<include refid="tsmsDataParamDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_sms_data_param 
+		<include refid="tsmsDataParamDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TsmsDataParamResult">
+    	select <include refid="tsmsDataParamColumns" />
+	    from t_sms_data_param 
+		<include refid="tsmsDataParamDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TsmsDataParamResult">
+    	select <include refid="tsmsDataParamColumns" />
+	    from t_sms_data_param 
+		<include refid="tsmsDataParamDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TsmsDataParamResult">
+    	select <include refid="tsmsDataParamColumns" />
+	    from t_sms_data_param 
+		<include refid="tsmsDataParamDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

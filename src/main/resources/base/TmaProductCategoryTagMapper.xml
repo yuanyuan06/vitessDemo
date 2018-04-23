@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaProductCategoryTagDao">
+	<resultMap id="TmaProductCategoryTagResult" type="io.vitess.model.sqlmap.TmaProductCategoryTag">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaProductCategoryTagColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CODE as code,
+	        	CREATE_TIME as createTime,
+	        	CREATOR as creator,
+	        	DESCRIPTION as description,
+	        	NAME as name,
+	        	STATUS as status,
+	        	VERSION as version,
+	        	COMPANY_SHOP_ID as companyShopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaProductCategoryTag"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_product_category_tag (
+		        id,
+		        	CODE ,
+		        	CREATE_TIME ,
+		        	CREATOR ,
+		        	DESCRIPTION ,
+		        	NAME ,
+		        	STATUS ,
+		        	VERSION ,
+		        	COMPANY_SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{creator,javaType=Long,jdbcType=BIGINT} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{status,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{companyShopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaProductCategoryTag">
+	    <![CDATA[
+	        UPDATE t_ma_product_category_tag SET
+		        CODE = #{code,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        DESCRIPTION = #{description,javaType=String,jdbcType=VARCHAR} ,
+		        NAME = #{name,javaType=String,jdbcType=VARCHAR} ,
+		        STATUS = #{status,javaType=Integer,jdbcType=INTEGER} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        COMPANY_SHOP_ID = #{companyShopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_product_category_tag where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_product_category_tag 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaProductCategoryTagResult" flushCache="false">
+			select <include refid="tmaProductCategoryTagColumns" />
+		    <![CDATA[
+			    from t_ma_product_category_tag 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaProductCategoryTagResult" flushCache="false">
+			select <include refid="tmaProductCategoryTagColumns" />
+			    from t_ma_product_category_tag 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaProductCategoryTagDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="code!=null">
+					and CODE = #{code}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="creator!=null">
+					and CREATOR = #{creator}
+				</if>
+	       
+				<if test="description!=null">
+					and DESCRIPTION = #{description}
+				</if>
+	       
+				<if test="name!=null">
+					and NAME = #{name}
+				</if>
+	       
+				<if test="status!=null">
+					and STATUS = #{status}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="companyShopId!=null">
+					and COMPANY_SHOP_ID = #{companyShopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_product_category_tag 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_product_category_tag 
+		<include refid="tmaProductCategoryTagDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_product_category_tag 
+		<include refid="tmaProductCategoryTagDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaProductCategoryTagResult">
+    	select <include refid="tmaProductCategoryTagColumns" />
+	    from t_ma_product_category_tag 
+		<include refid="tmaProductCategoryTagDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaProductCategoryTagResult">
+    	select <include refid="tmaProductCategoryTagColumns" />
+	    from t_ma_product_category_tag 
+		<include refid="tmaProductCategoryTagDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaProductCategoryTagResult">
+    	select <include refid="tmaProductCategoryTagColumns" />
+	    from t_ma_product_category_tag 
+		<include refid="tmaProductCategoryTagDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

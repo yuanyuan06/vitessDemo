@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtopTbTradeDao">
+	<resultMap id="TtopTbTradeResult" type="io.vitess.model.sqlmap.TtopTbTrade">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttopTbTradeColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CONFIRM_TIME as confirmTime,
+	        	CONTENT as content,
+	        	COUNTER as counter,
+	        	CREATE_TIME as createTime,
+	        	DESCRIPTION as description,
+	        	ERROR_CODE as errorCode,
+	        	ERROR_MESSAGE as errorMessage,
+	        	FULLINFO_GET_TIME as fullinfoGetTime,
+	        	FULLINFO_STATUS as fullinfoStatus,
+	        	JDP_MODIFIED as jdpModified,
+	        	LAST_CALL_TIME as lastCallTime,
+	        	LOAD_TIME as loadTime,
+	        	NEXT_RUN_TIME as nextRunTime,
+	        	NOTIFY_TRADE_STATUS as notifyTradeStatus,
+	        	SHOP_ID as shopId,
+	        	STATUS as status,
+	        	STEP_TRADE_STATUS as stepTradeStatus,
+	        	SYNC_COUNTER as syncCounter,
+	        	SYNC_STATUS as syncStatus,
+	        	SYNC_TIME as syncTime,
+	        	TID as tid,
+	        	TRADE_CREATE_TIME as tradeCreateTime,
+	        	TRADE_PAY_TIME as tradePayTime,
+	        	TRADE_TYPE as tradeType,
+	        	VERSION as version,
+	        	OMS_SHOP_ID as omsShopId,
+	        	NO_PAY_STATUS as noPayStatus,
+	        	NO_PAY_PROCESS_TIME as noPayProcessTime
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtopTbTrade"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_top_tb_trade (
+		        id,
+		        	CONFIRM_TIME ,
+		        	CONTENT ,
+		        	COUNTER ,
+		        	CREATE_TIME ,
+		        	DESCRIPTION ,
+		        	ERROR_CODE ,
+		        	ERROR_MESSAGE ,
+		        	FULLINFO_GET_TIME ,
+		        	FULLINFO_STATUS ,
+		        	JDP_MODIFIED ,
+		        	LAST_CALL_TIME ,
+		        	LOAD_TIME ,
+		        	NEXT_RUN_TIME ,
+		        	NOTIFY_TRADE_STATUS ,
+		        	SHOP_ID ,
+		        	STATUS ,
+		        	STEP_TRADE_STATUS ,
+		        	SYNC_COUNTER ,
+		        	SYNC_STATUS ,
+		        	SYNC_TIME ,
+		        	TID ,
+		        	TRADE_CREATE_TIME ,
+		        	TRADE_PAY_TIME ,
+		        	TRADE_TYPE ,
+		        	VERSION ,
+		        	OMS_SHOP_ID ,
+		        	NO_PAY_STATUS ,
+		        	NO_PAY_PROCESS_TIME 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{confirmTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{content,javaType=String,jdbcType=LONGVARCHAR} ,
+		        	#{counter,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} ,
+		        	#{errorCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{errorMessage,javaType=String,jdbcType=VARCHAR} ,
+		        	#{fullinfoGetTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{fullinfoStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{jdpModified,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{lastCallTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{loadTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{nextRunTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{notifyTradeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{status,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{stepTradeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{syncCounter,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{syncStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{syncTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{tid,javaType=Long,jdbcType=BIGINT} ,
+		        	#{tradeCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{tradePayTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{tradeType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=String,jdbcType=VARCHAR} ,
+		        	#{omsShopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{noPayStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{noPayProcessTime,javaType=java.util.Date,jdbcType=TIMESTAMP} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtopTbTrade">
+	    <![CDATA[
+	        UPDATE t_top_tb_trade SET
+		        CONFIRM_TIME = #{confirmTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        CONTENT = #{content,javaType=String,jdbcType=LONGVARCHAR} ,
+		        COUNTER = #{counter,javaType=Integer,jdbcType=INTEGER} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        DESCRIPTION = #{description,javaType=String,jdbcType=VARCHAR} ,
+		        ERROR_CODE = #{errorCode,javaType=String,jdbcType=VARCHAR} ,
+		        ERROR_MESSAGE = #{errorMessage,javaType=String,jdbcType=VARCHAR} ,
+		        FULLINFO_GET_TIME = #{fullinfoGetTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        FULLINFO_STATUS = #{fullinfoStatus,javaType=String,jdbcType=VARCHAR} ,
+		        JDP_MODIFIED = #{jdpModified,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        LAST_CALL_TIME = #{lastCallTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        LOAD_TIME = #{loadTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        NEXT_RUN_TIME = #{nextRunTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        NOTIFY_TRADE_STATUS = #{notifyTradeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        STATUS = #{status,javaType=Integer,jdbcType=INTEGER} ,
+		        STEP_TRADE_STATUS = #{stepTradeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        SYNC_COUNTER = #{syncCounter,javaType=Integer,jdbcType=INTEGER} ,
+		        SYNC_STATUS = #{syncStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        SYNC_TIME = #{syncTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TID = #{tid,javaType=Long,jdbcType=BIGINT} ,
+		        TRADE_CREATE_TIME = #{tradeCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TRADE_PAY_TIME = #{tradePayTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TRADE_TYPE = #{tradeType,javaType=String,jdbcType=VARCHAR} ,
+		        VERSION = #{version,javaType=String,jdbcType=VARCHAR} ,
+		        OMS_SHOP_ID = #{omsShopId,javaType=Long,jdbcType=BIGINT} ,
+		        NO_PAY_STATUS = #{noPayStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        NO_PAY_PROCESS_TIME = #{noPayProcessTime,javaType=java.util.Date,jdbcType=TIMESTAMP} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_top_tb_trade where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_top_tb_trade 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtopTbTradeResult" flushCache="false">
+			select <include refid="ttopTbTradeColumns" />
+		    <![CDATA[
+			    from t_top_tb_trade 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtopTbTradeResult" flushCache="false">
+			select <include refid="ttopTbTradeColumns" />
+			    from t_top_tb_trade 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttopTbTradeDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="confirmTime!=null">
+					and CONFIRM_TIME = #{confirmTime}
+				</if>
+	       
+				<if test="content!=null">
+					and CONTENT = #{content}
+				</if>
+	       
+				<if test="counter!=null">
+					and COUNTER = #{counter}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="description!=null">
+					and DESCRIPTION = #{description}
+				</if>
+	       
+				<if test="errorCode!=null">
+					and ERROR_CODE = #{errorCode}
+				</if>
+	       
+				<if test="errorMessage!=null">
+					and ERROR_MESSAGE = #{errorMessage}
+				</if>
+	       
+				<if test="fullinfoGetTime!=null">
+					and FULLINFO_GET_TIME = #{fullinfoGetTime}
+				</if>
+	       
+				<if test="fullinfoStatus!=null">
+					and FULLINFO_STATUS = #{fullinfoStatus}
+				</if>
+	       
+				<if test="jdpModified!=null">
+					and JDP_MODIFIED = #{jdpModified}
+				</if>
+	       
+				<if test="lastCallTime!=null">
+					and LAST_CALL_TIME = #{lastCallTime}
+				</if>
+	       
+				<if test="loadTime!=null">
+					and LOAD_TIME = #{loadTime}
+				</if>
+	       
+				<if test="nextRunTime!=null">
+					and NEXT_RUN_TIME = #{nextRunTime}
+				</if>
+	       
+				<if test="notifyTradeStatus!=null">
+					and NOTIFY_TRADE_STATUS = #{notifyTradeStatus}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="status!=null">
+					and STATUS = #{status}
+				</if>
+	       
+				<if test="stepTradeStatus!=null">
+					and STEP_TRADE_STATUS = #{stepTradeStatus}
+				</if>
+	       
+				<if test="syncCounter!=null">
+					and SYNC_COUNTER = #{syncCounter}
+				</if>
+	       
+				<if test="syncStatus!=null">
+					and SYNC_STATUS = #{syncStatus}
+				</if>
+	       
+				<if test="syncTime!=null">
+					and SYNC_TIME = #{syncTime}
+				</if>
+	       
+				<if test="tid!=null">
+					and TID = #{tid}
+				</if>
+	       
+				<if test="tradeCreateTime!=null">
+					and TRADE_CREATE_TIME = #{tradeCreateTime}
+				</if>
+	       
+				<if test="tradePayTime!=null">
+					and TRADE_PAY_TIME = #{tradePayTime}
+				</if>
+	       
+				<if test="tradeType!=null">
+					and TRADE_TYPE = #{tradeType}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="omsShopId!=null">
+					and OMS_SHOP_ID = #{omsShopId}
+				</if>
+	       
+				<if test="noPayStatus!=null">
+					and NO_PAY_STATUS = #{noPayStatus}
+				</if>
+	       
+				<if test="noPayProcessTime!=null">
+					and NO_PAY_PROCESS_TIME = #{noPayProcessTime}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_top_tb_trade 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_top_tb_trade 
+		<include refid="ttopTbTradeDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_top_tb_trade 
+		<include refid="ttopTbTradeDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtopTbTradeResult">
+    	select <include refid="ttopTbTradeColumns" />
+	    from t_top_tb_trade 
+		<include refid="ttopTbTradeDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtopTbTradeResult">
+    	select <include refid="ttopTbTradeColumns" />
+	    from t_top_tb_trade 
+		<include refid="ttopTbTradeDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtopTbTradeResult">
+    	select <include refid="ttopTbTradeColumns" />
+	    from t_top_tb_trade 
+		<include refid="ttopTbTradeDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

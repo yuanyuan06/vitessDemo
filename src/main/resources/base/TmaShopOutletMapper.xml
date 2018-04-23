@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaShopOutletDao">
+	<resultMap id="TmaShopOutletResult" type="io.vitess.model.sqlmap.TmaShopOutlet">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaShopOutletColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	SHOP_ID as shopId,
+	        	STORE_CODE as storeCode,
+	        	COMPANY_NAME as companyName,
+	        	STORE_NAME as storeName,
+	        	STORE_TYPE as storeType,
+	        	MAIN_CATEGORY as mainCategory,
+	        	START_TIME as startTime,
+	        	END_TIME as endTime,
+	        	STORE_STATUS as storeStatus,
+	        	STORE_DESCRIPTION as storeDescription,
+	        	CREATE_USER as createUser,
+	        	LAST_MODIFY_USER as lastModifyUser,
+	        	CREATE_TIME as createTime,
+	        	LAST_MODIFY_TIME as lastModifyTime,
+	        	REMARK as remark,
+	        	STORE_ID as storeId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaShopOutlet"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_shop_outlet (
+		        id,
+		        	SHOP_ID ,
+		        	STORE_CODE ,
+		        	COMPANY_NAME ,
+		        	STORE_NAME ,
+		        	STORE_TYPE ,
+		        	MAIN_CATEGORY ,
+		        	START_TIME ,
+		        	END_TIME ,
+		        	STORE_STATUS ,
+		        	STORE_DESCRIPTION ,
+		        	CREATE_USER ,
+		        	LAST_MODIFY_USER ,
+		        	CREATE_TIME ,
+		        	LAST_MODIFY_TIME ,
+		        	REMARK ,
+		        	STORE_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{storeCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{companyName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{mainCategory,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{startTime,javaType=String,jdbcType=VARCHAR} ,
+		        	#{endTime,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeDescription,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createUser,javaType=String,jdbcType=VARCHAR} ,
+		        	#{lastModifyUser,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeId,javaType=String,jdbcType=VARCHAR} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaShopOutlet">
+	    <![CDATA[
+	        UPDATE t_ma_shop_outlet SET
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        STORE_CODE = #{storeCode,javaType=String,jdbcType=VARCHAR} ,
+		        COMPANY_NAME = #{companyName,javaType=String,jdbcType=VARCHAR} ,
+		        STORE_NAME = #{storeName,javaType=String,jdbcType=VARCHAR} ,
+		        STORE_TYPE = #{storeType,javaType=String,jdbcType=VARCHAR} ,
+		        MAIN_CATEGORY = #{mainCategory,javaType=Integer,jdbcType=INTEGER} ,
+		        START_TIME = #{startTime,javaType=String,jdbcType=VARCHAR} ,
+		        END_TIME = #{endTime,javaType=String,jdbcType=VARCHAR} ,
+		        STORE_STATUS = #{storeStatus,javaType=String,jdbcType=VARCHAR} ,
+		        STORE_DESCRIPTION = #{storeDescription,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_USER = #{createUser,javaType=String,jdbcType=VARCHAR} ,
+		        LAST_MODIFY_USER = #{lastModifyUser,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        LAST_MODIFY_TIME = #{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        REMARK = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        STORE_ID = #{storeId,javaType=String,jdbcType=VARCHAR} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_shop_outlet where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_shop_outlet 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaShopOutletResult" flushCache="false">
+			select <include refid="tmaShopOutletColumns" />
+		    <![CDATA[
+			    from t_ma_shop_outlet 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaShopOutletResult" flushCache="false">
+			select <include refid="tmaShopOutletColumns" />
+			    from t_ma_shop_outlet 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaShopOutletDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="storeCode!=null">
+					and STORE_CODE = #{storeCode}
+				</if>
+	       
+				<if test="companyName!=null">
+					and COMPANY_NAME = #{companyName}
+				</if>
+	       
+				<if test="storeName!=null">
+					and STORE_NAME = #{storeName}
+				</if>
+	       
+				<if test="storeType!=null">
+					and STORE_TYPE = #{storeType}
+				</if>
+	       
+				<if test="mainCategory!=null">
+					and MAIN_CATEGORY = #{mainCategory}
+				</if>
+	       
+				<if test="startTime!=null">
+					and START_TIME = #{startTime}
+				</if>
+	       
+				<if test="endTime!=null">
+					and END_TIME = #{endTime}
+				</if>
+	       
+				<if test="storeStatus!=null">
+					and STORE_STATUS = #{storeStatus}
+				</if>
+	       
+				<if test="storeDescription!=null">
+					and STORE_DESCRIPTION = #{storeDescription}
+				</if>
+	       
+				<if test="createUser!=null">
+					and CREATE_USER = #{createUser}
+				</if>
+	       
+				<if test="lastModifyUser!=null">
+					and LAST_MODIFY_USER = #{lastModifyUser}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="lastModifyTime!=null">
+					and LAST_MODIFY_TIME = #{lastModifyTime}
+				</if>
+	       
+				<if test="remark!=null">
+					and REMARK = #{remark}
+				</if>
+	       
+				<if test="storeId!=null">
+					and STORE_ID = #{storeId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_shop_outlet 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_shop_outlet 
+		<include refid="tmaShopOutletDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_shop_outlet 
+		<include refid="tmaShopOutletDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaShopOutletResult">
+    	select <include refid="tmaShopOutletColumns" />
+	    from t_ma_shop_outlet 
+		<include refid="tmaShopOutletDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaShopOutletResult">
+    	select <include refid="tmaShopOutletColumns" />
+	    from t_ma_shop_outlet 
+		<include refid="tmaShopOutletDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaShopOutletResult">
+    	select <include refid="tmaShopOutletColumns" />
+	    from t_ma_shop_outlet 
+		<include refid="tmaShopOutletDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

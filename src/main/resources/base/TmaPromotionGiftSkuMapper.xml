@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaPromotionGiftSkuDao">
+	<resultMap id="TmaPromotionGiftSkuResult" type="io.vitess.model.sqlmap.TmaPromotionGiftSku">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaPromotionGiftSkuColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CREATE_TIME as createTime,
+	        	GIFT_QTY as giftQty,
+	        	SHOP_ID as shopId,
+	        	SKU_GIFT_LEVEL as skuGiftLevel,
+	        	SKU_ID as skuId,
+	        	TOTAL_QTY as totalQty,
+	        	VERSION as version,
+	        	PROMOTION_GIFT_ID as promotionGiftId,
+	        	USED_GIFT_NUM as usedGiftNum
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaPromotionGiftSku"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_promotion_gift_sku (
+		        id,
+		        	CREATE_TIME ,
+		        	GIFT_QTY ,
+		        	SHOP_ID ,
+		        	SKU_GIFT_LEVEL ,
+		        	SKU_ID ,
+		        	TOTAL_QTY ,
+		        	VERSION ,
+		        	PROMOTION_GIFT_ID ,
+		        	USED_GIFT_NUM 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{giftQty,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{skuGiftLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{skuId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{totalQty,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{promotionGiftId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{usedGiftNum,javaType=Integer,jdbcType=INTEGER} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaPromotionGiftSku">
+	    <![CDATA[
+	        UPDATE t_ma_promotion_gift_sku SET
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        GIFT_QTY = #{giftQty,javaType=Integer,jdbcType=INTEGER} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        SKU_GIFT_LEVEL = #{skuGiftLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        SKU_ID = #{skuId,javaType=Long,jdbcType=BIGINT} ,
+		        TOTAL_QTY = #{totalQty,javaType=Integer,jdbcType=INTEGER} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        PROMOTION_GIFT_ID = #{promotionGiftId,javaType=Long,jdbcType=BIGINT} ,
+		        USED_GIFT_NUM = #{usedGiftNum,javaType=Integer,jdbcType=INTEGER} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_promotion_gift_sku where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_promotion_gift_sku 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaPromotionGiftSkuResult" flushCache="false">
+			select <include refid="tmaPromotionGiftSkuColumns" />
+		    <![CDATA[
+			    from t_ma_promotion_gift_sku 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaPromotionGiftSkuResult" flushCache="false">
+			select <include refid="tmaPromotionGiftSkuColumns" />
+			    from t_ma_promotion_gift_sku 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaPromotionGiftSkuDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="giftQty!=null">
+					and GIFT_QTY = #{giftQty}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="skuGiftLevel!=null">
+					and SKU_GIFT_LEVEL = #{skuGiftLevel}
+				</if>
+	       
+				<if test="skuId!=null">
+					and SKU_ID = #{skuId}
+				</if>
+	       
+				<if test="totalQty!=null">
+					and TOTAL_QTY = #{totalQty}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="promotionGiftId!=null">
+					and PROMOTION_GIFT_ID = #{promotionGiftId}
+				</if>
+	       
+				<if test="usedGiftNum!=null">
+					and USED_GIFT_NUM = #{usedGiftNum}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_promotion_gift_sku 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_promotion_gift_sku 
+		<include refid="tmaPromotionGiftSkuDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_promotion_gift_sku 
+		<include refid="tmaPromotionGiftSkuDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaPromotionGiftSkuResult">
+    	select <include refid="tmaPromotionGiftSkuColumns" />
+	    from t_ma_promotion_gift_sku 
+		<include refid="tmaPromotionGiftSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaPromotionGiftSkuResult">
+    	select <include refid="tmaPromotionGiftSkuColumns" />
+	    from t_ma_promotion_gift_sku 
+		<include refid="tmaPromotionGiftSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaPromotionGiftSkuResult">
+    	select <include refid="tmaPromotionGiftSkuColumns" />
+	    from t_ma_promotion_gift_sku 
+		<include refid="tmaPromotionGiftSkuDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

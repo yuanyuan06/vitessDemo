@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdSoInvFlowSkuSnDao">
+	<resultMap id="TtdSoInvFlowSkuSnResult" type="io.vitess.model.sqlmap.TtdSoInvFlowSkuSn">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdSoInvFlowSkuSnColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	SO_INVENTORY_FLOW_ID as soInventoryFlowId,
+	        	SN as sn,
+	        	SHOP_ID as shopId,
+	        	IS_CUT_WATCH_BAND as isCutWatchBand,
+	        	CUT_NUM as cutNum
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdSoInvFlowSkuSn"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_so_inv_flow_sku_sn (
+		        id,
+		        	SO_INVENTORY_FLOW_ID ,
+		        	SN ,
+		        	SHOP_ID ,
+		        	IS_CUT_WATCH_BAND ,
+		        	CUT_NUM 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{soInventoryFlowId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{sn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{isCutWatchBand,javaType=Boolean,jdbcType=BIT} ,
+		        	#{cutNum,javaType=Integer,jdbcType=INTEGER} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdSoInvFlowSkuSn">
+	    <![CDATA[
+	        UPDATE t_td_so_inv_flow_sku_sn SET
+		        SO_INVENTORY_FLOW_ID = #{soInventoryFlowId,javaType=Long,jdbcType=BIGINT} ,
+		        SN = #{sn,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        IS_CUT_WATCH_BAND = #{isCutWatchBand,javaType=Boolean,jdbcType=BIT} ,
+		        CUT_NUM = #{cutNum,javaType=Integer,jdbcType=INTEGER} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_so_inv_flow_sku_sn where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_so_inv_flow_sku_sn 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdSoInvFlowSkuSnResult" flushCache="false">
+			select <include refid="ttdSoInvFlowSkuSnColumns" />
+		    <![CDATA[
+			    from t_td_so_inv_flow_sku_sn 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdSoInvFlowSkuSnResult" flushCache="false">
+			select <include refid="ttdSoInvFlowSkuSnColumns" />
+			    from t_td_so_inv_flow_sku_sn 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdSoInvFlowSkuSnDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="soInventoryFlowId!=null">
+					and SO_INVENTORY_FLOW_ID = #{soInventoryFlowId}
+				</if>
+	       
+				<if test="sn!=null">
+					and SN = #{sn}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="isCutWatchBand!=null">
+					and IS_CUT_WATCH_BAND = #{isCutWatchBand}
+				</if>
+	       
+				<if test="cutNum!=null">
+					and CUT_NUM = #{cutNum}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_so_inv_flow_sku_sn 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_so_inv_flow_sku_sn 
+		<include refid="ttdSoInvFlowSkuSnDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_so_inv_flow_sku_sn 
+		<include refid="ttdSoInvFlowSkuSnDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdSoInvFlowSkuSnResult">
+    	select <include refid="ttdSoInvFlowSkuSnColumns" />
+	    from t_td_so_inv_flow_sku_sn 
+		<include refid="ttdSoInvFlowSkuSnDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdSoInvFlowSkuSnResult">
+    	select <include refid="ttdSoInvFlowSkuSnColumns" />
+	    from t_td_so_inv_flow_sku_sn 
+		<include refid="ttdSoInvFlowSkuSnDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdSoInvFlowSkuSnResult">
+    	select <include refid="ttdSoInvFlowSkuSnColumns" />
+	    from t_td_so_inv_flow_sku_sn 
+		<include refid="ttdSoInvFlowSkuSnDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdSoDeliveryAddressDao">
+	<resultMap id="TtdSoDeliveryAddressResult" type="io.vitess.model.sqlmap.TtdSoDeliveryAddress">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdSoDeliveryAddressColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	IS_CHINESE as isChinese,
+	        	TID as tid,
+	        	COUNTRY as country,
+	        	PROVINCE as province,
+	        	CITY as city,
+	        	DISTRICT as district,
+	        	ADDRESS as address,
+	        	ZIPCODE as zipcode,
+	        	CONTACT_PERSON as contactPerson,
+	        	RECEIVER as receiver,
+	        	RECEIVER_PHONE as receiverPhone,
+	        	RECEIVER_MOBILE as receiverMobile,
+	        	PROCESS_STATUS as processStatus,
+	        	CREATE_TIME as createTime,
+	        	PROCESS_TIME as processTime,
+	        	ERROR_MESSAGE as errorMessage,
+	        	SHOP_ID as shopId,
+	        	LAST_DEAL_TIME as lastDealTime,
+	        	NEXT_DEAL_TIME as nextDealTime,
+	        	PROCESS_COUNT as processCount
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdSoDeliveryAddress"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_so_delivery_address (
+		        id,
+		        	IS_CHINESE ,
+		        	TID ,
+		        	COUNTRY ,
+		        	PROVINCE ,
+		        	CITY ,
+		        	DISTRICT ,
+		        	ADDRESS ,
+		        	ZIPCODE ,
+		        	CONTACT_PERSON ,
+		        	RECEIVER ,
+		        	RECEIVER_PHONE ,
+		        	RECEIVER_MOBILE ,
+		        	PROCESS_STATUS ,
+		        	CREATE_TIME ,
+		        	PROCESS_TIME ,
+		        	ERROR_MESSAGE ,
+		        	SHOP_ID ,
+		        	LAST_DEAL_TIME ,
+		        	NEXT_DEAL_TIME ,
+		        	PROCESS_COUNT 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{isChinese,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{tid,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{processTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{errorMessage,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{lastDealTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{nextDealTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{processCount,javaType=Integer,jdbcType=INTEGER} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdSoDeliveryAddress">
+	    <![CDATA[
+	        UPDATE t_td_so_delivery_address SET
+		        IS_CHINESE = #{isChinese,javaType=Integer,jdbcType=TINYINT} ,
+		        TID = #{tid,javaType=String,jdbcType=VARCHAR} ,
+		        COUNTRY = #{country,javaType=String,jdbcType=VARCHAR} ,
+		        PROVINCE = #{province,javaType=String,jdbcType=VARCHAR} ,
+		        CITY = #{city,javaType=String,jdbcType=VARCHAR} ,
+		        DISTRICT = #{district,javaType=String,jdbcType=VARCHAR} ,
+		        ADDRESS = #{address,javaType=String,jdbcType=VARCHAR} ,
+		        ZIPCODE = #{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        CONTACT_PERSON = #{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        RECEIVER = #{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        RECEIVER_PHONE = #{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        RECEIVER_MOBILE = #{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        PROCESS_STATUS = #{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        PROCESS_TIME = #{processTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        ERROR_MESSAGE = #{errorMessage,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        LAST_DEAL_TIME = #{lastDealTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        NEXT_DEAL_TIME = #{nextDealTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        PROCESS_COUNT = #{processCount,javaType=Integer,jdbcType=INTEGER} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_so_delivery_address where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_so_delivery_address 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdSoDeliveryAddressResult" flushCache="false">
+			select <include refid="ttdSoDeliveryAddressColumns" />
+		    <![CDATA[
+			    from t_td_so_delivery_address 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdSoDeliveryAddressResult" flushCache="false">
+			select <include refid="ttdSoDeliveryAddressColumns" />
+			    from t_td_so_delivery_address 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdSoDeliveryAddressDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="isChinese!=null">
+					and IS_CHINESE = #{isChinese}
+				</if>
+	       
+				<if test="tid!=null">
+					and TID = #{tid}
+				</if>
+	       
+				<if test="country!=null">
+					and COUNTRY = #{country}
+				</if>
+	       
+				<if test="province!=null">
+					and PROVINCE = #{province}
+				</if>
+	       
+				<if test="city!=null">
+					and CITY = #{city}
+				</if>
+	       
+				<if test="district!=null">
+					and DISTRICT = #{district}
+				</if>
+	       
+				<if test="address!=null">
+					and ADDRESS = #{address}
+				</if>
+	       
+				<if test="zipcode!=null">
+					and ZIPCODE = #{zipcode}
+				</if>
+	       
+				<if test="contactPerson!=null">
+					and CONTACT_PERSON = #{contactPerson}
+				</if>
+	       
+				<if test="receiver!=null">
+					and RECEIVER = #{receiver}
+				</if>
+	       
+				<if test="receiverPhone!=null">
+					and RECEIVER_PHONE = #{receiverPhone}
+				</if>
+	       
+				<if test="receiverMobile!=null">
+					and RECEIVER_MOBILE = #{receiverMobile}
+				</if>
+	       
+				<if test="processStatus!=null">
+					and PROCESS_STATUS = #{processStatus}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="processTime!=null">
+					and PROCESS_TIME = #{processTime}
+				</if>
+	       
+				<if test="errorMessage!=null">
+					and ERROR_MESSAGE = #{errorMessage}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="lastDealTime!=null">
+					and LAST_DEAL_TIME = #{lastDealTime}
+				</if>
+	       
+				<if test="nextDealTime!=null">
+					and NEXT_DEAL_TIME = #{nextDealTime}
+				</if>
+	       
+				<if test="processCount!=null">
+					and PROCESS_COUNT = #{processCount}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_so_delivery_address 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_so_delivery_address 
+		<include refid="ttdSoDeliveryAddressDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_so_delivery_address 
+		<include refid="ttdSoDeliveryAddressDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdSoDeliveryAddressResult">
+    	select <include refid="ttdSoDeliveryAddressColumns" />
+	    from t_td_so_delivery_address 
+		<include refid="ttdSoDeliveryAddressDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdSoDeliveryAddressResult">
+    	select <include refid="ttdSoDeliveryAddressColumns" />
+	    from t_td_so_delivery_address 
+		<include refid="ttdSoDeliveryAddressDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdSoDeliveryAddressResult">
+    	select <include refid="ttdSoDeliveryAddressColumns" />
+	    from t_td_so_delivery_address 
+		<include refid="ttdSoDeliveryAddressDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

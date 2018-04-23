@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TwfWorkflowTaskLogDao">
+	<resultMap id="TwfWorkflowTaskLogResult" type="io.vitess.model.sqlmap.TwfWorkflowTaskLog">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="twfWorkflowTaskLogColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	ENTER_TIME as enterTime,
+	        	expenseTime as expenseTime,
+	        	FROM_NODE_NO as fromNodeNo,
+	        	MEMO as memo,
+	        	operaterStatus as operaterStatus,
+	        	TASK_ID as taskId,
+	        	TO_NODE_NO as toNodeNo,
+	        	TRANSITION_CODE as transitionCode,
+	        	TRANSITION_TIME as transitionTime,
+	        	USER_ID as userId,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TwfWorkflowTaskLog"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_wf_workflow_task_log (
+		        id,
+		        	ENTER_TIME ,
+		        	expenseTime ,
+		        	FROM_NODE_NO ,
+		        	MEMO ,
+		        	operaterStatus ,
+		        	TASK_ID ,
+		        	TO_NODE_NO ,
+		        	TRANSITION_CODE ,
+		        	TRANSITION_TIME ,
+		        	USER_ID ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{enterTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{expenseTime,javaType=String,jdbcType=VARCHAR} ,
+		        	#{fromNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{memo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{operaterStatus,javaType=String,jdbcType=VARCHAR} ,
+		        	#{taskId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{toNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transitionCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transitionTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{userId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TwfWorkflowTaskLog">
+	    <![CDATA[
+	        UPDATE t_wf_workflow_task_log SET
+		        ENTER_TIME = #{enterTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        expenseTime = #{expenseTime,javaType=String,jdbcType=VARCHAR} ,
+		        FROM_NODE_NO = #{fromNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        MEMO = #{memo,javaType=String,jdbcType=VARCHAR} ,
+		        operaterStatus = #{operaterStatus,javaType=String,jdbcType=VARCHAR} ,
+		        TASK_ID = #{taskId,javaType=Long,jdbcType=BIGINT} ,
+		        TO_NODE_NO = #{toNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        TRANSITION_CODE = #{transitionCode,javaType=String,jdbcType=VARCHAR} ,
+		        TRANSITION_TIME = #{transitionTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        USER_ID = #{userId,javaType=Long,jdbcType=BIGINT} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_wf_workflow_task_log where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_wf_workflow_task_log 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TwfWorkflowTaskLogResult" flushCache="false">
+			select <include refid="twfWorkflowTaskLogColumns" />
+		    <![CDATA[
+			    from t_wf_workflow_task_log 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TwfWorkflowTaskLogResult" flushCache="false">
+			select <include refid="twfWorkflowTaskLogColumns" />
+			    from t_wf_workflow_task_log 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="twfWorkflowTaskLogDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="enterTime!=null">
+					and ENTER_TIME = #{enterTime}
+				</if>
+	       
+				<if test="expenseTime!=null">
+					and expenseTime = #{expenseTime}
+				</if>
+	       
+				<if test="fromNodeNo!=null">
+					and FROM_NODE_NO = #{fromNodeNo}
+				</if>
+	       
+				<if test="memo!=null">
+					and MEMO = #{memo}
+				</if>
+	       
+				<if test="operaterStatus!=null">
+					and operaterStatus = #{operaterStatus}
+				</if>
+	       
+				<if test="taskId!=null">
+					and TASK_ID = #{taskId}
+				</if>
+	       
+				<if test="toNodeNo!=null">
+					and TO_NODE_NO = #{toNodeNo}
+				</if>
+	       
+				<if test="transitionCode!=null">
+					and TRANSITION_CODE = #{transitionCode}
+				</if>
+	       
+				<if test="transitionTime!=null">
+					and TRANSITION_TIME = #{transitionTime}
+				</if>
+	       
+				<if test="userId!=null">
+					and USER_ID = #{userId}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_wf_workflow_task_log 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_wf_workflow_task_log 
+		<include refid="twfWorkflowTaskLogDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_wf_workflow_task_log 
+		<include refid="twfWorkflowTaskLogDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TwfWorkflowTaskLogResult">
+    	select <include refid="twfWorkflowTaskLogColumns" />
+	    from t_wf_workflow_task_log 
+		<include refid="twfWorkflowTaskLogDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TwfWorkflowTaskLogResult">
+    	select <include refid="twfWorkflowTaskLogColumns" />
+	    from t_wf_workflow_task_log 
+		<include refid="twfWorkflowTaskLogDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TwfWorkflowTaskLogResult">
+    	select <include refid="twfWorkflowTaskLogColumns" />
+	    from t_wf_workflow_task_log 
+		<include refid="twfWorkflowTaskLogDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

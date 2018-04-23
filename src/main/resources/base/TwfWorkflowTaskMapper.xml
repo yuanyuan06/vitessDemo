@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TwfWorkflowTaskDao">
+	<resultMap id="TwfWorkflowTaskResult" type="io.vitess.model.sqlmap.TwfWorkflowTask">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="twfWorkflowTaskColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CURRENT_NODE_NO as currentNodeNo,
+	        	END_TIME as endTime,
+	        	ENTER_TIME as enterTime,
+	        	IS_AVAILABLE as isAvailable,
+	        	REF_SLIP_CODE as refSlipCode,
+	        	REF_SLIP_ID as refSlipId,
+	        	REF_SLIP_SHOP_ID as refSlipShopId,
+	        	REF_SLIP_TYPE as refSlipType,
+	        	START_TIME as startTime,
+	        	STATUS as status,
+	        	TASK_NO as taskNo,
+	        	VERSION as version,
+	        	CREATE_USER_ID as createUserId,
+	        	WORKFLOW_ID as workflowId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TwfWorkflowTask"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_wf_workflow_task (
+		        id,
+		        	CURRENT_NODE_NO ,
+		        	END_TIME ,
+		        	ENTER_TIME ,
+		        	IS_AVAILABLE ,
+		        	REF_SLIP_CODE ,
+		        	REF_SLIP_ID ,
+		        	REF_SLIP_SHOP_ID ,
+		        	REF_SLIP_TYPE ,
+		        	START_TIME ,
+		        	STATUS ,
+		        	TASK_NO ,
+		        	VERSION ,
+		        	CREATE_USER_ID ,
+		        	WORKFLOW_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{currentNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{endTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{enterTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{isAvailable,javaType=Boolean,jdbcType=BIT} ,
+		        	#{refSlipCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{refSlipId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{refSlipShopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{refSlipType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{startTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{status,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{taskNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{createUserId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{workflowId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TwfWorkflowTask">
+	    <![CDATA[
+	        UPDATE t_wf_workflow_task SET
+		        CURRENT_NODE_NO = #{currentNodeNo,javaType=Integer,jdbcType=INTEGER} ,
+		        END_TIME = #{endTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        ENTER_TIME = #{enterTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        IS_AVAILABLE = #{isAvailable,javaType=Boolean,jdbcType=BIT} ,
+		        REF_SLIP_CODE = #{refSlipCode,javaType=String,jdbcType=VARCHAR} ,
+		        REF_SLIP_ID = #{refSlipId,javaType=Long,jdbcType=BIGINT} ,
+		        REF_SLIP_SHOP_ID = #{refSlipShopId,javaType=Long,jdbcType=BIGINT} ,
+		        REF_SLIP_TYPE = #{refSlipType,javaType=Integer,jdbcType=INTEGER} ,
+		        START_TIME = #{startTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        STATUS = #{status,javaType=Integer,jdbcType=INTEGER} ,
+		        TASK_NO = #{taskNo,javaType=String,jdbcType=VARCHAR} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        CREATE_USER_ID = #{createUserId,javaType=Long,jdbcType=BIGINT} ,
+		        WORKFLOW_ID = #{workflowId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_wf_workflow_task where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_wf_workflow_task 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TwfWorkflowTaskResult" flushCache="false">
+			select <include refid="twfWorkflowTaskColumns" />
+		    <![CDATA[
+			    from t_wf_workflow_task 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TwfWorkflowTaskResult" flushCache="false">
+			select <include refid="twfWorkflowTaskColumns" />
+			    from t_wf_workflow_task 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="twfWorkflowTaskDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="currentNodeNo!=null">
+					and CURRENT_NODE_NO = #{currentNodeNo}
+				</if>
+	       
+				<if test="endTime!=null">
+					and END_TIME = #{endTime}
+				</if>
+	       
+				<if test="enterTime!=null">
+					and ENTER_TIME = #{enterTime}
+				</if>
+	       
+				<if test="isAvailable!=null">
+					and IS_AVAILABLE = #{isAvailable}
+				</if>
+	       
+				<if test="refSlipCode!=null">
+					and REF_SLIP_CODE = #{refSlipCode}
+				</if>
+	       
+				<if test="refSlipId!=null">
+					and REF_SLIP_ID = #{refSlipId}
+				</if>
+	       
+				<if test="refSlipShopId!=null">
+					and REF_SLIP_SHOP_ID = #{refSlipShopId}
+				</if>
+	       
+				<if test="refSlipType!=null">
+					and REF_SLIP_TYPE = #{refSlipType}
+				</if>
+	       
+				<if test="startTime!=null">
+					and START_TIME = #{startTime}
+				</if>
+	       
+				<if test="status!=null">
+					and STATUS = #{status}
+				</if>
+	       
+				<if test="taskNo!=null">
+					and TASK_NO = #{taskNo}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="createUserId!=null">
+					and CREATE_USER_ID = #{createUserId}
+				</if>
+	       
+				<if test="workflowId!=null">
+					and WORKFLOW_ID = #{workflowId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_wf_workflow_task 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_wf_workflow_task 
+		<include refid="twfWorkflowTaskDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_wf_workflow_task 
+		<include refid="twfWorkflowTaskDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TwfWorkflowTaskResult">
+    	select <include refid="twfWorkflowTaskColumns" />
+	    from t_wf_workflow_task 
+		<include refid="twfWorkflowTaskDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TwfWorkflowTaskResult">
+    	select <include refid="twfWorkflowTaskColumns" />
+	    from t_wf_workflow_task 
+		<include refid="twfWorkflowTaskDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TwfWorkflowTaskResult">
+    	select <include refid="twfWorkflowTaskColumns" />
+	    from t_wf_workflow_task 
+		<include refid="twfWorkflowTaskDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

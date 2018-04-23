@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaComboSkuDao">
+	<resultMap id="TmaComboSkuResult" type="io.vitess.model.sqlmap.TmaComboSku">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaComboSkuColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CODE as code,
+	        	CREATE_TIME as createTime,
+	        	CREATOR as creator,
+	        	DESCRIPTION as description,
+	        	NAME as name,
+	        	STATUS as status,
+	        	TOTAL_PRICE as totalPrice,
+	        	VERSION as version,
+	        	SHOP_ID as shopId,
+	        	IS_PACKAGE as isPackage
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaComboSku"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_combo_sku (
+		        id,
+		        	CODE ,
+		        	CREATE_TIME ,
+		        	CREATOR ,
+		        	DESCRIPTION ,
+		        	NAME ,
+		        	STATUS ,
+		        	TOTAL_PRICE ,
+		        	VERSION ,
+		        	SHOP_ID ,
+		        	IS_PACKAGE 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{creator,javaType=Long,jdbcType=BIGINT} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{status,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{totalPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{isPackage,javaType=Integer,jdbcType=INTEGER} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaComboSku">
+	    <![CDATA[
+	        UPDATE t_ma_combo_sku SET
+		        CODE = #{code,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        DESCRIPTION = #{description,javaType=String,jdbcType=VARCHAR} ,
+		        NAME = #{name,javaType=String,jdbcType=VARCHAR} ,
+		        STATUS = #{status,javaType=Integer,jdbcType=INTEGER} ,
+		        TOTAL_PRICE = #{totalPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        VERSION = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        IS_PACKAGE = #{isPackage,javaType=Integer,jdbcType=INTEGER} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_combo_sku where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_combo_sku 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaComboSkuResult" flushCache="false">
+			select <include refid="tmaComboSkuColumns" />
+		    <![CDATA[
+			    from t_ma_combo_sku 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaComboSkuResult" flushCache="false">
+			select <include refid="tmaComboSkuColumns" />
+			    from t_ma_combo_sku 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaComboSkuDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="code!=null">
+					and CODE = #{code}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="creator!=null">
+					and CREATOR = #{creator}
+				</if>
+	       
+				<if test="description!=null">
+					and DESCRIPTION = #{description}
+				</if>
+	       
+				<if test="name!=null">
+					and NAME = #{name}
+				</if>
+	       
+				<if test="status!=null">
+					and STATUS = #{status}
+				</if>
+	       
+				<if test="totalPrice!=null">
+					and TOTAL_PRICE = #{totalPrice}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="isPackage!=null">
+					and IS_PACKAGE = #{isPackage}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_combo_sku 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_combo_sku 
+		<include refid="tmaComboSkuDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_combo_sku 
+		<include refid="tmaComboSkuDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaComboSkuResult">
+    	select <include refid="tmaComboSkuColumns" />
+	    from t_ma_combo_sku 
+		<include refid="tmaComboSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaComboSkuResult">
+    	select <include refid="tmaComboSkuColumns" />
+	    from t_ma_combo_sku 
+		<include refid="tmaComboSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaComboSkuResult">
+    	select <include refid="tmaComboSkuColumns" />
+	    from t_ma_combo_sku 
+		<include refid="tmaComboSkuDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaTransReginTplDtDao">
+	<resultMap id="TmaTransReginTplDtResult" type="io.vitess.model.sqlmap.TmaTransReginTplDt">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaTransReginTplDtColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CITY as city,
+	        	CREATE_TIME as createTime,
+	        	DISTRICT as district,
+	        	PROVINCE as province,
+	        	REACHABLE_AREA as reachableArea,
+	        	UN_REACHABLE_AREA as unReachableArea,
+	        	VERSION as version,
+	        	TRAN_REGIN_TEMP_ID as tranReginTempId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaTransReginTplDt"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_trans_regin_tpl_dt (
+		        id,
+		        	CITY ,
+		        	CREATE_TIME ,
+		        	DISTRICT ,
+		        	PROVINCE ,
+		        	REACHABLE_AREA ,
+		        	UN_REACHABLE_AREA ,
+		        	VERSION ,
+		        	TRAN_REGIN_TEMP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{reachableArea,javaType=String,jdbcType=VARCHAR} ,
+		        	#{unReachableArea,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{tranReginTempId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaTransReginTplDt">
+	    <![CDATA[
+	        UPDATE t_ma_trans_regin_tpl_dt SET
+		        CITY = #{city,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        DISTRICT = #{district,javaType=String,jdbcType=VARCHAR} ,
+		        PROVINCE = #{province,javaType=String,jdbcType=VARCHAR} ,
+		        REACHABLE_AREA = #{reachableArea,javaType=String,jdbcType=VARCHAR} ,
+		        UN_REACHABLE_AREA = #{unReachableArea,javaType=String,jdbcType=VARCHAR} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        TRAN_REGIN_TEMP_ID = #{tranReginTempId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_trans_regin_tpl_dt where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_trans_regin_tpl_dt 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaTransReginTplDtResult" flushCache="false">
+			select <include refid="tmaTransReginTplDtColumns" />
+		    <![CDATA[
+			    from t_ma_trans_regin_tpl_dt 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaTransReginTplDtResult" flushCache="false">
+			select <include refid="tmaTransReginTplDtColumns" />
+			    from t_ma_trans_regin_tpl_dt 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaTransReginTplDtDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="city!=null">
+					and CITY = #{city}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="district!=null">
+					and DISTRICT = #{district}
+				</if>
+	       
+				<if test="province!=null">
+					and PROVINCE = #{province}
+				</if>
+	       
+				<if test="reachableArea!=null">
+					and REACHABLE_AREA = #{reachableArea}
+				</if>
+	       
+				<if test="unReachableArea!=null">
+					and UN_REACHABLE_AREA = #{unReachableArea}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="tranReginTempId!=null">
+					and TRAN_REGIN_TEMP_ID = #{tranReginTempId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_trans_regin_tpl_dt 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_trans_regin_tpl_dt 
+		<include refid="tmaTransReginTplDtDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_trans_regin_tpl_dt 
+		<include refid="tmaTransReginTplDtDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaTransReginTplDtResult">
+    	select <include refid="tmaTransReginTplDtColumns" />
+	    from t_ma_trans_regin_tpl_dt 
+		<include refid="tmaTransReginTplDtDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaTransReginTplDtResult">
+    	select <include refid="tmaTransReginTplDtColumns" />
+	    from t_ma_trans_regin_tpl_dt 
+		<include refid="tmaTransReginTplDtDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaTransReginTplDtResult">
+    	select <include refid="tmaTransReginTplDtColumns" />
+	    from t_ma_trans_regin_tpl_dt 
+		<include refid="tmaTransReginTplDtDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

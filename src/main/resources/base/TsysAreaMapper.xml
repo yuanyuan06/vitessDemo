@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TsysAreaDao">
+	<resultMap id="TsysAreaResult" type="io.vitess.model.sqlmap.TsysArea">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tsysAreaColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CITY as city,
+	        	COUNTRY as country,
+	        	DISTRICT as district,
+	        	PROVINCE as province,
+	        	SFCODE as sfcode
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TsysArea"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_sys_area (
+		        id,
+		        	CITY ,
+		        	COUNTRY ,
+		        	DISTRICT ,
+		        	PROVINCE ,
+		        	SFCODE 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{sfcode,javaType=String,jdbcType=VARCHAR} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TsysArea">
+	    <![CDATA[
+	        UPDATE t_sys_area SET
+		        CITY = #{city,javaType=String,jdbcType=VARCHAR} ,
+		        COUNTRY = #{country,javaType=String,jdbcType=VARCHAR} ,
+		        DISTRICT = #{district,javaType=String,jdbcType=VARCHAR} ,
+		        PROVINCE = #{province,javaType=String,jdbcType=VARCHAR} ,
+		        SFCODE = #{sfcode,javaType=String,jdbcType=VARCHAR} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_sys_area where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_sys_area 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TsysAreaResult" flushCache="false">
+			select <include refid="tsysAreaColumns" />
+		    <![CDATA[
+			    from t_sys_area 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TsysAreaResult" flushCache="false">
+			select <include refid="tsysAreaColumns" />
+			    from t_sys_area 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tsysAreaDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="city!=null">
+					and CITY = #{city}
+				</if>
+	       
+				<if test="country!=null">
+					and COUNTRY = #{country}
+				</if>
+	       
+				<if test="district!=null">
+					and DISTRICT = #{district}
+				</if>
+	       
+				<if test="province!=null">
+					and PROVINCE = #{province}
+				</if>
+	       
+				<if test="sfcode!=null">
+					and SFCODE = #{sfcode}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_sys_area 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_sys_area 
+		<include refid="tsysAreaDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_sys_area 
+		<include refid="tsysAreaDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TsysAreaResult">
+    	select <include refid="tsysAreaColumns" />
+	    from t_sys_area 
+		<include refid="tsysAreaDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TsysAreaResult">
+    	select <include refid="tsysAreaColumns" />
+	    from t_sys_area 
+		<include refid="tsysAreaDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TsysAreaResult">
+    	select <include refid="tsysAreaColumns" />
+	    from t_sys_area 
+		<include refid="tsysAreaDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

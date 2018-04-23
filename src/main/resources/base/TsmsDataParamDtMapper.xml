@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TsmsDataParamDtDao">
+	<resultMap id="TsmsDataParamDtResult" type="io.vitess.model.sqlmap.TsmsDataParamDt">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tsmsDataParamDtColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	SMS_DATA_PARAM_ID as smsDataParamId,
+	        	PARAM as param,
+	        	VALUE as value,
+	        	REMARK as remark,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TsmsDataParamDt"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_sms_data_param_dt (
+		        id,
+		        	SMS_DATA_PARAM_ID ,
+		        	PARAM ,
+		        	VALUE ,
+		        	REMARK ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{smsDataParamId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{param,javaType=String,jdbcType=VARCHAR} ,
+		        	#{value,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TsmsDataParamDt">
+	    <![CDATA[
+	        UPDATE t_sms_data_param_dt SET
+		        SMS_DATA_PARAM_ID = #{smsDataParamId,javaType=Long,jdbcType=BIGINT} ,
+		        PARAM = #{param,javaType=String,jdbcType=VARCHAR} ,
+		        VALUE = #{value,javaType=String,jdbcType=VARCHAR} ,
+		        REMARK = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_sms_data_param_dt where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_sms_data_param_dt 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TsmsDataParamDtResult" flushCache="false">
+			select <include refid="tsmsDataParamDtColumns" />
+		    <![CDATA[
+			    from t_sms_data_param_dt 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TsmsDataParamDtResult" flushCache="false">
+			select <include refid="tsmsDataParamDtColumns" />
+			    from t_sms_data_param_dt 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tsmsDataParamDtDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="smsDataParamId!=null">
+					and SMS_DATA_PARAM_ID = #{smsDataParamId}
+				</if>
+	       
+				<if test="param!=null">
+					and PARAM = #{param}
+				</if>
+	       
+				<if test="value!=null">
+					and VALUE = #{value}
+				</if>
+	       
+				<if test="remark!=null">
+					and REMARK = #{remark}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_sms_data_param_dt 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_sms_data_param_dt 
+		<include refid="tsmsDataParamDtDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_sms_data_param_dt 
+		<include refid="tsmsDataParamDtDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TsmsDataParamDtResult">
+    	select <include refid="tsmsDataParamDtColumns" />
+	    from t_sms_data_param_dt 
+		<include refid="tsmsDataParamDtDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TsmsDataParamDtResult">
+    	select <include refid="tsmsDataParamDtColumns" />
+	    from t_sms_data_param_dt 
+		<include refid="tsmsDataParamDtDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TsmsDataParamDtResult">
+    	select <include refid="tsmsDataParamDtColumns" />
+	    from t_sms_data_param_dt 
+		<include refid="tsmsDataParamDtDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdTallyOrderToPacsDao">
+	<resultMap id="TtdTallyOrderToPacsResult" type="io.vitess.model.sqlmap.TtdTallyOrderToPacs">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdTallyOrderToPacsColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	REF_SLIP_ID as refSlipId,
+	        	REF_SLIP_CODE as refSlipCode,
+	        	DATA_TYPE as dataType,
+	        	PROCESS_STATUS as processStatus,
+	        	ERROR_MSG as errorMsg,
+	        	INPUT_TIME as inputTime,
+	        	UPDATE_TIME as updateTime,
+	        	SHOP_ID as shopId,
+	        	NEXT_RETRY_TIME as nextRetryTime,
+	        	RETRY_COUNT as retryCount
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdTallyOrderToPacs"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_tally_order_to_pacs (
+		        id,
+		        	REF_SLIP_ID ,
+		        	REF_SLIP_CODE ,
+		        	DATA_TYPE ,
+		        	PROCESS_STATUS ,
+		        	ERROR_MSG ,
+		        	INPUT_TIME ,
+		        	UPDATE_TIME ,
+		        	SHOP_ID ,
+		        	NEXT_RETRY_TIME ,
+		        	RETRY_COUNT 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{refSlipId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{refSlipCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{dataType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{errorMsg,javaType=String,jdbcType=VARCHAR} ,
+		        	#{inputTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{nextRetryTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{retryCount,javaType=Integer,jdbcType=INTEGER} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdTallyOrderToPacs">
+	    <![CDATA[
+	        UPDATE t_td_tally_order_to_pacs SET
+		        REF_SLIP_ID = #{refSlipId,javaType=Long,jdbcType=BIGINT} ,
+		        REF_SLIP_CODE = #{refSlipCode,javaType=String,jdbcType=VARCHAR} ,
+		        DATA_TYPE = #{dataType,javaType=Integer,jdbcType=TINYINT} ,
+		        PROCESS_STATUS = #{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        ERROR_MSG = #{errorMsg,javaType=String,jdbcType=VARCHAR} ,
+		        INPUT_TIME = #{inputTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        UPDATE_TIME = #{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        NEXT_RETRY_TIME = #{nextRetryTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        RETRY_COUNT = #{retryCount,javaType=Integer,jdbcType=INTEGER} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_tally_order_to_pacs where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_tally_order_to_pacs 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdTallyOrderToPacsResult" flushCache="false">
+			select <include refid="ttdTallyOrderToPacsColumns" />
+		    <![CDATA[
+			    from t_td_tally_order_to_pacs 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdTallyOrderToPacsResult" flushCache="false">
+			select <include refid="ttdTallyOrderToPacsColumns" />
+			    from t_td_tally_order_to_pacs 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdTallyOrderToPacsDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="refSlipId!=null">
+					and REF_SLIP_ID = #{refSlipId}
+				</if>
+	       
+				<if test="refSlipCode!=null">
+					and REF_SLIP_CODE = #{refSlipCode}
+				</if>
+	       
+				<if test="dataType!=null">
+					and DATA_TYPE = #{dataType}
+				</if>
+	       
+				<if test="processStatus!=null">
+					and PROCESS_STATUS = #{processStatus}
+				</if>
+	       
+				<if test="errorMsg!=null">
+					and ERROR_MSG = #{errorMsg}
+				</if>
+	       
+				<if test="inputTime!=null">
+					and INPUT_TIME = #{inputTime}
+				</if>
+	       
+				<if test="updateTime!=null">
+					and UPDATE_TIME = #{updateTime}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+	       
+				<if test="nextRetryTime!=null">
+					and NEXT_RETRY_TIME = #{nextRetryTime}
+				</if>
+	       
+				<if test="retryCount!=null">
+					and RETRY_COUNT = #{retryCount}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_tally_order_to_pacs 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_tally_order_to_pacs 
+		<include refid="ttdTallyOrderToPacsDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_tally_order_to_pacs 
+		<include refid="ttdTallyOrderToPacsDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdTallyOrderToPacsResult">
+    	select <include refid="ttdTallyOrderToPacsColumns" />
+	    from t_td_tally_order_to_pacs 
+		<include refid="ttdTallyOrderToPacsDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdTallyOrderToPacsResult">
+    	select <include refid="ttdTallyOrderToPacsColumns" />
+	    from t_td_tally_order_to_pacs 
+		<include refid="ttdTallyOrderToPacsDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdTallyOrderToPacsResult">
+    	select <include refid="ttdTallyOrderToPacsColumns" />
+	    from t_td_tally_order_to_pacs 
+		<include refid="ttdTallyOrderToPacsDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

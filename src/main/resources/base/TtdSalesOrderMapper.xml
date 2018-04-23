@@ -1,0 +1,1066 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdSalesOrderDao">
+	<resultMap id="TtdSalesOrderResult" type="io.vitess.model.sqlmap.TtdSalesOrder">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdSalesOrderColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	TRADE_ID as tradeId,
+	        	PLATFORM_ORDER_CODE as platformOrderCode,
+	        	PLATFORM_ORDER_CODE_N as platformOrderCodeN,
+	        	TB_CREATE_TIME as tbCreateTime,
+	        	TB_PAYMENT_TIME as tbPaymentTime,
+	        	OMS_ORDER_CODE as omsOrderCode,
+	        	ERP_ORDER_CODE as erpOrderCode,
+	        	SUSPEND_REASON_TYPE as suspendReasonType,
+	        	SPECIAL_TYPE as specialType,
+	        	ORDER_STATUS as orderStatus,
+	        	ORDER_TYPE as orderType,
+	        	DELIVERY_TYPE as deliveryType,
+	        	IS_INSTALL as isInstall,
+	        	INSTALL_COMPANY_CODE as installCompanyCode,
+	        	INSTALL_COMPANY_NAME as installCompanyName,
+	        	FINANCE_STATUS as financeStatus,
+	        	HOME_DELIVERY_FEE as homeDeliveryFee,
+	        	DELIVERY_AND_INSTALL_FEE as deliveryAndInstallFee,
+	        	INSTALL_FEE as installFee,
+	        	SERVICE_ITEM_FEE as serviceItemFee,
+	        	FINANCE_TOTAL_AMOUNT as financeTotalAmount,
+	        	ALIPAY_ACCOUNT as alipayAccount,
+	        	ALIPAY_NO as alipayNo,
+	        	ERP_SHOP_CODE as erpShopCode,
+	        	SALES_MODES_STR as salesModesStr,
+	        	CREATE_TIME as createTime,
+	        	WAREHOUSE_CODE as warehouseCode,
+	        	SYNC_TO_ERP_TIME as syncToErpTime,
+	        	ERP_RESPONSE_TIME as erpResponseTime,
+	        	CANCEL_TIME as cancelTime,
+	        	TRANS_TO_WAREHOUSE_TIME as transToWarehouseTime,
+	        	STOCK_OUT_TIME as stockOutTime,
+	        	FINISH_TIME as finishTime,
+	        	HEAD_DISCOUNT as headDiscount,
+	        	LINES_DISCOUNT as linesDiscount,
+	        	DISCOUNT_TOTAL as discountTotal,
+	        	AMOUNT_BEFORE_DISCOUNT as amountBeforeDiscount,
+	        	AMOUNT_AFTER_DISCOUNT as amountAfterDiscount,
+	        	PAYMENT_DISCOUNT as paymentDiscount,
+	        	TOTAL_OUTER_POINT as totalOuterPoint,
+	        	TOTAL_INNER_POINT as totalInnerPoint,
+	        	USE_POINT as usePoint,
+	        	VIRTUAL_AMOUNT as virtualAmount,
+	        	MAIN_PAYMENT_TYPE as mainPaymentType,
+	        	TRANS_FEE as transFee,
+	        	SELLER_MEMO as sellerMemo,
+	        	BUYER_MEMO as buyerMemo,
+	        	SYS_MEMO as sysMemo,
+	        	NEED_PACKING as needPacking,
+	        	NEED_INVOICE as needInvoice,
+	        	IS_BILLING_MANUAL as isBillingManual,
+	        	INVOICE_MEMO as invoiceMemo,
+	        	INVOICE_TYPE as invoiceType,
+	        	INVOICE_TITLE as invoiceTitle,
+	        	INVOICE_CONTENT as invoiceContent,
+	        	IS_BILLING_INVOICE_DETAIL as isBillingInvoiceDetail,
+	        	VA_TAX_COMPANY_NAME as vaTaxCompanyName,
+	        	VA_TAX_CODE as vaTaxCode,
+	        	VA_TAX_REGISTER_ADDRESS as vaTaxRegisterAddress,
+	        	VA_TAX_TELEPHONE as vaTaxTelephone,
+	        	VA_TAX_BANK_NAME as vaTaxBankName,
+	        	VA_TAX_BANK_CARD as vaTaxBankCard,
+	        	SOURCE_REMARK as sourceRemark,
+	        	PLATFORM_SOURCE as platformSource,
+	        	TERMINAL_SOURCE as terminalSource,
+	        	ACTIVITY_SOURCE as activitySource,
+	        	SUB_ORDER_SOURCE as subOrderSource,
+	        	IS_CYCLE as isCycle,
+	        	IS_PRESALE as isPresale,
+	        	EST_ARRIVAL_TIME as estArrivalTime,
+	        	WF_BRANCH as wfBranch,
+	        	CREATE_AU_USER_ID as createAuUserId,
+	        	LAST_MODIFY_AU_USER_ID as lastModifyAuUserId,
+	        	VERSION as version,
+	        	VMI_PROMOTION_CODE as vmiPromotionCode,
+	        	SPLIT_SOURCE_OMS_ORDER_CODE as splitSourceOmsOrderCode,
+	        	COPY_SOURCE_OMS_ORDER_CODE as copySourceOmsOrderCode,
+	        	RA_OMS_ORDER_CODE as raOmsOrderCode,
+	        	POS_SALES as posSales,
+	        	ORIGINAL_POCN as originalPocn,
+	        	SOURCE_TYPE as sourceType,
+	        	EXT_VC1 as extVc1,
+	        	EXT_VC2 as extVc2,
+	        	EXT_VC3 as extVc3,
+	        	TO_WH_REMARK as toWhRemark,
+	        	CARE_GRADE as careGrade,
+	        	CARE_MOMO as careMomo,
+	        	IS_CLOUD_STACK_SO as isCloudStackSo,
+	        	MAIN_BRANCH_WH_CODE as mainBranchWhCode,
+	        	IS_AUTO_WH as isAutoWh,
+	        	GOODS_WEIGHT as goodsWeight,
+	        	ALIPAY_ID as alipayId,
+	        	CREDIT_CARD_FEE as creditCardFee,
+	        	PLATFORM_TRADE_TYPE as platformTradeType,
+	        	IS_DIRECT_WMS_ORDER as isDirectWmsOrder,
+	        	SPLIT_ORDER_TIME as splitOrderTime,
+	        	IS_ASSIGN_WH as isAssignWh,
+	        	INVOICE_KIND as invoiceKind,
+	        	ORDER_TAX_FEE as orderTaxFee,
+	        	IS_BUNDLE as isBundle,
+	        	CUSTOMIZATION_MEMO as customizationMemo,
+	        	ORDER_ROUTE_STATUS as orderRouteStatus,
+	        	IS_ORDER_ROUTE as isOrderRoute,
+	        	IS_OMNICHANNEL_PARAM as isOmnichannelParam,
+	        	TARGET_CODE as targetCode,
+	        	UPDATE_ROUTE_TIME as updateRouteTime,
+	        	ALLOCATION_CODE as allocationCode,
+	        	BUYER_TAX_NO as buyerTaxNo,
+	        	STEP_PAID_FEE as stepPaidFee,
+	        	IS_ADDR_CHANGED as isAddrChanged,
+	        	BUSINESS_TYPE as businessType,
+	        	WH_LOCATION_CODE as whLocationCode,
+	        	IS_SUPPORT_PRE_PACKAGE as isSupportPrePackage,
+	        	STEP_PAY_TIME as stepPayTime,
+	        	ORIGINAL_TARGET_CODE as originalTargetCode,
+	        	TAG_NAME as tagName,
+	        	TRANS_TYPE as transType,
+	        	COUPON_FEE as couponFee
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdSalesOrder"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_sales_order (
+		        id,
+		        	TRADE_ID ,
+		        	PLATFORM_ORDER_CODE ,
+		        	PLATFORM_ORDER_CODE_N ,
+		        	TB_CREATE_TIME ,
+		        	TB_PAYMENT_TIME ,
+		        	OMS_ORDER_CODE ,
+		        	ERP_ORDER_CODE ,
+		        	SUSPEND_REASON_TYPE ,
+		        	SPECIAL_TYPE ,
+		        	ORDER_STATUS ,
+		        	ORDER_TYPE ,
+		        	DELIVERY_TYPE ,
+		        	IS_INSTALL ,
+		        	INSTALL_COMPANY_CODE ,
+		        	INSTALL_COMPANY_NAME ,
+		        	FINANCE_STATUS ,
+		        	HOME_DELIVERY_FEE ,
+		        	DELIVERY_AND_INSTALL_FEE ,
+		        	INSTALL_FEE ,
+		        	SERVICE_ITEM_FEE ,
+		        	FINANCE_TOTAL_AMOUNT ,
+		        	ALIPAY_ACCOUNT ,
+		        	ALIPAY_NO ,
+		        	ERP_SHOP_CODE ,
+		        	SALES_MODES_STR ,
+		        	CREATE_TIME ,
+		        	WAREHOUSE_CODE ,
+		        	SYNC_TO_ERP_TIME ,
+		        	ERP_RESPONSE_TIME ,
+		        	CANCEL_TIME ,
+		        	TRANS_TO_WAREHOUSE_TIME ,
+		        	STOCK_OUT_TIME ,
+		        	FINISH_TIME ,
+		        	HEAD_DISCOUNT ,
+		        	LINES_DISCOUNT ,
+		        	DISCOUNT_TOTAL ,
+		        	AMOUNT_BEFORE_DISCOUNT ,
+		        	AMOUNT_AFTER_DISCOUNT ,
+		        	PAYMENT_DISCOUNT ,
+		        	TOTAL_OUTER_POINT ,
+		        	TOTAL_INNER_POINT ,
+		        	USE_POINT ,
+		        	VIRTUAL_AMOUNT ,
+		        	MAIN_PAYMENT_TYPE ,
+		        	TRANS_FEE ,
+		        	SELLER_MEMO ,
+		        	BUYER_MEMO ,
+		        	SYS_MEMO ,
+		        	NEED_PACKING ,
+		        	NEED_INVOICE ,
+		        	IS_BILLING_MANUAL ,
+		        	INVOICE_MEMO ,
+		        	INVOICE_TYPE ,
+		        	INVOICE_TITLE ,
+		        	INVOICE_CONTENT ,
+		        	IS_BILLING_INVOICE_DETAIL ,
+		        	VA_TAX_COMPANY_NAME ,
+		        	VA_TAX_CODE ,
+		        	VA_TAX_REGISTER_ADDRESS ,
+		        	VA_TAX_TELEPHONE ,
+		        	VA_TAX_BANK_NAME ,
+		        	VA_TAX_BANK_CARD ,
+		        	SOURCE_REMARK ,
+		        	PLATFORM_SOURCE ,
+		        	TERMINAL_SOURCE ,
+		        	ACTIVITY_SOURCE ,
+		        	SUB_ORDER_SOURCE ,
+		        	IS_CYCLE ,
+		        	IS_PRESALE ,
+		        	EST_ARRIVAL_TIME ,
+		        	WF_BRANCH ,
+		        	CREATE_AU_USER_ID ,
+		        	LAST_MODIFY_AU_USER_ID ,
+		        	VERSION ,
+		        	VMI_PROMOTION_CODE ,
+		        	SPLIT_SOURCE_OMS_ORDER_CODE ,
+		        	COPY_SOURCE_OMS_ORDER_CODE ,
+		        	RA_OMS_ORDER_CODE ,
+		        	POS_SALES ,
+		        	ORIGINAL_POCN ,
+		        	SOURCE_TYPE ,
+		        	EXT_VC1 ,
+		        	EXT_VC2 ,
+		        	EXT_VC3 ,
+		        	TO_WH_REMARK ,
+		        	CARE_GRADE ,
+		        	CARE_MOMO ,
+		        	IS_CLOUD_STACK_SO ,
+		        	MAIN_BRANCH_WH_CODE ,
+		        	IS_AUTO_WH ,
+		        	GOODS_WEIGHT ,
+		        	ALIPAY_ID ,
+		        	CREDIT_CARD_FEE ,
+		        	PLATFORM_TRADE_TYPE ,
+		        	IS_DIRECT_WMS_ORDER ,
+		        	SPLIT_ORDER_TIME ,
+		        	IS_ASSIGN_WH ,
+		        	INVOICE_KIND ,
+		        	ORDER_TAX_FEE ,
+		        	IS_BUNDLE ,
+		        	CUSTOMIZATION_MEMO ,
+		        	ORDER_ROUTE_STATUS ,
+		        	IS_ORDER_ROUTE ,
+		        	IS_OMNICHANNEL_PARAM ,
+		        	TARGET_CODE ,
+		        	UPDATE_ROUTE_TIME ,
+		        	ALLOCATION_CODE ,
+		        	BUYER_TAX_NO ,
+		        	STEP_PAID_FEE ,
+		        	IS_ADDR_CHANGED ,
+		        	BUSINESS_TYPE ,
+		        	WH_LOCATION_CODE ,
+		        	IS_SUPPORT_PRE_PACKAGE ,
+		        	STEP_PAY_TIME ,
+		        	ORIGINAL_TARGET_CODE ,
+		        	TAG_NAME ,
+		        	TRANS_TYPE ,
+		        	COUPON_FEE 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{tradeId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{platformOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{platformOrderCodeN,javaType=String,jdbcType=VARCHAR} ,
+		        	#{tbCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{tbPaymentTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{omsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{erpOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{suspendReasonType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{specialType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{orderStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{orderType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{deliveryType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isInstall,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{installCompanyCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{installCompanyName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{financeStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{homeDeliveryFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{deliveryAndInstallFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{installFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{serviceItemFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{financeTotalAmount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{alipayAccount,javaType=String,jdbcType=VARCHAR} ,
+		        	#{alipayNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{erpShopCode,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{salesModesStr,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{warehouseCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{syncToErpTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{erpResponseTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{cancelTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{transToWarehouseTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{stockOutTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{finishTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{headDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{linesDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{discountTotal,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{amountBeforeDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{amountAfterDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{paymentDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalOuterPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{totalInnerPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{usePoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{virtualAmount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{mainPaymentType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{sellerMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{buyerMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{sysMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{needPacking,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{needInvoice,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isBillingManual,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{invoiceMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{invoiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{invoiceTitle,javaType=String,jdbcType=VARCHAR} ,
+		        	#{invoiceContent,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isBillingInvoiceDetail,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{vaTaxCompanyName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vaTaxCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vaTaxRegisterAddress,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vaTaxTelephone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vaTaxBankName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{vaTaxBankCard,javaType=String,jdbcType=VARCHAR} ,
+		        	#{sourceRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{platformSource,javaType=String,jdbcType=VARCHAR} ,
+		        	#{terminalSource,javaType=String,jdbcType=VARCHAR} ,
+		        	#{activitySource,javaType=String,jdbcType=VARCHAR} ,
+		        	#{subOrderSource,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isCycle,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isPresale,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{estArrivalTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{wfBranch,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{createAuUserId,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{lastModifyAuUserId,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{vmiPromotionCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{splitSourceOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{copySourceOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{raOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{posSales,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{originalPocn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{sourceType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{extVc1,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{extVc2,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{extVc3,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{toWhRemark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{careGrade,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{careMomo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isCloudStackSo,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{mainBranchWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isAutoWh,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{goodsWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{alipayId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{creditCardFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{platformTradeType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isDirectWmsOrder,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{splitOrderTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{isAssignWh,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{invoiceKind,javaType=Boolean,jdbcType=BIT} ,
+		        	#{orderTaxFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isBundle,javaType=Boolean,jdbcType=BIT} ,
+		        	#{customizationMemo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{orderRouteStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isOrderRoute,javaType=Boolean,jdbcType=BIT} ,
+		        	#{isOmnichannelParam,javaType=Boolean,jdbcType=BIT} ,
+		        	#{targetCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{updateRouteTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{allocationCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{buyerTaxNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{stepPaidFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isAddrChanged,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{businessType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{whLocationCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isSupportPrePackage,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{stepPayTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{originalTargetCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{tagName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{couponFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdSalesOrder">
+	    <![CDATA[
+	        UPDATE t_td_sales_order SET
+		        TRADE_ID = #{tradeId,javaType=Long,jdbcType=BIGINT} ,
+		        PLATFORM_ORDER_CODE = #{platformOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        PLATFORM_ORDER_CODE_N = #{platformOrderCodeN,javaType=String,jdbcType=VARCHAR} ,
+		        TB_CREATE_TIME = #{tbCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TB_PAYMENT_TIME = #{tbPaymentTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        OMS_ORDER_CODE = #{omsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        ERP_ORDER_CODE = #{erpOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        SUSPEND_REASON_TYPE = #{suspendReasonType,javaType=Integer,jdbcType=INTEGER} ,
+		        SPECIAL_TYPE = #{specialType,javaType=Integer,jdbcType=INTEGER} ,
+		        ORDER_STATUS = #{orderStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        ORDER_TYPE = #{orderType,javaType=Integer,jdbcType=INTEGER} ,
+		        DELIVERY_TYPE = #{deliveryType,javaType=Integer,jdbcType=INTEGER} ,
+		        IS_INSTALL = #{isInstall,javaType=Integer,jdbcType=INTEGER} ,
+		        INSTALL_COMPANY_CODE = #{installCompanyCode,javaType=String,jdbcType=VARCHAR} ,
+		        INSTALL_COMPANY_NAME = #{installCompanyName,javaType=String,jdbcType=VARCHAR} ,
+		        FINANCE_STATUS = #{financeStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        HOME_DELIVERY_FEE = #{homeDeliveryFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        DELIVERY_AND_INSTALL_FEE = #{deliveryAndInstallFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        INSTALL_FEE = #{installFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        SERVICE_ITEM_FEE = #{serviceItemFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        FINANCE_TOTAL_AMOUNT = #{financeTotalAmount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        ALIPAY_ACCOUNT = #{alipayAccount,javaType=String,jdbcType=VARCHAR} ,
+		        ALIPAY_NO = #{alipayNo,javaType=String,jdbcType=VARCHAR} ,
+		        ERP_SHOP_CODE = #{erpShopCode,javaType=Integer,jdbcType=INTEGER} ,
+		        SALES_MODES_STR = #{salesModesStr,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        WAREHOUSE_CODE = #{warehouseCode,javaType=String,jdbcType=VARCHAR} ,
+		        SYNC_TO_ERP_TIME = #{syncToErpTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        ERP_RESPONSE_TIME = #{erpResponseTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        CANCEL_TIME = #{cancelTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TRANS_TO_WAREHOUSE_TIME = #{transToWarehouseTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        STOCK_OUT_TIME = #{stockOutTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        FINISH_TIME = #{finishTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        HEAD_DISCOUNT = #{headDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        LINES_DISCOUNT = #{linesDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        DISCOUNT_TOTAL = #{discountTotal,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        AMOUNT_BEFORE_DISCOUNT = #{amountBeforeDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        AMOUNT_AFTER_DISCOUNT = #{amountAfterDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        PAYMENT_DISCOUNT = #{paymentDiscount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        TOTAL_OUTER_POINT = #{totalOuterPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        TOTAL_INNER_POINT = #{totalInnerPoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        USE_POINT = #{usePoint,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        VIRTUAL_AMOUNT = #{virtualAmount,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        MAIN_PAYMENT_TYPE = #{mainPaymentType,javaType=Integer,jdbcType=INTEGER} ,
+		        TRANS_FEE = #{transFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        SELLER_MEMO = #{sellerMemo,javaType=String,jdbcType=VARCHAR} ,
+		        BUYER_MEMO = #{buyerMemo,javaType=String,jdbcType=VARCHAR} ,
+		        SYS_MEMO = #{sysMemo,javaType=String,jdbcType=VARCHAR} ,
+		        NEED_PACKING = #{needPacking,javaType=Integer,jdbcType=INTEGER} ,
+		        NEED_INVOICE = #{needInvoice,javaType=Integer,jdbcType=INTEGER} ,
+		        IS_BILLING_MANUAL = #{isBillingManual,javaType=Integer,jdbcType=INTEGER} ,
+		        INVOICE_MEMO = #{invoiceMemo,javaType=String,jdbcType=VARCHAR} ,
+		        INVOICE_TYPE = #{invoiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        INVOICE_TITLE = #{invoiceTitle,javaType=String,jdbcType=VARCHAR} ,
+		        INVOICE_CONTENT = #{invoiceContent,javaType=String,jdbcType=VARCHAR} ,
+		        IS_BILLING_INVOICE_DETAIL = #{isBillingInvoiceDetail,javaType=Integer,jdbcType=INTEGER} ,
+		        VA_TAX_COMPANY_NAME = #{vaTaxCompanyName,javaType=String,jdbcType=VARCHAR} ,
+		        VA_TAX_CODE = #{vaTaxCode,javaType=String,jdbcType=VARCHAR} ,
+		        VA_TAX_REGISTER_ADDRESS = #{vaTaxRegisterAddress,javaType=String,jdbcType=VARCHAR} ,
+		        VA_TAX_TELEPHONE = #{vaTaxTelephone,javaType=String,jdbcType=VARCHAR} ,
+		        VA_TAX_BANK_NAME = #{vaTaxBankName,javaType=String,jdbcType=VARCHAR} ,
+		        VA_TAX_BANK_CARD = #{vaTaxBankCard,javaType=String,jdbcType=VARCHAR} ,
+		        SOURCE_REMARK = #{sourceRemark,javaType=String,jdbcType=VARCHAR} ,
+		        PLATFORM_SOURCE = #{platformSource,javaType=String,jdbcType=VARCHAR} ,
+		        TERMINAL_SOURCE = #{terminalSource,javaType=String,jdbcType=VARCHAR} ,
+		        ACTIVITY_SOURCE = #{activitySource,javaType=String,jdbcType=VARCHAR} ,
+		        SUB_ORDER_SOURCE = #{subOrderSource,javaType=String,jdbcType=VARCHAR} ,
+		        IS_CYCLE = #{isCycle,javaType=Integer,jdbcType=INTEGER} ,
+		        IS_PRESALE = #{isPresale,javaType=Integer,jdbcType=INTEGER} ,
+		        EST_ARRIVAL_TIME = #{estArrivalTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        WF_BRANCH = #{wfBranch,javaType=Integer,jdbcType=INTEGER} ,
+		        CREATE_AU_USER_ID = #{createAuUserId,javaType=Integer,jdbcType=INTEGER} ,
+		        LAST_MODIFY_AU_USER_ID = #{lastModifyAuUserId,javaType=Integer,jdbcType=INTEGER} ,
+		        VERSION = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        VMI_PROMOTION_CODE = #{vmiPromotionCode,javaType=String,jdbcType=VARCHAR} ,
+		        SPLIT_SOURCE_OMS_ORDER_CODE = #{splitSourceOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        COPY_SOURCE_OMS_ORDER_CODE = #{copySourceOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        RA_OMS_ORDER_CODE = #{raOmsOrderCode,javaType=String,jdbcType=VARCHAR} ,
+		        POS_SALES = #{posSales,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        ORIGINAL_POCN = #{originalPocn,javaType=String,jdbcType=VARCHAR} ,
+		        SOURCE_TYPE = #{sourceType,javaType=Integer,jdbcType=INTEGER} ,
+		        EXT_VC1 = #{extVc1,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        EXT_VC2 = #{extVc2,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        EXT_VC3 = #{extVc3,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        TO_WH_REMARK = #{toWhRemark,javaType=String,jdbcType=VARCHAR} ,
+		        CARE_GRADE = #{careGrade,javaType=Integer,jdbcType=INTEGER} ,
+		        CARE_MOMO = #{careMomo,javaType=String,jdbcType=VARCHAR} ,
+		        IS_CLOUD_STACK_SO = #{isCloudStackSo,javaType=Integer,jdbcType=TINYINT} ,
+		        MAIN_BRANCH_WH_CODE = #{mainBranchWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        IS_AUTO_WH = #{isAutoWh,javaType=Integer,jdbcType=TINYINT} ,
+		        GOODS_WEIGHT = #{goodsWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        ALIPAY_ID = #{alipayId,javaType=Long,jdbcType=BIGINT} ,
+		        CREDIT_CARD_FEE = #{creditCardFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        PLATFORM_TRADE_TYPE = #{platformTradeType,javaType=String,jdbcType=VARCHAR} ,
+		        IS_DIRECT_WMS_ORDER = #{isDirectWmsOrder,javaType=Integer,jdbcType=TINYINT} ,
+		        SPLIT_ORDER_TIME = #{splitOrderTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        IS_ASSIGN_WH = #{isAssignWh,javaType=Integer,jdbcType=INTEGER} ,
+		        INVOICE_KIND = #{invoiceKind,javaType=Boolean,jdbcType=BIT} ,
+		        ORDER_TAX_FEE = #{orderTaxFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        IS_BUNDLE = #{isBundle,javaType=Boolean,jdbcType=BIT} ,
+		        CUSTOMIZATION_MEMO = #{customizationMemo,javaType=String,jdbcType=VARCHAR} ,
+		        ORDER_ROUTE_STATUS = #{orderRouteStatus,javaType=Integer,jdbcType=INTEGER} ,
+		        IS_ORDER_ROUTE = #{isOrderRoute,javaType=Boolean,jdbcType=BIT} ,
+		        IS_OMNICHANNEL_PARAM = #{isOmnichannelParam,javaType=Boolean,jdbcType=BIT} ,
+		        TARGET_CODE = #{targetCode,javaType=String,jdbcType=VARCHAR} ,
+		        UPDATE_ROUTE_TIME = #{updateRouteTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        ALLOCATION_CODE = #{allocationCode,javaType=String,jdbcType=VARCHAR} ,
+		        BUYER_TAX_NO = #{buyerTaxNo,javaType=String,jdbcType=VARCHAR} ,
+		        STEP_PAID_FEE = #{stepPaidFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        IS_ADDR_CHANGED = #{isAddrChanged,javaType=Integer,jdbcType=TINYINT} ,
+		        BUSINESS_TYPE = #{businessType,javaType=Integer,jdbcType=INTEGER} ,
+		        WH_LOCATION_CODE = #{whLocationCode,javaType=String,jdbcType=VARCHAR} ,
+		        IS_SUPPORT_PRE_PACKAGE = #{isSupportPrePackage,javaType=Integer,jdbcType=TINYINT} ,
+		        STEP_PAY_TIME = #{stepPayTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        ORIGINAL_TARGET_CODE = #{originalTargetCode,javaType=String,jdbcType=VARCHAR} ,
+		        TAG_NAME = #{tagName,javaType=String,jdbcType=VARCHAR} ,
+		        TRANS_TYPE = #{transType,javaType=Integer,jdbcType=TINYINT} ,
+		        COUPON_FEE = #{couponFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_sales_order where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_sales_order 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdSalesOrderResult" flushCache="false">
+			select <include refid="ttdSalesOrderColumns" />
+		    <![CDATA[
+			    from t_td_sales_order 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdSalesOrderResult" flushCache="false">
+			select <include refid="ttdSalesOrderColumns" />
+			    from t_td_sales_order 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdSalesOrderDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="tradeId!=null">
+					and TRADE_ID = #{tradeId}
+				</if>
+	       
+				<if test="platformOrderCode!=null">
+					and PLATFORM_ORDER_CODE = #{platformOrderCode}
+				</if>
+	       
+				<if test="platformOrderCodeN!=null">
+					and PLATFORM_ORDER_CODE_N = #{platformOrderCodeN}
+				</if>
+	       
+				<if test="tbCreateTime!=null">
+					and TB_CREATE_TIME = #{tbCreateTime}
+				</if>
+	       
+				<if test="tbPaymentTime!=null">
+					and TB_PAYMENT_TIME = #{tbPaymentTime}
+				</if>
+	       
+				<if test="omsOrderCode!=null">
+					and OMS_ORDER_CODE = #{omsOrderCode}
+				</if>
+	       
+				<if test="erpOrderCode!=null">
+					and ERP_ORDER_CODE = #{erpOrderCode}
+				</if>
+	       
+				<if test="suspendReasonType!=null">
+					and SUSPEND_REASON_TYPE = #{suspendReasonType}
+				</if>
+	       
+				<if test="specialType!=null">
+					and SPECIAL_TYPE = #{specialType}
+				</if>
+	       
+				<if test="orderStatus!=null">
+					and ORDER_STATUS = #{orderStatus}
+				</if>
+	       
+				<if test="orderType!=null">
+					and ORDER_TYPE = #{orderType}
+				</if>
+	       
+				<if test="deliveryType!=null">
+					and DELIVERY_TYPE = #{deliveryType}
+				</if>
+	       
+				<if test="isInstall!=null">
+					and IS_INSTALL = #{isInstall}
+				</if>
+	       
+				<if test="installCompanyCode!=null">
+					and INSTALL_COMPANY_CODE = #{installCompanyCode}
+				</if>
+	       
+				<if test="installCompanyName!=null">
+					and INSTALL_COMPANY_NAME = #{installCompanyName}
+				</if>
+	       
+				<if test="financeStatus!=null">
+					and FINANCE_STATUS = #{financeStatus}
+				</if>
+	       
+				<if test="homeDeliveryFee!=null">
+					and HOME_DELIVERY_FEE = #{homeDeliveryFee}
+				</if>
+	       
+				<if test="deliveryAndInstallFee!=null">
+					and DELIVERY_AND_INSTALL_FEE = #{deliveryAndInstallFee}
+				</if>
+	       
+				<if test="installFee!=null">
+					and INSTALL_FEE = #{installFee}
+				</if>
+	       
+				<if test="serviceItemFee!=null">
+					and SERVICE_ITEM_FEE = #{serviceItemFee}
+				</if>
+	       
+				<if test="financeTotalAmount!=null">
+					and FINANCE_TOTAL_AMOUNT = #{financeTotalAmount}
+				</if>
+	       
+				<if test="alipayAccount!=null">
+					and ALIPAY_ACCOUNT = #{alipayAccount}
+				</if>
+	       
+				<if test="alipayNo!=null">
+					and ALIPAY_NO = #{alipayNo}
+				</if>
+	       
+				<if test="erpShopCode!=null">
+					and ERP_SHOP_CODE = #{erpShopCode}
+				</if>
+	       
+				<if test="salesModesStr!=null">
+					and SALES_MODES_STR = #{salesModesStr}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="warehouseCode!=null">
+					and WAREHOUSE_CODE = #{warehouseCode}
+				</if>
+	       
+				<if test="syncToErpTime!=null">
+					and SYNC_TO_ERP_TIME = #{syncToErpTime}
+				</if>
+	       
+				<if test="erpResponseTime!=null">
+					and ERP_RESPONSE_TIME = #{erpResponseTime}
+				</if>
+	       
+				<if test="cancelTime!=null">
+					and CANCEL_TIME = #{cancelTime}
+				</if>
+	       
+				<if test="transToWarehouseTime!=null">
+					and TRANS_TO_WAREHOUSE_TIME = #{transToWarehouseTime}
+				</if>
+	       
+				<if test="stockOutTime!=null">
+					and STOCK_OUT_TIME = #{stockOutTime}
+				</if>
+	       
+				<if test="finishTime!=null">
+					and FINISH_TIME = #{finishTime}
+				</if>
+	       
+				<if test="headDiscount!=null">
+					and HEAD_DISCOUNT = #{headDiscount}
+				</if>
+	       
+				<if test="linesDiscount!=null">
+					and LINES_DISCOUNT = #{linesDiscount}
+				</if>
+	       
+				<if test="discountTotal!=null">
+					and DISCOUNT_TOTAL = #{discountTotal}
+				</if>
+	       
+				<if test="amountBeforeDiscount!=null">
+					and AMOUNT_BEFORE_DISCOUNT = #{amountBeforeDiscount}
+				</if>
+	       
+				<if test="amountAfterDiscount!=null">
+					and AMOUNT_AFTER_DISCOUNT = #{amountAfterDiscount}
+				</if>
+	       
+				<if test="paymentDiscount!=null">
+					and PAYMENT_DISCOUNT = #{paymentDiscount}
+				</if>
+	       
+				<if test="totalOuterPoint!=null">
+					and TOTAL_OUTER_POINT = #{totalOuterPoint}
+				</if>
+	       
+				<if test="totalInnerPoint!=null">
+					and TOTAL_INNER_POINT = #{totalInnerPoint}
+				</if>
+	       
+				<if test="usePoint!=null">
+					and USE_POINT = #{usePoint}
+				</if>
+	       
+				<if test="virtualAmount!=null">
+					and VIRTUAL_AMOUNT = #{virtualAmount}
+				</if>
+	       
+				<if test="mainPaymentType!=null">
+					and MAIN_PAYMENT_TYPE = #{mainPaymentType}
+				</if>
+	       
+				<if test="transFee!=null">
+					and TRANS_FEE = #{transFee}
+				</if>
+	       
+				<if test="sellerMemo!=null">
+					and SELLER_MEMO = #{sellerMemo}
+				</if>
+	       
+				<if test="buyerMemo!=null">
+					and BUYER_MEMO = #{buyerMemo}
+				</if>
+	       
+				<if test="sysMemo!=null">
+					and SYS_MEMO = #{sysMemo}
+				</if>
+	       
+				<if test="needPacking!=null">
+					and NEED_PACKING = #{needPacking}
+				</if>
+	       
+				<if test="needInvoice!=null">
+					and NEED_INVOICE = #{needInvoice}
+				</if>
+	       
+				<if test="isBillingManual!=null">
+					and IS_BILLING_MANUAL = #{isBillingManual}
+				</if>
+	       
+				<if test="invoiceMemo!=null">
+					and INVOICE_MEMO = #{invoiceMemo}
+				</if>
+	       
+				<if test="invoiceType!=null">
+					and INVOICE_TYPE = #{invoiceType}
+				</if>
+	       
+				<if test="invoiceTitle!=null">
+					and INVOICE_TITLE = #{invoiceTitle}
+				</if>
+	       
+				<if test="invoiceContent!=null">
+					and INVOICE_CONTENT = #{invoiceContent}
+				</if>
+	       
+				<if test="isBillingInvoiceDetail!=null">
+					and IS_BILLING_INVOICE_DETAIL = #{isBillingInvoiceDetail}
+				</if>
+	       
+				<if test="vaTaxCompanyName!=null">
+					and VA_TAX_COMPANY_NAME = #{vaTaxCompanyName}
+				</if>
+	       
+				<if test="vaTaxCode!=null">
+					and VA_TAX_CODE = #{vaTaxCode}
+				</if>
+	       
+				<if test="vaTaxRegisterAddress!=null">
+					and VA_TAX_REGISTER_ADDRESS = #{vaTaxRegisterAddress}
+				</if>
+	       
+				<if test="vaTaxTelephone!=null">
+					and VA_TAX_TELEPHONE = #{vaTaxTelephone}
+				</if>
+	       
+				<if test="vaTaxBankName!=null">
+					and VA_TAX_BANK_NAME = #{vaTaxBankName}
+				</if>
+	       
+				<if test="vaTaxBankCard!=null">
+					and VA_TAX_BANK_CARD = #{vaTaxBankCard}
+				</if>
+	       
+				<if test="sourceRemark!=null">
+					and SOURCE_REMARK = #{sourceRemark}
+				</if>
+	       
+				<if test="platformSource!=null">
+					and PLATFORM_SOURCE = #{platformSource}
+				</if>
+	       
+				<if test="terminalSource!=null">
+					and TERMINAL_SOURCE = #{terminalSource}
+				</if>
+	       
+				<if test="activitySource!=null">
+					and ACTIVITY_SOURCE = #{activitySource}
+				</if>
+	       
+				<if test="subOrderSource!=null">
+					and SUB_ORDER_SOURCE = #{subOrderSource}
+				</if>
+	       
+				<if test="isCycle!=null">
+					and IS_CYCLE = #{isCycle}
+				</if>
+	       
+				<if test="isPresale!=null">
+					and IS_PRESALE = #{isPresale}
+				</if>
+	       
+				<if test="estArrivalTime!=null">
+					and EST_ARRIVAL_TIME = #{estArrivalTime}
+				</if>
+	       
+				<if test="wfBranch!=null">
+					and WF_BRANCH = #{wfBranch}
+				</if>
+	       
+				<if test="createAuUserId!=null">
+					and CREATE_AU_USER_ID = #{createAuUserId}
+				</if>
+	       
+				<if test="lastModifyAuUserId!=null">
+					and LAST_MODIFY_AU_USER_ID = #{lastModifyAuUserId}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="vmiPromotionCode!=null">
+					and VMI_PROMOTION_CODE = #{vmiPromotionCode}
+				</if>
+	       
+				<if test="splitSourceOmsOrderCode!=null">
+					and SPLIT_SOURCE_OMS_ORDER_CODE = #{splitSourceOmsOrderCode}
+				</if>
+	       
+				<if test="copySourceOmsOrderCode!=null">
+					and COPY_SOURCE_OMS_ORDER_CODE = #{copySourceOmsOrderCode}
+				</if>
+	       
+				<if test="raOmsOrderCode!=null">
+					and RA_OMS_ORDER_CODE = #{raOmsOrderCode}
+				</if>
+	       
+				<if test="posSales!=null">
+					and POS_SALES = #{posSales}
+				</if>
+	       
+				<if test="originalPocn!=null">
+					and ORIGINAL_POCN = #{originalPocn}
+				</if>
+	       
+				<if test="sourceType!=null">
+					and SOURCE_TYPE = #{sourceType}
+				</if>
+	       
+				<if test="extVc1!=null">
+					and EXT_VC1 = #{extVc1}
+				</if>
+	       
+				<if test="extVc2!=null">
+					and EXT_VC2 = #{extVc2}
+				</if>
+	       
+				<if test="extVc3!=null">
+					and EXT_VC3 = #{extVc3}
+				</if>
+	       
+				<if test="toWhRemark!=null">
+					and TO_WH_REMARK = #{toWhRemark}
+				</if>
+	       
+				<if test="careGrade!=null">
+					and CARE_GRADE = #{careGrade}
+				</if>
+	       
+				<if test="careMomo!=null">
+					and CARE_MOMO = #{careMomo}
+				</if>
+	       
+				<if test="isCloudStackSo!=null">
+					and IS_CLOUD_STACK_SO = #{isCloudStackSo}
+				</if>
+	       
+				<if test="mainBranchWhCode!=null">
+					and MAIN_BRANCH_WH_CODE = #{mainBranchWhCode}
+				</if>
+	       
+				<if test="isAutoWh!=null">
+					and IS_AUTO_WH = #{isAutoWh}
+				</if>
+	       
+				<if test="goodsWeight!=null">
+					and GOODS_WEIGHT = #{goodsWeight}
+				</if>
+	       
+				<if test="alipayId!=null">
+					and ALIPAY_ID = #{alipayId}
+				</if>
+	       
+				<if test="creditCardFee!=null">
+					and CREDIT_CARD_FEE = #{creditCardFee}
+				</if>
+	       
+				<if test="platformTradeType!=null">
+					and PLATFORM_TRADE_TYPE = #{platformTradeType}
+				</if>
+	       
+				<if test="isDirectWmsOrder!=null">
+					and IS_DIRECT_WMS_ORDER = #{isDirectWmsOrder}
+				</if>
+	       
+				<if test="splitOrderTime!=null">
+					and SPLIT_ORDER_TIME = #{splitOrderTime}
+				</if>
+	       
+				<if test="isAssignWh!=null">
+					and IS_ASSIGN_WH = #{isAssignWh}
+				</if>
+	       
+				<if test="invoiceKind!=null">
+					and INVOICE_KIND = #{invoiceKind}
+				</if>
+	       
+				<if test="orderTaxFee!=null">
+					and ORDER_TAX_FEE = #{orderTaxFee}
+				</if>
+	       
+				<if test="isBundle!=null">
+					and IS_BUNDLE = #{isBundle}
+				</if>
+	       
+				<if test="customizationMemo!=null">
+					and CUSTOMIZATION_MEMO = #{customizationMemo}
+				</if>
+	       
+				<if test="orderRouteStatus!=null">
+					and ORDER_ROUTE_STATUS = #{orderRouteStatus}
+				</if>
+	       
+				<if test="isOrderRoute!=null">
+					and IS_ORDER_ROUTE = #{isOrderRoute}
+				</if>
+	       
+				<if test="isOmnichannelParam!=null">
+					and IS_OMNICHANNEL_PARAM = #{isOmnichannelParam}
+				</if>
+	       
+				<if test="targetCode!=null">
+					and TARGET_CODE = #{targetCode}
+				</if>
+	       
+				<if test="updateRouteTime!=null">
+					and UPDATE_ROUTE_TIME = #{updateRouteTime}
+				</if>
+	       
+				<if test="allocationCode!=null">
+					and ALLOCATION_CODE = #{allocationCode}
+				</if>
+	       
+				<if test="buyerTaxNo!=null">
+					and BUYER_TAX_NO = #{buyerTaxNo}
+				</if>
+	       
+				<if test="stepPaidFee!=null">
+					and STEP_PAID_FEE = #{stepPaidFee}
+				</if>
+	       
+				<if test="isAddrChanged!=null">
+					and IS_ADDR_CHANGED = #{isAddrChanged}
+				</if>
+	       
+				<if test="businessType!=null">
+					and BUSINESS_TYPE = #{businessType}
+				</if>
+	       
+				<if test="whLocationCode!=null">
+					and WH_LOCATION_CODE = #{whLocationCode}
+				</if>
+	       
+				<if test="isSupportPrePackage!=null">
+					and IS_SUPPORT_PRE_PACKAGE = #{isSupportPrePackage}
+				</if>
+	       
+				<if test="stepPayTime!=null">
+					and STEP_PAY_TIME = #{stepPayTime}
+				</if>
+	       
+				<if test="originalTargetCode!=null">
+					and ORIGINAL_TARGET_CODE = #{originalTargetCode}
+				</if>
+	       
+				<if test="tagName!=null">
+					and TAG_NAME = #{tagName}
+				</if>
+	       
+				<if test="transType!=null">
+					and TRANS_TYPE = #{transType}
+				</if>
+	       
+				<if test="couponFee!=null">
+					and COUPON_FEE = #{couponFee}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_sales_order 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_sales_order 
+		<include refid="ttdSalesOrderDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_sales_order 
+		<include refid="ttdSalesOrderDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdSalesOrderResult">
+    	select <include refid="ttdSalesOrderColumns" />
+	    from t_td_sales_order 
+		<include refid="ttdSalesOrderDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdSalesOrderResult">
+    	select <include refid="ttdSalesOrderColumns" />
+	    from t_td_sales_order 
+		<include refid="ttdSalesOrderDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdSalesOrderResult">
+    	select <include refid="ttdSalesOrderColumns" />
+	    from t_td_sales_order 
+		<include refid="ttdSalesOrderDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

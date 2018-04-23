@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TwfWorkflowTransitionDao">
+	<resultMap id="TwfWorkflowTransitionResult" type="io.vitess.model.sqlmap.TwfWorkflowTransition">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="twfWorkflowTransitionColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	CODE as code,
+	        	NAME as name,
+	        	FROM_NODE_ID as fromNodeId,
+	        	TO_NODE_ID as toNodeId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TwfWorkflowTransition"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_wf_workflow_transition (
+		        id,
+		        	CODE ,
+		        	NAME ,
+		        	FROM_NODE_ID ,
+		        	TO_NODE_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{fromNodeId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{toNodeId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TwfWorkflowTransition">
+	    <![CDATA[
+	        UPDATE t_wf_workflow_transition SET
+		        CODE = #{code,javaType=String,jdbcType=VARCHAR} ,
+		        NAME = #{name,javaType=String,jdbcType=VARCHAR} ,
+		        FROM_NODE_ID = #{fromNodeId,javaType=Long,jdbcType=BIGINT} ,
+		        TO_NODE_ID = #{toNodeId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_wf_workflow_transition where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_wf_workflow_transition 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TwfWorkflowTransitionResult" flushCache="false">
+			select <include refid="twfWorkflowTransitionColumns" />
+		    <![CDATA[
+			    from t_wf_workflow_transition 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TwfWorkflowTransitionResult" flushCache="false">
+			select <include refid="twfWorkflowTransitionColumns" />
+			    from t_wf_workflow_transition 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="twfWorkflowTransitionDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="code!=null">
+					and CODE = #{code}
+				</if>
+	       
+				<if test="name!=null">
+					and NAME = #{name}
+				</if>
+	       
+				<if test="fromNodeId!=null">
+					and FROM_NODE_ID = #{fromNodeId}
+				</if>
+	       
+				<if test="toNodeId!=null">
+					and TO_NODE_ID = #{toNodeId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_wf_workflow_transition 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_wf_workflow_transition 
+		<include refid="twfWorkflowTransitionDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_wf_workflow_transition 
+		<include refid="twfWorkflowTransitionDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TwfWorkflowTransitionResult">
+    	select <include refid="twfWorkflowTransitionColumns" />
+	    from t_wf_workflow_transition 
+		<include refid="twfWorkflowTransitionDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TwfWorkflowTransitionResult">
+    	select <include refid="twfWorkflowTransitionColumns" />
+	    from t_wf_workflow_transition 
+		<include refid="twfWorkflowTransitionDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TwfWorkflowTransitionResult">
+    	select <include refid="twfWorkflowTransitionColumns" />
+	    from t_wf_workflow_transition 
+		<include refid="twfWorkflowTransitionDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

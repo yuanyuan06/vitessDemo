@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdOrderAutotaskInfoDao">
+	<resultMap id="TtdOrderAutotaskInfoResult" type="io.vitess.model.sqlmap.TtdOrderAutotaskInfo">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdOrderAutotaskInfoColumns">
+	    <![CDATA[
+	        	ORDER_ID as id,
+	        	TASK_ID as taskId,
+	        	SYNC_TO_PACS_TIME as syncToPacsTime,
+	        	SUBMIT_TO_WH_TIME as submitToWhTime,
+	        	TRADE_CONFIRM_TIME as tradeConfirmTime,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdOrderAutotaskInfo"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_order_autotask_info (
+		        id,
+		        	TASK_ID ,
+		        	SYNC_TO_PACS_TIME ,
+		        	SUBMIT_TO_WH_TIME ,
+		        	TRADE_CONFIRM_TIME ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{taskId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{syncToPacsTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{submitToWhTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{tradeConfirmTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdOrderAutotaskInfo">
+	    <![CDATA[
+	        UPDATE t_td_order_autotask_info SET
+		        TASK_ID = #{taskId,javaType=Long,jdbcType=BIGINT} ,
+		        SYNC_TO_PACS_TIME = #{syncToPacsTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        SUBMIT_TO_WH_TIME = #{submitToWhTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        TRADE_CONFIRM_TIME = #{tradeConfirmTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ORDER_ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_order_autotask_info where
+		        ORDER_ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_order_autotask_info 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdOrderAutotaskInfoResult" flushCache="false">
+			select <include refid="ttdOrderAutotaskInfoColumns" />
+		    <![CDATA[
+			    from t_td_order_autotask_info 
+		        where 
+		        ORDER_ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdOrderAutotaskInfoResult" flushCache="false">
+			select <include refid="ttdOrderAutotaskInfoColumns" />
+			    from t_td_order_autotask_info 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdOrderAutotaskInfoDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ORDER_ID = #{id}
+				</if>
+	       
+				<if test="taskId!=null">
+					and TASK_ID = #{taskId}
+				</if>
+	       
+				<if test="syncToPacsTime!=null">
+					and SYNC_TO_PACS_TIME = #{syncToPacsTime}
+				</if>
+	       
+				<if test="submitToWhTime!=null">
+					and SUBMIT_TO_WH_TIME = #{submitToWhTime}
+				</if>
+	       
+				<if test="tradeConfirmTime!=null">
+					and TRADE_CONFIRM_TIME = #{tradeConfirmTime}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_order_autotask_info 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_order_autotask_info 
+		<include refid="ttdOrderAutotaskInfoDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_order_autotask_info 
+		<include refid="ttdOrderAutotaskInfoDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdOrderAutotaskInfoResult">
+    	select <include refid="ttdOrderAutotaskInfoColumns" />
+	    from t_td_order_autotask_info 
+		<include refid="ttdOrderAutotaskInfoDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdOrderAutotaskInfoResult">
+    	select <include refid="ttdOrderAutotaskInfoColumns" />
+	    from t_td_order_autotask_info 
+		<include refid="ttdOrderAutotaskInfoDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdOrderAutotaskInfoResult">
+    	select <include refid="ttdOrderAutotaskInfoColumns" />
+	    from t_td_order_autotask_info 
+		<include refid="ttdOrderAutotaskInfoDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

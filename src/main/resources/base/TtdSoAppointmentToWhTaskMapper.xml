@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TtdSoAppointmentToWhTaskDao">
+	<resultMap id="TtdSoAppointmentToWhTaskResult" type="io.vitess.model.sqlmap.TtdSoAppointmentToWhTask">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ttdSoAppointmentToWhTaskColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	VERSION as version,
+	        	SALES_ORDER_ID as salesOrderId,
+	        	FROM_WH_CODE as fromWhCode,
+	        	TO_WH_CODE as toWhCode,
+	        	TO_WH_TIME as toWhTime,
+	        	IS_AUTO_TO as isAutoTo,
+	        	PROCESS_STATUS as processStatus,
+	        	PROCESS_RESULT as processResult,
+	        	REMARK as remark,
+	        	CREATE_TIME as createTime,
+	        	CREATE_USER_NO as createUserNo,
+	        	UPDATE_TIME as updateTime,
+	        	UPDATE_USER_NO as updateUserNo,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TtdSoAppointmentToWhTask"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_td_so_appointment_to_wh_task (
+		        id,
+		        	VERSION ,
+		        	SALES_ORDER_ID ,
+		        	FROM_WH_CODE ,
+		        	TO_WH_CODE ,
+		        	TO_WH_TIME ,
+		        	IS_AUTO_TO ,
+		        	PROCESS_STATUS ,
+		        	PROCESS_RESULT ,
+		        	REMARK ,
+		        	CREATE_TIME ,
+		        	CREATE_USER_NO ,
+		        	UPDATE_TIME ,
+		        	UPDATE_USER_NO ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{salesOrderId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{fromWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{toWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{toWhTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{isAutoTo,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{processResult,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{createUserNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{updateUserNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TtdSoAppointmentToWhTask">
+	    <![CDATA[
+	        UPDATE t_td_so_appointment_to_wh_task SET
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        SALES_ORDER_ID = #{salesOrderId,javaType=Long,jdbcType=BIGINT} ,
+		        FROM_WH_CODE = #{fromWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        TO_WH_CODE = #{toWhCode,javaType=String,jdbcType=VARCHAR} ,
+		        TO_WH_TIME = #{toWhTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        IS_AUTO_TO = #{isAutoTo,javaType=Integer,jdbcType=TINYINT} ,
+		        PROCESS_STATUS = #{processStatus,javaType=Integer,jdbcType=TINYINT} ,
+		        PROCESS_RESULT = #{processResult,javaType=String,jdbcType=VARCHAR} ,
+		        REMARK = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        CREATE_TIME = #{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        CREATE_USER_NO = #{createUserNo,javaType=String,jdbcType=VARCHAR} ,
+		        UPDATE_TIME = #{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        UPDATE_USER_NO = #{updateUserNo,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_td_so_appointment_to_wh_task where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_td_so_appointment_to_wh_task 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TtdSoAppointmentToWhTaskResult" flushCache="false">
+			select <include refid="ttdSoAppointmentToWhTaskColumns" />
+		    <![CDATA[
+			    from t_td_so_appointment_to_wh_task 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TtdSoAppointmentToWhTaskResult" flushCache="false">
+			select <include refid="ttdSoAppointmentToWhTaskColumns" />
+			    from t_td_so_appointment_to_wh_task 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="ttdSoAppointmentToWhTaskDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="salesOrderId!=null">
+					and SALES_ORDER_ID = #{salesOrderId}
+				</if>
+	       
+				<if test="fromWhCode!=null">
+					and FROM_WH_CODE = #{fromWhCode}
+				</if>
+	       
+				<if test="toWhCode!=null">
+					and TO_WH_CODE = #{toWhCode}
+				</if>
+	       
+				<if test="toWhTime!=null">
+					and TO_WH_TIME = #{toWhTime}
+				</if>
+	       
+				<if test="isAutoTo!=null">
+					and IS_AUTO_TO = #{isAutoTo}
+				</if>
+	       
+				<if test="processStatus!=null">
+					and PROCESS_STATUS = #{processStatus}
+				</if>
+	       
+				<if test="processResult!=null">
+					and PROCESS_RESULT = #{processResult}
+				</if>
+	       
+				<if test="remark!=null">
+					and REMARK = #{remark}
+				</if>
+	       
+				<if test="createTime!=null">
+					and CREATE_TIME = #{createTime}
+				</if>
+	       
+				<if test="createUserNo!=null">
+					and CREATE_USER_NO = #{createUserNo}
+				</if>
+	       
+				<if test="updateTime!=null">
+					and UPDATE_TIME = #{updateTime}
+				</if>
+	       
+				<if test="updateUserNo!=null">
+					and UPDATE_USER_NO = #{updateUserNo}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_td_so_appointment_to_wh_task 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_td_so_appointment_to_wh_task 
+		<include refid="ttdSoAppointmentToWhTaskDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_td_so_appointment_to_wh_task 
+		<include refid="ttdSoAppointmentToWhTaskDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TtdSoAppointmentToWhTaskResult">
+    	select <include refid="ttdSoAppointmentToWhTaskColumns" />
+	    from t_td_so_appointment_to_wh_task 
+		<include refid="ttdSoAppointmentToWhTaskDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TtdSoAppointmentToWhTaskResult">
+    	select <include refid="ttdSoAppointmentToWhTaskColumns" />
+	    from t_td_so_appointment_to_wh_task 
+		<include refid="ttdSoAppointmentToWhTaskDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TtdSoAppointmentToWhTaskResult">
+    	select <include refid="ttdSoAppointmentToWhTaskColumns" />
+	    from t_td_so_appointment_to_wh_task 
+		<include refid="ttdSoAppointmentToWhTaskDynamicWhere"/>
+		
+    </select>
+
+    <select id="getBySalesOrderId" resultMap="TtdSoAppointmentToWhTaskResult" parameterType="Long">
+	    select <include refid="ttdSoAppointmentToWhTaskColumns"/>
+	    <![CDATA[
+	        from t_td_so_appointment_to_wh_task where SALES_ORDER_ID = #{salesOrderId}
+	    ]]>
+    </select>
+    
+	
+</mapper>

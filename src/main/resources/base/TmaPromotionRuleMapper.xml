@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaPromotionRuleDao">
+	<resultMap id="TmaPromotionRuleResult" type="io.vitess.model.sqlmap.TmaPromotionRule">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaPromotionRuleColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	AMOUNT_LEVEL as amountLevel,
+	        	DESCRIPTION as description,
+	        	EXCLUDE_LABEL as excludeLabel,
+	        	INCLUDE_LABEL as includeLabel,
+	        	IS_EXCELUDE_COMBO_SKU as isExceludeComboSku,
+	        	MAX_GIFT_TIMES as maxGiftTimes,
+	        	PRODUCT_SCOPE as productScope,
+	        	RULE_LEVEL as ruleLevel,
+	        	USED_GIFT_TIMES as usedGiftTimes,
+	        	VERSION as version,
+	        	PROMOTION_ID as promotionId,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaPromotionRule"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_promotion_rule (
+		        id,
+		        	AMOUNT_LEVEL ,
+		        	DESCRIPTION ,
+		        	EXCLUDE_LABEL ,
+		        	INCLUDE_LABEL ,
+		        	IS_EXCELUDE_COMBO_SKU ,
+		        	MAX_GIFT_TIMES ,
+		        	PRODUCT_SCOPE ,
+		        	RULE_LEVEL ,
+		        	USED_GIFT_TIMES ,
+		        	VERSION ,
+		        	PROMOTION_ID ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{amountLevel,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{description,javaType=String,jdbcType=VARCHAR} ,
+		        	#{excludeLabel,javaType=String,jdbcType=VARCHAR} ,
+		        	#{includeLabel,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isExceludeComboSku,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{maxGiftTimes,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{productScope,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{ruleLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{usedGiftTimes,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{promotionId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaPromotionRule">
+	    <![CDATA[
+	        UPDATE t_ma_promotion_rule SET
+		        AMOUNT_LEVEL = #{amountLevel,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        DESCRIPTION = #{description,javaType=String,jdbcType=VARCHAR} ,
+		        EXCLUDE_LABEL = #{excludeLabel,javaType=String,jdbcType=VARCHAR} ,
+		        INCLUDE_LABEL = #{includeLabel,javaType=String,jdbcType=VARCHAR} ,
+		        IS_EXCELUDE_COMBO_SKU = #{isExceludeComboSku,javaType=Integer,jdbcType=TINYINT} ,
+		        MAX_GIFT_TIMES = #{maxGiftTimes,javaType=Integer,jdbcType=INTEGER} ,
+		        PRODUCT_SCOPE = #{productScope,javaType=Integer,jdbcType=INTEGER} ,
+		        RULE_LEVEL = #{ruleLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        USED_GIFT_TIMES = #{usedGiftTimes,javaType=Integer,jdbcType=INTEGER} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        PROMOTION_ID = #{promotionId,javaType=Long,jdbcType=BIGINT} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_promotion_rule where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_promotion_rule 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaPromotionRuleResult" flushCache="false">
+			select <include refid="tmaPromotionRuleColumns" />
+		    <![CDATA[
+			    from t_ma_promotion_rule 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaPromotionRuleResult" flushCache="false">
+			select <include refid="tmaPromotionRuleColumns" />
+			    from t_ma_promotion_rule 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaPromotionRuleDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="amountLevel!=null">
+					and AMOUNT_LEVEL = #{amountLevel}
+				</if>
+	       
+				<if test="description!=null">
+					and DESCRIPTION = #{description}
+				</if>
+	       
+				<if test="excludeLabel!=null">
+					and EXCLUDE_LABEL = #{excludeLabel}
+				</if>
+	       
+				<if test="includeLabel!=null">
+					and INCLUDE_LABEL = #{includeLabel}
+				</if>
+	       
+				<if test="isExceludeComboSku!=null">
+					and IS_EXCELUDE_COMBO_SKU = #{isExceludeComboSku}
+				</if>
+	       
+				<if test="maxGiftTimes!=null">
+					and MAX_GIFT_TIMES = #{maxGiftTimes}
+				</if>
+	       
+				<if test="productScope!=null">
+					and PRODUCT_SCOPE = #{productScope}
+				</if>
+	       
+				<if test="ruleLevel!=null">
+					and RULE_LEVEL = #{ruleLevel}
+				</if>
+	       
+				<if test="usedGiftTimes!=null">
+					and USED_GIFT_TIMES = #{usedGiftTimes}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="promotionId!=null">
+					and PROMOTION_ID = #{promotionId}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_promotion_rule 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_promotion_rule 
+		<include refid="tmaPromotionRuleDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_promotion_rule 
+		<include refid="tmaPromotionRuleDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaPromotionRuleResult">
+    	select <include refid="tmaPromotionRuleColumns" />
+	    from t_ma_promotion_rule 
+		<include refid="tmaPromotionRuleDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaPromotionRuleResult">
+    	select <include refid="tmaPromotionRuleColumns" />
+	    from t_ma_promotion_rule 
+		<include refid="tmaPromotionRuleDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaPromotionRuleResult">
+    	select <include refid="tmaPromotionRuleColumns" />
+	    from t_ma_promotion_rule 
+		<include refid="tmaPromotionRuleDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmqDeliveryInfoLogDao">
+	<resultMap id="TmqDeliveryInfoLogResult" type="io.vitess.model.sqlmap.TmqDeliveryInfoLog">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmqDeliveryInfoLogColumns">
+	    <![CDATA[
+	        	id as id,
+	        	version as version,
+	        	receiver as receiver,
+	        	contact_person as contactPerson,
+	        	country as country,
+	        	province as province,
+	        	city as city,
+	        	district as district,
+	        	address as address,
+	        	zipcode as zipcode,
+	        	receiver_phone as receiverPhone,
+	        	receiver_mobile as receiverMobile,
+	        	user_name as userName,
+	        	membre_email as membreEmail,
+	        	lp_code as lpCode,
+	        	so_log_id as soLogId,
+	        	given_name as givenName,
+	        	family_name as familyName,
+	        	trans_service_type as transServiceType,
+	        	trans_time_type as transTimeType,
+	        	remark as remark,
+	        	town as town,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmqDeliveryInfoLog"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_mq_delivery_info_log (
+		        id,
+		        	version ,
+		        	receiver ,
+		        	contact_person ,
+		        	country ,
+		        	province ,
+		        	city ,
+		        	district ,
+		        	address ,
+		        	zipcode ,
+		        	receiver_phone ,
+		        	receiver_mobile ,
+		        	user_name ,
+		        	membre_email ,
+		        	lp_code ,
+		        	so_log_id ,
+		        	given_name ,
+		        	family_name ,
+		        	trans_service_type ,
+		        	trans_time_type ,
+		        	remark ,
+		        	town ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        	#{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{userName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{membreEmail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{lpCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{givenName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{familyName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transServiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transTimeType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{town,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmqDeliveryInfoLog">
+	    <![CDATA[
+	        UPDATE t_mq_delivery_info_log SET
+		        version = #{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        receiver = #{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        contact_person = #{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        country = #{country,javaType=String,jdbcType=VARCHAR} ,
+		        province = #{province,javaType=String,jdbcType=VARCHAR} ,
+		        city = #{city,javaType=String,jdbcType=VARCHAR} ,
+		        district = #{district,javaType=String,jdbcType=VARCHAR} ,
+		        address = #{address,javaType=String,jdbcType=VARCHAR} ,
+		        zipcode = #{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        receiver_phone = #{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        receiver_mobile = #{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        user_name = #{userName,javaType=String,jdbcType=VARCHAR} ,
+		        membre_email = #{membreEmail,javaType=String,jdbcType=VARCHAR} ,
+		        lp_code = #{lpCode,javaType=String,jdbcType=VARCHAR} ,
+		        so_log_id = #{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        given_name = #{givenName,javaType=String,jdbcType=VARCHAR} ,
+		        family_name = #{familyName,javaType=String,jdbcType=VARCHAR} ,
+		        trans_service_type = #{transServiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        trans_time_type = #{transTimeType,javaType=Integer,jdbcType=INTEGER} ,
+		        remark = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        town = #{town,javaType=String,jdbcType=VARCHAR} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_mq_delivery_info_log where
+		        id = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_mq_delivery_info_log 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmqDeliveryInfoLogResult" flushCache="false">
+			select <include refid="tmqDeliveryInfoLogColumns" />
+		    <![CDATA[
+			    from t_mq_delivery_info_log 
+		        where 
+		        id = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmqDeliveryInfoLogResult" flushCache="false">
+			select <include refid="tmqDeliveryInfoLogColumns" />
+			    from t_mq_delivery_info_log 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmqDeliveryInfoLogDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and id = #{id}
+				</if>
+	       
+				<if test="version!=null">
+					and version = #{version}
+				</if>
+	       
+				<if test="receiver!=null">
+					and receiver = #{receiver}
+				</if>
+	       
+				<if test="contactPerson!=null">
+					and contact_person = #{contactPerson}
+				</if>
+	       
+				<if test="country!=null">
+					and country = #{country}
+				</if>
+	       
+				<if test="province!=null">
+					and province = #{province}
+				</if>
+	       
+				<if test="city!=null">
+					and city = #{city}
+				</if>
+	       
+				<if test="district!=null">
+					and district = #{district}
+				</if>
+	       
+				<if test="address!=null">
+					and address = #{address}
+				</if>
+	       
+				<if test="zipcode!=null">
+					and zipcode = #{zipcode}
+				</if>
+	       
+				<if test="receiverPhone!=null">
+					and receiver_phone = #{receiverPhone}
+				</if>
+	       
+				<if test="receiverMobile!=null">
+					and receiver_mobile = #{receiverMobile}
+				</if>
+	       
+				<if test="userName!=null">
+					and user_name = #{userName}
+				</if>
+	       
+				<if test="membreEmail!=null">
+					and membre_email = #{membreEmail}
+				</if>
+	       
+				<if test="lpCode!=null">
+					and lp_code = #{lpCode}
+				</if>
+	       
+				<if test="soLogId!=null">
+					and so_log_id = #{soLogId}
+				</if>
+	       
+				<if test="givenName!=null">
+					and given_name = #{givenName}
+				</if>
+	       
+				<if test="familyName!=null">
+					and family_name = #{familyName}
+				</if>
+	       
+				<if test="transServiceType!=null">
+					and trans_service_type = #{transServiceType}
+				</if>
+	       
+				<if test="transTimeType!=null">
+					and trans_time_type = #{transTimeType}
+				</if>
+	       
+				<if test="remark!=null">
+					and remark = #{remark}
+				</if>
+	       
+				<if test="town!=null">
+					and town = #{town}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_mq_delivery_info_log 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_mq_delivery_info_log 
+		<include refid="tmqDeliveryInfoLogDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_mq_delivery_info_log 
+		<include refid="tmqDeliveryInfoLogDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmqDeliveryInfoLogResult">
+    	select <include refid="tmqDeliveryInfoLogColumns" />
+	    from t_mq_delivery_info_log 
+		<include refid="tmqDeliveryInfoLogDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmqDeliveryInfoLogResult">
+    	select <include refid="tmqDeliveryInfoLogColumns" />
+	    from t_mq_delivery_info_log 
+		<include refid="tmqDeliveryInfoLogDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmqDeliveryInfoLogResult">
+    	select <include refid="tmqDeliveryInfoLogColumns" />
+	    from t_mq_delivery_info_log 
+		<include refid="tmqDeliveryInfoLogDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>

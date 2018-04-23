@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaInvSkuDao">
+	<resultMap id="TmaInvSkuResult" type="io.vitess.model.sqlmap.TmaInvSku">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaInvSkuColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	BAR_CODE as barCode,
+	        	CODE as code,
+	        	COLOR as color,
+	        	COLOR_NAME as colorName,
+	        	EN_NAME as enName,
+	        	EXT_CODE1 as extCode1,
+	        	EXT_CODE2 as extCode2,
+	        	EXT_CODE3 as extCode3,
+	        	JM_CODE as jmCode,
+	        	KEY_PROPERTIES as keyProperties,
+	        	NAME as name,
+	        	SKU_SIZE as skuSize,
+	        	SPECIAL_TYPE as specialType,
+	        	SUPPLIER_CODE as supplierCode,
+	        	VERSION as version,
+	        	PRODUCT_ID as productId,
+	        	ITEM_ID as itemId,
+	        	SHIPPING_METHODS as shippingMethods,
+	        	IS_COMMON as isCommon,
+	        	PROD_RATE as prodRate,
+	        	NEED_QUALITYCHECK as needQualitycheck
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaInvSku"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_inv_sku (
+		        id,
+		        	BAR_CODE ,
+		        	CODE ,
+		        	COLOR ,
+		        	COLOR_NAME ,
+		        	EN_NAME ,
+		        	EXT_CODE1 ,
+		        	EXT_CODE2 ,
+		        	EXT_CODE3 ,
+		        	JM_CODE ,
+		        	KEY_PROPERTIES ,
+		        	NAME ,
+		        	SKU_SIZE ,
+		        	SPECIAL_TYPE ,
+		        	SUPPLIER_CODE ,
+		        	VERSION ,
+		        	PRODUCT_ID ,
+		        	ITEM_ID ,
+		        	SHIPPING_METHODS ,
+		        	IS_COMMON ,
+		        	PROD_RATE ,
+		        	NEED_QUALITYCHECK 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{barCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{color,javaType=String,jdbcType=VARCHAR} ,
+		        	#{colorName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{enName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode2,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode3,javaType=String,jdbcType=VARCHAR} ,
+		        	#{jmCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{keyProperties,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{skuSize,javaType=String,jdbcType=VARCHAR} ,
+		        	#{specialType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{productId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{itemId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shippingMethods,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isCommon,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{needQualitycheck,javaType=Integer,jdbcType=TINYINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaInvSku">
+	    <![CDATA[
+	        UPDATE t_ma_inv_sku SET
+		        BAR_CODE = #{barCode,javaType=String,jdbcType=VARCHAR} ,
+		        CODE = #{code,javaType=String,jdbcType=VARCHAR} ,
+		        COLOR = #{color,javaType=String,jdbcType=VARCHAR} ,
+		        COLOR_NAME = #{colorName,javaType=String,jdbcType=VARCHAR} ,
+		        EN_NAME = #{enName,javaType=String,jdbcType=VARCHAR} ,
+		        EXT_CODE1 = #{extCode1,javaType=String,jdbcType=VARCHAR} ,
+		        EXT_CODE2 = #{extCode2,javaType=String,jdbcType=VARCHAR} ,
+		        EXT_CODE3 = #{extCode3,javaType=String,jdbcType=VARCHAR} ,
+		        JM_CODE = #{jmCode,javaType=String,jdbcType=VARCHAR} ,
+		        KEY_PROPERTIES = #{keyProperties,javaType=String,jdbcType=VARCHAR} ,
+		        NAME = #{name,javaType=String,jdbcType=VARCHAR} ,
+		        SKU_SIZE = #{skuSize,javaType=String,jdbcType=VARCHAR} ,
+		        SPECIAL_TYPE = #{specialType,javaType=Integer,jdbcType=TINYINT} ,
+		        SUPPLIER_CODE = #{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        PRODUCT_ID = #{productId,javaType=Long,jdbcType=BIGINT} ,
+		        ITEM_ID = #{itemId,javaType=String,jdbcType=VARCHAR} ,
+		        SHIPPING_METHODS = #{shippingMethods,javaType=String,jdbcType=VARCHAR} ,
+		        IS_COMMON = #{isCommon,javaType=Integer,jdbcType=TINYINT} ,
+		        PROD_RATE = #{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        NEED_QUALITYCHECK = #{needQualitycheck,javaType=Integer,jdbcType=TINYINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_inv_sku where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_inv_sku 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaInvSkuResult" flushCache="false">
+			select <include refid="tmaInvSkuColumns" />
+		    <![CDATA[
+			    from t_ma_inv_sku 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaInvSkuResult" flushCache="false">
+			select <include refid="tmaInvSkuColumns" />
+			    from t_ma_inv_sku 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaInvSkuDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="barCode!=null">
+					and BAR_CODE = #{barCode}
+				</if>
+	       
+				<if test="code!=null">
+					and CODE = #{code}
+				</if>
+	       
+				<if test="color!=null">
+					and COLOR = #{color}
+				</if>
+	       
+				<if test="colorName!=null">
+					and COLOR_NAME = #{colorName}
+				</if>
+	       
+				<if test="enName!=null">
+					and EN_NAME = #{enName}
+				</if>
+	       
+				<if test="extCode1!=null">
+					and EXT_CODE1 = #{extCode1}
+				</if>
+	       
+				<if test="extCode2!=null">
+					and EXT_CODE2 = #{extCode2}
+				</if>
+	       
+				<if test="extCode3!=null">
+					and EXT_CODE3 = #{extCode3}
+				</if>
+	       
+				<if test="jmCode!=null">
+					and JM_CODE = #{jmCode}
+				</if>
+	       
+				<if test="keyProperties!=null">
+					and KEY_PROPERTIES = #{keyProperties}
+				</if>
+	       
+				<if test="name!=null">
+					and NAME = #{name}
+				</if>
+	       
+				<if test="skuSize!=null">
+					and SKU_SIZE = #{skuSize}
+				</if>
+	       
+				<if test="specialType!=null">
+					and SPECIAL_TYPE = #{specialType}
+				</if>
+	       
+				<if test="supplierCode!=null">
+					and SUPPLIER_CODE = #{supplierCode}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="productId!=null">
+					and PRODUCT_ID = #{productId}
+				</if>
+	       
+				<if test="itemId!=null">
+					and ITEM_ID = #{itemId}
+				</if>
+	       
+				<if test="shippingMethods!=null">
+					and SHIPPING_METHODS = #{shippingMethods}
+				</if>
+	       
+				<if test="isCommon!=null">
+					and IS_COMMON = #{isCommon}
+				</if>
+	       
+				<if test="prodRate!=null">
+					and PROD_RATE = #{prodRate}
+				</if>
+	       
+				<if test="needQualitycheck!=null">
+					and NEED_QUALITYCHECK = #{needQualitycheck}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_inv_sku 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_inv_sku 
+		<include refid="tmaInvSkuDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_inv_sku 
+		<include refid="tmaInvSkuDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaInvSkuResult">
+    	select <include refid="tmaInvSkuColumns" />
+	    from t_ma_inv_sku 
+		<include refid="tmaInvSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaInvSkuResult">
+    	select <include refid="tmaInvSkuColumns" />
+	    from t_ma_inv_sku 
+		<include refid="tmaInvSkuDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaInvSkuResult">
+    	select <include refid="tmaInvSkuColumns" />
+	    from t_ma_inv_sku 
+		<include refid="tmaInvSkuDynamicWhere"/>
+		
+    </select>
+
+    <select id="getByCode" resultMap="TmaInvSkuResult" parameterType="String">
+	    select <include refid="tmaInvSkuColumns"/>
+	    <![CDATA[
+	        from t_ma_inv_sku where CODE = #{code}
+	    ]]>
+    </select>
+    
+	
+</mapper>

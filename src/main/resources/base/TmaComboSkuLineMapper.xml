@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="io.vitess.dao.sqlmap.TmaComboSkuLineDao">
+	<resultMap id="TmaComboSkuLineResult" type="io.vitess.model.sqlmap.TmaComboSkuLine">
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="tmaComboSkuLineColumns">
+	    <![CDATA[
+	        	ID as id,
+	        	QUANTITY as quantity,
+	        	REMARK as remark,
+	        	PRICE as price,
+	        	VERSION as version,
+	        	COMBO_SKU_ID as comboSkuId,
+	        	INV_SKU_ID as invSkuId,
+	        	SHOP_ID as shopId
+	    ]]>
+	</sql>
+
+		<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+		<insert id="insert" parameterType="io.vitess.model.sqlmap.TmaComboSkuLine"
+				
+			 flushCache="true">
+		    <![CDATA[
+		        INSERT INTO
+		        t_ma_combo_sku_line (
+		        id,
+		        	QUANTITY ,
+		        	REMARK ,
+		        	PRICE ,
+		        	VERSION ,
+		        	COMBO_SKU_ID ,
+		        	INV_SKU_ID ,
+		        	SHOP_ID 
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{quantity,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{price,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{comboSkuId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{invSkuId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} 
+		        )
+		    ]]>
+
+		</insert>
+		
+
+		<update id="update" parameterType="io.vitess.model.sqlmap.TmaComboSkuLine">
+	    <![CDATA[
+	        UPDATE t_ma_combo_sku_line SET
+		        QUANTITY = #{quantity,javaType=Integer,jdbcType=INTEGER} ,
+		        REMARK = #{remark,javaType=String,jdbcType=VARCHAR} ,
+		        PRICE = #{price,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        VERSION = #{version,javaType=Integer,jdbcType=INTEGER} ,
+		        COMBO_SKU_ID = #{comboSkuId,javaType=Long,jdbcType=BIGINT} ,
+		        INV_SKU_ID = #{invSkuId,javaType=Long,jdbcType=BIGINT} ,
+		        SHOP_ID = #{shopId,javaType=Long,jdbcType=BIGINT} 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+		</update>
+	   <delete id="delete" parameterType="java.lang.Long">
+	    <![CDATA[
+	        delete from t_ma_combo_sku_line where
+		        ID = #{id} 
+	    ]]>
+	    </delete> 
+	    
+	     <delete id="deleteByIds" parameterType="list">
+	    
+	        delete from t_ma_combo_sku_line 
+	        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>	
+	  
+	    </delete>  
+	         
+	    <select id="findById" parameterType="java.lang.Long" resultMap="TmaComboSkuLineResult" flushCache="false">
+			select <include refid="tmaComboSkuLineColumns" />
+		    <![CDATA[
+			    from t_ma_combo_sku_line 
+		        where 
+		        ID = #{id} 
+		    ]]>
+		</select>	
+		<select id="getByIds" parameterType="list"  resultMap="TmaComboSkuLineResult" flushCache="false">
+			select <include refid="tmaComboSkuLineColumns" />
+			    from t_ma_combo_sku_line 
+		        where id in
+				<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+#{item}				</foreach>					
+		</select>	
+	<sql id="tmaComboSkuLineDynamicWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>
+	       
+				<if test="id!=null">
+					and ID = #{id}
+				</if>
+	       
+				<if test="quantity!=null">
+					and QUANTITY = #{quantity}
+				</if>
+	       
+				<if test="remark!=null">
+					and REMARK = #{remark}
+				</if>
+	       
+				<if test="price!=null">
+					and PRICE = #{price}
+				</if>
+	       
+				<if test="version!=null">
+					and VERSION = #{version}
+				</if>
+	       
+				<if test="comboSkuId!=null">
+					and COMBO_SKU_ID = #{comboSkuId}
+				</if>
+	       
+				<if test="invSkuId!=null">
+					and INV_SKU_ID = #{invSkuId}
+				</if>
+	       
+				<if test="shopId!=null">
+					and SHOP_ID = #{shopId}
+				</if>
+		</where>
+	</sql>
+	
+
+	<select id="getCount" resultType="long">
+        select count(*) from t_ma_combo_sku_line 
+    </select>
+    <select id="findListCountByQueryMap" resultType="long">
+        select count(*) from t_ma_combo_sku_line 
+		<include refid="tmaComboSkuLineDynamicWhere"/>    
+    </select>
+    
+    <select id="findListCountByParam" resultType="long">
+        select count(*) from t_ma_combo_sku_line 
+		<include refid="tmaComboSkuLineDynamicWhere"/>    
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="findListByQueryMapWithPage" resultMap="TmaComboSkuLineResult">
+    	select <include refid="tmaComboSkuLineColumns" />
+	    from t_ma_combo_sku_line 
+		<include refid="tmaComboSkuLineDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByQueryMap" resultMap="TmaComboSkuLineResult">
+    	select <include refid="tmaComboSkuLineColumns" />
+	    from t_ma_combo_sku_line 
+		<include refid="tmaComboSkuLineDynamicWhere"/>
+		
+    </select>
+    
+    <select id="findListByParam" resultMap="TmaComboSkuLineResult">
+    	select <include refid="tmaComboSkuLineColumns" />
+	    from t_ma_combo_sku_line 
+		<include refid="tmaComboSkuLineDynamicWhere"/>
+		
+    </select>
+
+	
+</mapper>
