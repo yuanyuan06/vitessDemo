@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.VmiTimedPromotion;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface VmiTimedPromotionDao extends BaseMapper<VmiTimedPromotion> {
+public interface VmiTimedPromotionDao extends BaseDao<VmiTimedPromotion> {
 
 
     List<VmiTimedPromotion> findVmiPromotionList( int status,  String proType,  Long shopId);

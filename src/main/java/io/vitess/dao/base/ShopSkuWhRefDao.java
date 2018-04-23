@@ -1,13 +1,14 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.ShopSkuWhRefCommand;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.ShopSkuWhRef;
 
 import java.util.Date;
 import java.util.List;
 
-public interface ShopSkuWhRefDao extends BaseMapper<ShopSkuWhRef> {
+public interface ShopSkuWhRefDao extends BaseDao<ShopSkuWhRef> {
 
 	/**
 	 * 

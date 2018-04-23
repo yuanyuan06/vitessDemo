@@ -1,7 +1,7 @@
 package io.vitess.service.so;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+
+
 import io.vitess.common.SuperEntity;
 import lombok.Data;
 
@@ -14,26 +14,26 @@ import java.util.Date;
  *
  */
 @Data
-@TableName("t_ma_location_mapping")
+//@TableName("t_ma_location_mapping")
 public class OrderLocationMapping extends SuperEntity{
 	private static final long serialVersionUID = -1730519845870860416L;
 
-	@TableField("SHOP_ID")
+
 	private Long shopId;
 
-	@TableField("SKU_CODE")
+
 	private String skuCode;
 
-	@TableField("OWNER_CODE")
+
 	private String ownerCode;
 
-	@TableField("LOCATION_CODE")
+
 	private String locationCode;
 
-	@TableField("CREATE_TIME")
+
 	private Date createTime;
 
-	@TableField("BUSINESS_TYPE")
+
 	private Integer businessType;
 	
 }

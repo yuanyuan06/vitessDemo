@@ -1,12 +1,12 @@
 package io.vitess.dao.mq;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqSoLog;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author hh
  * @since 2018-04-19
  */
-public interface MqSoLogDao extends BaseMapper<MqSoLog> {
+public interface MqSoLogDao extends BaseDao<MqSoLog> {
 
     MqSoLog findMqSoLogByIdShopId(@Param("id") Long id, @Param("shopId") Long shopId);
 

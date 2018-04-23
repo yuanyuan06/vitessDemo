@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.SalesOrder;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface SalesOrderDao extends BaseMapper<SalesOrder> {
+public interface SalesOrderDao extends BaseDao<SalesOrder> {
 
     SalesOrder findSoByCodeShopId(String code,  Long shopId);
 

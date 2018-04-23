@@ -1,7 +1,7 @@
 package io.vitess.common;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
+
+
 import io.vitess.enums.WorkFlowNodeType;
 import io.vitess.model.base.WorkFlowNodeActor;
 import io.vitess.model.base.WorkFlowTransition;
@@ -17,7 +17,7 @@ import java.util.List;
  * 
  */
 @Data
-@TableName("t_wf_workflow_node")
+//@TableName("t_wf_workflow_node")
 public abstract class WorkFlowNode extends SuperEntity {
 
     private static final long serialVersionUID = 8905563189130164524L;
@@ -35,7 +35,7 @@ public abstract class WorkFlowNode extends SuperEntity {
     /**
      * 节点编号
      */
-    @TableField("NODE_NO")
+
     protected Integer nodeNo;
 
     /**
@@ -51,7 +51,7 @@ public abstract class WorkFlowNode extends SuperEntity {
     /**
      * 工作流
      */
-    @TableField("WORKFLOW_ID")
+
     protected WorkFlow workFlow;
 
     protected List<WorkFlowNodeActor> actors = new ArrayList<WorkFlowNodeActor>();

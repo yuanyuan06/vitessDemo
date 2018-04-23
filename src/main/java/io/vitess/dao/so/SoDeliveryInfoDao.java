@@ -1,8 +1,9 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.SoDeliveryInfo;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface SoDeliveryInfoDao extends BaseMapper<SoDeliveryInfo> {
+public interface SoDeliveryInfoDao extends BaseDao<SoDeliveryInfo> {
 
     //已不推荐使用，请使用带shopId的
     SoDeliveryInfo findBySoId(Long soId);

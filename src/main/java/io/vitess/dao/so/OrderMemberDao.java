@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.OrderMember;
 
 /**
@@ -11,7 +12,7 @@ import io.vitess.model.so.OrderMember;
  * @author hh
  * @since 2018-04-19
  */
-public interface OrderMemberDao extends BaseMapper<OrderMember> {
+public interface OrderMemberDao extends BaseDao<OrderMember> {
 
     OrderMember findBySoId(Long soId, Long shopId);
 }

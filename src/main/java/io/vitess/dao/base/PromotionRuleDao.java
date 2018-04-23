@@ -1,14 +1,15 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.PromotionRuleCommand;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.PromotionRule;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface PromotionRuleDao extends BaseMapper<PromotionRule> {
+public interface PromotionRuleDao extends BaseDao<PromotionRule> {
 	
     PromotionRule getPromotionRuleLevelIsExits(int ruleLevel,  Long promotionId);
 

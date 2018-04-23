@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.SalesOrderPaymentInfo;
 
 /**
@@ -11,5 +12,5 @@ import io.vitess.model.so.SalesOrderPaymentInfo;
  * @author hh
  * @since 2018-04-19
  */
-public interface SalesOrderPaymentInfoDao extends BaseMapper<SalesOrderPaymentInfo> {
+public interface SalesOrderPaymentInfoDao extends BaseDao<SalesOrderPaymentInfo> {
 }

@@ -1,11 +1,12 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.PromotionGiftSku;
 
 import java.util.List;
 
-public interface PromotionGiftSkuDao extends BaseMapper<PromotionGiftSku> {
+public interface PromotionGiftSkuDao extends BaseDao<PromotionGiftSku> {
 
     List<PromotionGiftSku> findBypromotionGiftId( Long promotionGiftId, Long shopId);
     

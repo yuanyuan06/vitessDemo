@@ -1,8 +1,9 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.SendSoMsg;
 
-public interface SendSoDao extends BaseMapper<SendSoMsg> {
+public interface SendSoDao extends BaseDao<SendSoMsg> {
 	
 }

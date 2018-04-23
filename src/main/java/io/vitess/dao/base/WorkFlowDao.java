@@ -1,13 +1,12 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.common.WorkFlow;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Transactional
-public interface WorkFlowDao extends BaseMapper<WorkFlow> {
+public interface WorkFlowDao extends BaseDao<WorkFlow> {
 
     WorkFlow findByCode(String workFlowCode);
 

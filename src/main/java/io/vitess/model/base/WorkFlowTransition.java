@@ -1,7 +1,5 @@
 package io.vitess.model.base;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import io.vitess.common.WorkFlowNode;
 
@@ -16,22 +14,18 @@ import java.util.Map;
  * @author Benjamin
  * 
  */
-@TableName("t_wf_workflow_transition")
+//@TableName("t_wf_workflow_transition")
 public class WorkFlowTransition extends SuperEntity {
 
     private static final long serialVersionUID = 5117157713902309018L;
 
 
-    @TableField("CODE")
     private String code;
 
-    @TableField("NAME")
     private String name;
 
-    @TableField("IDX_WFT_FROMN")
     private WorkFlowNode fromNode;
 
-    @TableField("IDX_WFT_TON")
     private WorkFlowNode toNode;
     /**
      * 流转上的动作列表定义

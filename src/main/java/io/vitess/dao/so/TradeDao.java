@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.Trade;
 
 /**
@@ -11,7 +12,7 @@ import io.vitess.model.so.Trade;
  * @author hh
  * @since 2018-04-19
  */
-public interface TradeDao extends BaseMapper<Trade> {
+public interface TradeDao extends BaseDao<Trade> {
 
     Trade findByPlatformOrderCode(String platformOrderCode,Long shopId);
 }

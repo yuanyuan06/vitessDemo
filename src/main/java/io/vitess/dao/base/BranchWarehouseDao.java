@@ -1,6 +1,7 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.enums.BranchWarehouseStatus;
 import io.vitess.enums.BranchWarehouseWmsType;
 import io.vitess.service.common.BranchWarehouse;
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author hailiang.jiang
  * @date 2014年10月21日 下午7:59:26
  */
-public interface BranchWarehouseDao extends BaseMapper<BranchWarehouse> {
+public interface BranchWarehouseDao extends BaseDao<BranchWarehouse> {
 	
     public List<BranchWarehouse> findBranchWarehouseListByShopAndBranchWarehouseWmsType(Long shopId, BranchWarehouseWmsType type, BranchWarehouseStatus status);
 

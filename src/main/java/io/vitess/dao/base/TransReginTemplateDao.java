@@ -1,13 +1,14 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.TransReginTemplateCommand;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.TransReginTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
-public interface TransReginTemplateDao extends BaseMapper<TransReginTemplate> {
+public interface TransReginTemplateDao extends BaseDao<TransReginTemplate> {
 	
     /**
      * 查找所有

@@ -1,9 +1,10 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.PackageSkuNum;
 
-public interface PackageSkuNumDao extends BaseMapper<PackageSkuNum> {
+public interface PackageSkuNumDao extends BaseDao<PackageSkuNum> {
 
 	/**
 	 * 根据extCode查询PackageSkuNum

@@ -15,13 +15,13 @@
 
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.ChooseOption;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ChooseOptionDao extends BaseMapper<ChooseOption> {
+public interface ChooseOptionDao extends BaseDao<ChooseOption> {
 
 
     List<ChooseOption> findListByPackageName( String packageName);

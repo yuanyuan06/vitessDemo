@@ -1,6 +1,7 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.WorkTask;
 
 /**
@@ -11,5 +12,5 @@ import io.vitess.model.base.WorkTask;
  * @author hh
  * @since 2018-04-19
  */
-public interface WorkTaskDao extends BaseMapper<WorkTask> {
+public interface WorkTaskDao extends BaseDao<WorkTask> {
 }

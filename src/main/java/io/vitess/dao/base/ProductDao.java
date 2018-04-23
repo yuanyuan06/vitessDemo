@@ -1,6 +1,6 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.Product;
 
 /**
@@ -11,5 +11,5 @@ import io.vitess.model.base.Product;
  * @author hh
  * @since 2018-04-19
  */
-public interface ProductDao extends BaseMapper<Product> {
+public interface ProductDao extends BaseDao<Product> {
 }

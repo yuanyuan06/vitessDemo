@@ -1,10 +1,9 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import io.vitess.model.mq.TbTrade;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import io.vitess.common.BaseDao;
+import io.vitess.model.mq.TbTrade;
+
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface TbTradeDao extends BaseMapper<TbTrade> {
+public interface TbTradeDao extends BaseDao<TbTrade> {
 
     List<TbTrade> findTbTradeNotSync();
 

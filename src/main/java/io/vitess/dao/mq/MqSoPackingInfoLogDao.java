@@ -1,6 +1,7 @@
 package io.vitess.dao.mq;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.enums.MqSoPackingInfoLevel;
 import io.vitess.model.mq.MqSoPackingInfoLog;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface MqSoPackingInfoLogDao extends BaseMapper<MqSoPackingInfoLog> {
+public interface MqSoPackingInfoLogDao extends BaseDao<MqSoPackingInfoLog> {
 
 
     List<MqSoPackingInfoLog> findBySoLineLogIdAndLevel(Long soLineLogId, MqSoPackingInfoLevel level, Long shopId);

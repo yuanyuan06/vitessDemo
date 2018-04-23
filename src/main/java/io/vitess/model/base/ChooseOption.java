@@ -15,8 +15,6 @@
 
 package io.vitess.model.base;
 
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
 import io.vitess.common.SuperEntity;
 import lombok.Data;
 
@@ -32,36 +30,27 @@ import lombok.Data;
  */
 
 @Data
-@TableName("t_sys_choose_option")
+//@TableName("t_sys_choose_option")
 public class ChooseOption extends SuperEntity{
 
     private static final long serialVersionUID = -8939064652943346455L;
 
-    @TableField("CATEGORY_CODE")
     private String categoryCode;
 
-    @TableField("CATEGORY_NAME")
     private String categoryName;
 
-    @TableField("PACKAGE_NAME")
     private String packageName;
 
-    @TableField("SORT_NO")
     private int sortNo;
 
-    @TableField("OPTION_KEY")
     private String optionKey;
 
-    @TableField("OPTION_VALUE")
     private String optionValue;
 
-    @TableField("IS_AVAILABLE")
     private Boolean isAvailable = true;
 
-    @TableField("CATEGORY_AVAILABLE")
     private Boolean categoryAvailable;
 
-    @TableField("OPTION_DESCRIPTION")
     private String optionDescription;
 
 }

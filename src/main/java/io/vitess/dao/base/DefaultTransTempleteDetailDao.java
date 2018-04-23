@@ -1,9 +1,9 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.common.DefaultTransTempleteDetailCommand;
 import io.vitess.model.base.DefaultTransTempleteDetail;
-import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface DefaultTransTempleteDetailDao extends BaseMapper<DefaultTransTempleteDetail> {
+public interface DefaultTransTempleteDetailDao extends BaseDao<DefaultTransTempleteDetail> {
 
     List<DefaultTransTempleteDetailCommand> findDTTDByTempId(Long tempId);
 

@@ -1,6 +1,7 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.enums.SpecialSkuType;
 import io.vitess.model.base.SpecialSku;
 
@@ -14,7 +15,7 @@ import io.vitess.model.base.SpecialSku;
  * @version: v1.0.0
  * @see
  */
-public interface SpecialSkuDao extends BaseMapper<SpecialSku> {
+public interface SpecialSkuDao extends BaseDao<SpecialSku> {
 
 	SpecialSku findSpecialSku(Long shopId, String extCode, SpecialSkuType skuType);
 

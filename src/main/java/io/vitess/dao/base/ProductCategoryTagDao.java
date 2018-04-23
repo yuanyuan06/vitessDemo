@@ -1,12 +1,13 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.ProductCategoryTag;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.util.List;
 
-public interface ProductCategoryTagDao extends BaseMapper<ProductCategoryTag> {
+public interface ProductCategoryTagDao extends BaseDao<ProductCategoryTag> {
     
     ProductCategoryTag getPromotionActivityByName(String name,  Long shopId);
 

@@ -1,11 +1,12 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.ServiceInstallCompany;
 
 import java.util.List;
 
-public interface ServiceInstallCompanyDao extends BaseMapper<ServiceInstallCompany> {
+public interface ServiceInstallCompanyDao extends BaseDao<ServiceInstallCompany> {
     
 	public List<ServiceInstallCompany> findServiceInstallCompanyList( Long shopId,  String province,  String city,  String district);
 	

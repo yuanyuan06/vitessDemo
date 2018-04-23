@@ -1,9 +1,10 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.service.so.OrderLocationMapping;
 
-public interface OrderLocationMappingDao extends BaseMapper<OrderLocationMapping> {
+public interface OrderLocationMappingDao extends BaseDao<OrderLocationMapping> {
 	
 	OrderLocationMapping findByBusinessType(Long shopId,  String skuCode,  Integer businessType);
 

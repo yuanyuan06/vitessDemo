@@ -15,14 +15,15 @@
 
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.District;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface DistrictDao extends BaseMapper<District> {
+public interface DistrictDao extends BaseDao<District> {
 
     List<District> findCountry();
 

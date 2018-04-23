@@ -1,14 +1,15 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.PromotionGiftCommand;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.PromotionGift;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Transactional
-public interface PromotionGiftDao extends BaseMapper<PromotionGift> {
+public interface PromotionGiftDao extends BaseDao<PromotionGift> {
 
     List<PromotionGiftCommand> findGiftByRuleID( long RuleID);
 

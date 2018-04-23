@@ -1,6 +1,7 @@
 package io.vitess.dao.so;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.so.SoWfTask;
 
 /**
@@ -11,5 +12,5 @@ import io.vitess.model.so.SoWfTask;
  * @author hh
  * @since 2018-04-19
  */
-public interface SoWfTaskDao extends BaseMapper<SoWfTask> {
+public interface SoWfTaskDao extends BaseDao<SoWfTask> {
 }

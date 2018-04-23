@@ -1,6 +1,7 @@
 package io.vitess.dao.mq;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqSoPromotionLog;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author hh
  * @since 2018-04-19
  */
-public interface MqSoPromotionLogDao extends BaseMapper<MqSoPromotionLog> {
+public interface MqSoPromotionLogDao extends BaseDao<MqSoPromotionLog> {
 
     List<MqSoPromotionLog> findBySoLogIdAndType(Long soLogId, Integer scopeType, Long shopId);
 

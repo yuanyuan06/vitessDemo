@@ -1,6 +1,7 @@
 package io.vitess.dao.mq;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqPlatformMemberLog;
 
 /**
@@ -11,7 +12,7 @@ import io.vitess.model.mq.MqPlatformMemberLog;
  * @author hh
  * @since 2018-04-19
  */
-public interface MqPlatformMemberLogDao extends BaseMapper<MqPlatformMemberLog> {
+public interface MqPlatformMemberLogDao extends BaseDao<MqPlatformMemberLog> {
 
     MqPlatformMemberLog findMqPlatformMemberLog(Long id, Long shopId);
 }

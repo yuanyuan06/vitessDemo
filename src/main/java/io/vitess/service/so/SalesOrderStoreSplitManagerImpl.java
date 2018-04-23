@@ -2,7 +2,7 @@ package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
-import io.vitess.command.ShoOutLetInfo;
+import io.vitess.model.base.ShoOutLetInfo;
 import io.vitess.command.WmsConstants;
 import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;

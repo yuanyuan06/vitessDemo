@@ -1,6 +1,7 @@
 package io.vitess.dao.mq;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqSoServiceLineLog;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface MqSoServiceLineLogDao extends BaseMapper<MqSoServiceLineLog> {
+public interface MqSoServiceLineLogDao extends BaseDao<MqSoServiceLineLog> {
 
 
     public List<MqSoServiceLineLog> findMqSoServiceLineLogList(Long soLogId, Long shopId);

@@ -1,7 +1,8 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
 import io.vitess.command.PromotionActivityCommand2;
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.PromotionActivity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional
-public interface PromotionActivityDao extends BaseMapper<PromotionActivity> {
+public interface PromotionActivityDao extends BaseDao<PromotionActivity> {
 
     PromotionActivity findPromotionActivityByName(String name, Long shopId);
 

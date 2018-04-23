@@ -1,6 +1,7 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import io.vitess.common.BaseDao;
 import io.vitess.model.base.Transportator;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @author hh
  * @since 2018-04-19
  */
-public interface TransportatorDao extends BaseMapper<Transportator> {
+public interface TransportatorDao extends BaseDao<Transportator> {
 
     List<Transportator> findAll();
 

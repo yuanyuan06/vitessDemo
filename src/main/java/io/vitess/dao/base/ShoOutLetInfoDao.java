@@ -1,9 +1,10 @@
 package io.vitess.dao.base;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import io.vitess.command.ShoOutLetInfo;
 
-public interface ShoOutLetInfoDao extends BaseMapper<ShoOutLetInfo> {
+import io.vitess.common.BaseDao;
+import io.vitess.model.base.ShoOutLetInfo;
+
+public interface ShoOutLetInfoDao extends BaseDao<ShoOutLetInfo> {
 
 	ShoOutLetInfo queryStore(String storeId, Long shopId);
 
