@@ -13,7 +13,7 @@
  * 
  */
 
-package io.vitess.model.mq;
+package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
 

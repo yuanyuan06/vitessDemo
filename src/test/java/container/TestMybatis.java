@@ -1,6 +1,10 @@
 package container;
 
+import com.alibaba.fastjson.JSON;
+import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.so.TbTradeDao;
+import io.vitess.model.base.CompanyShop;
+import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.mq.TbTrade;
 import io.vitess.service.common.CompanyShopManager;
 import io.vitess.service.mq.TbTradeParsePorxyManager;
@@ -11,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author YSH4807
@@ -22,11 +27,13 @@ import java.util.Date;
 public class TestMybatis {
 
     @Autowired
-    private TbTradeDao tbTrade;
+    private TbTradeDao tbTradeDao;
     @Autowired
     private TbTradeParsePorxyManager tbTradeParsePorxyManager;
     @Autowired
     private CompanyShopManager shopManager;
+    @Autowired
+    private CompanyShopDao companyShopDao;
 
     @Test
     public void testInsertTrade(){
@@ -34,7 +41,12 @@ public class TestMybatis {
         trade.setId(1L);
         trade.setContent("");
         trade.setFullInfoGetTime(new Date());
-        tbTrade.insert(trade);
+        tbTradeDao.insert(trade);
+    }
+
+    @Test
+    public void tt(){
+        shopManager.findShopInfoByShopId(1L);
     }
 
     @Test
@@ -43,7 +55,21 @@ public class TestMybatis {
     }
 
     @Test
-    public void tt(){
-        shopManager.findShopInfoByShopId(1L);
+    public void testShop(){
+        CompanyShop byId = companyShopDao.findById(6111L);
+        System.out.println(byId);
+    }
+
+    @Test
+    public void getTrade(){
+        List<TbTrade> tbTradeNotSync = tbTradeDao.findTbTradeNotSync();
+        System.out.println(JSON.toJSONString(tbTradeNotSync));
+    }
+
+    @Test
+    public void te(){
+        MqSoLog log = new MqSoLog();
+//        log.getIsLgtype();
+//        log.getIsLgType();
     }
 }

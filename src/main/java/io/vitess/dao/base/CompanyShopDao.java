@@ -2,7 +2,7 @@ package io.vitess.dao.base;
 
 
 import io.vitess.common.BaseDao;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 
 import java.util.List;
 

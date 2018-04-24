@@ -4,7 +4,7 @@ import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.dao.mq.MqSoPromotionLogDao;
 import io.vitess.dao.so.PlatformPromotionDao;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.mq.MqSoPromotionLog;
 import io.vitess.model.so.PlatformPromotion;

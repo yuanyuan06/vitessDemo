@@ -2,7 +2,7 @@ package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.service.BaseManager;
 

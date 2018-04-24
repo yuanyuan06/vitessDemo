@@ -13,6 +13,7 @@ import io.vitess.constants.PlatformConstants;
 import io.vitess.dao.mq.*;
 import io.vitess.enums.*;
 import io.vitess.exception.SoGetTradeException;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.*;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.common.CompanyShopManager;
@@ -155,7 +156,7 @@ public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSo
 		// //淘宝暂时无此字段信息
 		soLog.setInvoiceTitle(tbTrade.getInvoiceName());
 		soLog.setInvoiceKind(E_INVOICE_KIND.equals(tbTrade.getInvoiceKind()));
-		soLog.setAcutalTransFee(new BigDecimal(tbTrade.getPostFee()));
+		soLog.setActualTransFee(new BigDecimal(tbTrade.getPostFee()));
 		//zhiyong.shi 交易头新增全渠道标示
 		if(StringUtils.hasText(tbTrade.getOmnichannelParam())){
 			soLog.setOmnichannelParam(tbTrade.getOmnichannelParam().substring(0, 1000));
@@ -168,7 +169,7 @@ public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSo
 		soLog.setExtVc2(pccAf);
 		soLog.setSellerMemo(tbTrade.getSellerMemo());
 		soLog.setSource(tbTrade.getTradeFrom()); // 订单平台来源
-		soLog.setIsLgtype(tbTrade.getIsLgtype());
+		soLog.setIsLgType(tbTrade.getIsLgtype());
 		soLog.setPlatformOrderType(tbTrade.getType());
 		soLog.setPlatformType(PlatformType.TAOBAO_PLATFORM.getValue());
 		soLog.setPlatformOrderStatus(tbTrade.getStatus());

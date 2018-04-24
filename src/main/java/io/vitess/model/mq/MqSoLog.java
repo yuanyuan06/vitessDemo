@@ -7,8 +7,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Data
 //@TableName("t_mq_so_log")
+@Data
 public class MqSoLog extends SuperEntity {
     private static final long serialVersionUID = 6640950308239023560L;
 
@@ -96,7 +96,7 @@ public class MqSoLog extends SuperEntity {
     /**
      * 实际运费
      */
-    private BigDecimal acutalTransFee;
+    private BigDecimal actualTransFee;
 
     /**
      * 商品总金额
@@ -221,7 +221,7 @@ public class MqSoLog extends SuperEntity {
      * taobao订单属性 是否保障速递 如果为true，则为保障速递订单，使用线下联系发货接口发货
      * 如果未false，则该订单非保障速递，根据卖家设置的订单流转规则可使用物流宝或者常规物流发货
      */
-    private Boolean isLgtype;
+    private Boolean isLgType;
 
     /**
      * 扩展字段1 son格式，若商城有某些特有的字段信息需要传送，以json格式通过该字段传送
@@ -374,5 +374,17 @@ public class MqSoLog extends SuperEntity {
      * 分阶段付款的已付金额（万人团订单已付金额）
      */
     private BigDecimal stepPaidFee;
+
+//     ---------------------------------------------------没什么卵用的字段 --------------------------------------------
+    private Integer isPrezzie;
+
+    private Long omsShopId;
+
+    private Long  platformLineId;
+
+    private String allocationType;
+
+    private Integer businessType;
+
 
 }

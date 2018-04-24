@@ -3,7 +3,7 @@
 <mapper namespace="io.vitess.dao.base.CompanyShopDao">
 
 
-    <resultMap id="TmaTbShopInfoResult" type="io.vitess.model.mq.CompanyShop">
+    <resultMap id="TmaTbShopInfoResult" type="io.vitess.model.base.CompanyShop">
     </resultMap>
 
     <!-- 用于select查询公用抽取的列 -->
@@ -185,7 +185,7 @@
 	        	IS_DIRECT_OMS as isDirectOms
     </sql>
 
-    <select id="findShopListGeneralOrder" resultType="io.vitess.model.mq.CompanyShop">
+    <select id="findShopListGeneralOrder" resultType="io.vitess.model.base.CompanyShop">
             SELECT
                 info.id,
                 info.inner_shop_code,
@@ -203,7 +203,7 @@
     </select>
 
 
-    <select id="getByOuId" resultType="io.vitess.model.mq.CompanyShop"></select>
+    <select id="getByOuId" resultType="io.vitess.model.base.CompanyShop"></select>
 
 
     <select id="findById" parameterType="java.lang.Long" resultMap="TmaTbShopInfoResult" flushCache="false">
@@ -216,7 +216,7 @@
     </select>
 
 
-    <insert id="insert" parameterType="io.vitess.model.mq.CompanyShop" flushCache="true">
+    <insert id="insert" parameterType="io.vitess.model.base.CompanyShop" flushCache="true">
 		        INSERT INTO
 		        t_ma_tb_shop_info (
 		        id,

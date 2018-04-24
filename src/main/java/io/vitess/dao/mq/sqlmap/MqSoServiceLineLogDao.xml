@@ -9,7 +9,7 @@
     <sql id="tmqSoServiceLineLogColumns">
         <![CDATA[
 	        	ID as id,
-	        	SO_LOG_ID as soLogId,
+	        	SO_LOG_ID as soLog,
 	        	PLATFORM_LINE_ID as platformLineId,
 	        	SERVICE_ID as serviceId,
 	        	QTY as qty,
@@ -42,7 +42,7 @@
 		        	SHOP_ID
 		        ) VALUES (
 		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
-		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLog,javaType=Long,jdbcType=BIGINT} ,
 		        	#{platformLineId,javaType=String,jdbcType=VARCHAR} ,
 		        	#{serviceId,javaType=String,jdbcType=VARCHAR} ,
 		        	#{qty,javaType=Integer,jdbcType=INTEGER} ,
@@ -54,7 +54,6 @@
 		        	#{shopId,javaType=Long,jdbcType=BIGINT}
 		        )
 		    ]]>
-
     </insert>
 
 

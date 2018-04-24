@@ -2,7 +2,6 @@ package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
 import io.vitess.enums.*;
-import io.vitess.model.mq.CompanyShop;
 import lombok.Data;
 
 import java.util.Date;

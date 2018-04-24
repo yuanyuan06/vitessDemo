@@ -3,8 +3,8 @@ package io.vitess.dao.so;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.mq.TbTrade;
+import org.apache.ibatis.annotations.Param;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,6 +19,6 @@ public interface TbTradeDao extends BaseDao<TbTrade> {
 
     List<TbTrade> findTbTradeNotSync();
 
-    void updateTbTrade(Long id,Integer syncStatus);
+    void updateTbTrade(@Param("id") Long id, @Param("syncStatus") Integer syncStatus);
 
 }

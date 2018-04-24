@@ -12,7 +12,7 @@ import io.vitess.enums.PromotionType;
 import io.vitess.model.base.Product;
 import io.vitess.model.base.PromotionActivity;
 import io.vitess.model.base.Sku;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;
 import io.vitess.model.so.SoPromotionApplyLog;

@@ -4,7 +4,7 @@ import io.vitess.command.SoSuspend;
 import io.vitess.enums.SoSpecialType;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.model.base.WorkTask;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.OrderMember;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;

@@ -16,7 +16,7 @@
 	        	qty as qty,
 	        	unit_price as unitPrice,
 	        	total_actual as totalActual,
-	        	so_log_id as soLogId,
+	        	so_log_id as soLog,
 	        	sku_combo_remark as skuComboRemark,
 	        	extention_code as extentionCode,
 	        	list_price as listPrice,
@@ -50,7 +50,7 @@
 	        	TARGET_TYPE as targetType,
 	        	ALLOCATION_CODE as allocationCode,
 	        	FQG_NUM as fqgNum,
-	        	IS_FQG_S_FEE as isFqgSfee,
+	        	IS_FQG_S_FEE as isFqgSFee,
 	        	ALLOCATION_TYPE as allocationType,
 	        	PLATFORM_SKU_ID as platformSkuId,
 	        	COUPON_FEE as couponFee
@@ -115,7 +115,7 @@
 		        	#{qty,javaType=Integer,jdbcType=INTEGER} ,
 		        	#{unitPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
 		        	#{totalActual,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
-		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLog,javaType=Long,jdbcType=BIGINT} ,
 		        	#{skuComboRemark,javaType=String,jdbcType=VARCHAR} ,
 		        	#{extentionCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{listPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
@@ -149,7 +149,7 @@
 		        	#{targetType,javaType=String,jdbcType=VARCHAR} ,
 		        	#{allocationCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{fqgNum,javaType=Integer,jdbcType=INTEGER} ,
-		        	#{isFqgSfee,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isFqgSFee,javaType=Integer,jdbcType=INTEGER} ,
 		        	#{allocationType,javaType=String,jdbcType=VARCHAR} ,
 		        	#{platformSkuId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{couponFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL}
@@ -195,8 +195,8 @@
 	       		 from
 	       		 	t_mq_so_line_log t
                 <where>
-                    <if test="soLogId != null and soLogId != ''">
-                         and t.SO_LOG_ID=#{soLogId}
+                    <if test="soLog != null and soLog != ''">
+                         and t.SO_LOG_ID=#{soLog}
                     </if>
                     <if test="shopId != null and shopId != ''">
                          AND t.SHOP_ID = #{shopId}

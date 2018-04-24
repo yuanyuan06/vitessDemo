@@ -5,7 +5,7 @@ import io.vitess.common.User;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.enums.*;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import lombok.Data;
 
 import java.math.BigDecimal;

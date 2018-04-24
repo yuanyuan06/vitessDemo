@@ -1,10 +1,9 @@
-package io.vitess.model.mq;
+package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.enums.CompanyShopManagerMode;
 import io.vitess.enums.SkuSplitType;
-import io.vitess.model.base.DefaultTransTemplete;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
 package io.vitess.service.common;
 
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 
 /**
  * 店铺信息

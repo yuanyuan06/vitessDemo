@@ -305,7 +305,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			sumTotalDiscountOfLine.add(soLineCommand.getLineDiscount());
 		}
 
-		soCmd.setTransFee(soLog.getAcutalTransFee());
+		soCmd.setTransFee(soLog.getActualTransFee());
 		soCmd.setAmountBeforeDiscount(sumTotalAmountOfLine);
 		soCmd.setAmountAfterDiscount(soLog.getTotalActual());
 		soCmd.setDiscountTotal(soCmd.getAmountBeforeDiscount().subtract(soCmd.getAmountAfterDiscount()));

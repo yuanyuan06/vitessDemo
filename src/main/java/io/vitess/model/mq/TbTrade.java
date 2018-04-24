@@ -16,7 +16,6 @@ public class TbTrade extends SuperEntity{
 
     private static final long serialVersionUID = -9099901955418076253L;
 
-    private Long id;
     private Long tid;
     /**
      * 调用淘宝API: taobao.trade.fullinfo.get 所得到的response body字符串 内容为该Trade对应的JSON字符串

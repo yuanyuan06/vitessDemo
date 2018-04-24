@@ -88,4 +88,32 @@ public class MqPlatformMemberLog extends SuperEntity {
     //店铺ID
     private Long shopId;
 
+    // ---------------------------------------- 没什么卵用的字段 ---------------------------------------------------
+    private String receiver;
+
+    private String contactPerson;
+
+    private String receiverPhone;
+
+    private String receiverMobile;
+
+    private String userName;
+
+    private String memberEmail;
+
+    private String lpCode;
+
+    private String soLog;
+
+    private String givenName;
+
+    private String familyName;
+
+    private Integer transServiceType;
+
+    private Integer transTimeType;
+
+    private String remark;
+
+    private String town;
 }

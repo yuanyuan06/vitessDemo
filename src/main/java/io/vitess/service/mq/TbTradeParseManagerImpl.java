@@ -8,7 +8,7 @@ import io.vitess.dao.so.PlatformSoLogDao;
 import io.vitess.dao.so.TbTradeDao;
 import io.vitess.exception.SoGetTradeException;
 import io.vitess.model.mq.MqSoLog;
-import io.vitess.model.mq.PlatformSoLog;
+import io.vitess.model.base.PlatformSoLog;
 import io.vitess.model.mq.TbTrade;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.so.ShopWhDao">
     <select id="findByShopIdAndProvince" resultType="io.vitess.common.ShopWhCommand"></select>
-    <select id="findShopWhByShopIdAndWhCode" resultType="io.vitess.model.mq.ShopWh"></select>
-    <select id="findDefaultByShopId" resultType="io.vitess.model.mq.ShopWh"></select>
-    <select id="findPlatformDefaultWhByShopId" resultType="io.vitess.model.mq.ShopWh"></select>
-    <select id="findShopWhList" resultType="io.vitess.model.mq.ShopWh"></select>
+    <select id="findShopWhByShopIdAndWhCode" resultType="io.vitess.model.base.ShopWh"></select>
+    <select id="findDefaultByShopId" resultType="io.vitess.model.base.ShopWh"></select>
+    <select id="findPlatformDefaultWhByShopId" resultType="io.vitess.model.base.ShopWh"></select>
+    <select id="findShopWhList" resultType="io.vitess.model.base.ShopWh"></select>
 </mapper>

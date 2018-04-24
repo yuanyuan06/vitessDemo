@@ -1,7 +1,6 @@
 package io.vitess.service.common;
 
-import io.vitess.model.mq.ShopWh;
-import io.vitess.model.so.SalesOrder;
+import io.vitess.model.base.ShopWh;
 import io.vitess.service.BaseManager;
 import io.vitess.service.BusinessException;
 

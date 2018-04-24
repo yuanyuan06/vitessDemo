@@ -114,4 +114,11 @@ public class MqDeliveryInfoLog extends SuperEntity {
      */
     private Long soLog;
 
+
+    // 没啥卵用的字段
+    private String remark;
+
+    private String town;
+
+
 }

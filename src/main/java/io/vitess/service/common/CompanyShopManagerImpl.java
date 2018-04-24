@@ -1,7 +1,7 @@
 package io.vitess.service.common;
 
 import io.vitess.dao.base.CompanyShopDao;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

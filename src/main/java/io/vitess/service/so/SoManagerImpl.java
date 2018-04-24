@@ -9,7 +9,7 @@ import io.vitess.enums.*;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.exception.WrongCurrentTaskNodeException;
 import io.vitess.model.base.WorkTask;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.OrderMember;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;

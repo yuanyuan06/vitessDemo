@@ -5,7 +5,7 @@ import io.vitess.command.SoServiceLineCommand;
 import io.vitess.dao.so.SoServiceLineDao;
 import io.vitess.enums.SoServiceType;
 import io.vitess.model.base.Transportator;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.mq.MqSoServiceLineLog;
 import io.vitess.model.so.ServiceInstallCompany;

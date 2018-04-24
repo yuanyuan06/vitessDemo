@@ -6,7 +6,7 @@ import io.vitess.common.User;
 import io.vitess.enums.SalesMode;
 import io.vitess.enums.SalesOrderType;
 import io.vitess.model.base.SkuAppointment;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.service.BaseManager;
 

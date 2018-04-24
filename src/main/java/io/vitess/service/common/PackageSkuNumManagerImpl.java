@@ -2,7 +2,7 @@ package io.vitess.service.common;
 
 import io.vitess.dao.base.PackageSkuNumDao;
 import io.vitess.model.base.PackageSkuNum;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -42,12 +42,47 @@
 
 
 
-    <update id="updateTbTrade"></update>
+    <update id="updateTbTrade">
+		UPDATE t_top_tb_trade t
+			SET t.CONFIRM_TIME = SYSDATE(),
+			 t.SYNC_STATUS = #{syncStatus},
+			 t.SYNC_COUNTER = IFNULL(t.SYNC_COUNTER, 0) + 1
+			WHERE
+				t.ID = #{id}
+	</update>
 
 
     <select id="findTbTradeNotSync" resultType="io.vitess.model.mq.TbTrade">
 		SELECT
-		t.*
+			t.ID as id,
+			t.CONFIRM_TIME as confirmTime,
+			t.CONTENT as content,
+			t.COUNTER as counter,
+			t.CREATE_TIME as createTime,
+			t.DESCRIPTION as description,
+			t.ERROR_CODE as errorCode,
+			t.ERROR_MESSAGE as errorMessage,
+			t.FULLINFO_GET_TIME as fullinfoGetTime,
+			t.FULLINFO_STATUS as fullinfoStatus,
+			t.JDP_MODIFIED as jdpModified,
+			t.LAST_CALL_TIME as lastCallTime,
+			t.LOAD_TIME as loadTime,
+			t.NEXT_RUN_TIME as nextRunTime,
+			t.NOTIFY_TRADE_STATUS as notifyTradeStatus,
+			t.SHOP_ID as shopId,
+			t.STATUS as status,
+			t.STEP_TRADE_STATUS as stepTradeStatus,
+			t.SYNC_COUNTER as syncCounter,
+			t.SYNC_STATUS as syncStatus,
+			t.SYNC_TIME as syncTime,
+			t.TID as tid,
+			t.TRADE_CREATE_TIME as tradeCreateTime,
+			t.TRADE_PAY_TIME as tradePayTime,
+			t.TRADE_TYPE as tradeType,
+			t.VERSION as version,
+			t.OMS_SHOP_ID as omsShopId,
+			t.NO_PAY_STATUS as noPayStatus,
+			t.NO_PAY_PROCESS_TIME as noPayProcessTime
 		FROM
 		t_top_tb_trade t,
 		t_ma_tb_shop_info i

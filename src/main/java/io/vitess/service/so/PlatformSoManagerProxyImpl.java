@@ -7,7 +7,7 @@ import io.vitess.dao.mq.MqSoLogDao;
 import io.vitess.enums.MqSoLogStatus;
 import io.vitess.enums.PlatformType;
 import io.vitess.enums.SalesOrderType;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;

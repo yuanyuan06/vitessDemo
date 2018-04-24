@@ -1,7 +1,7 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import lombok.Data;
 
 import java.util.Date;

@@ -167,4 +167,28 @@ public class MqSoLineLog extends SuperEntity {
     private Boolean isFqgSFee;
   //------------- add by chenping 20170629 end
 
+
+//    没啥卵用的垃圾字段
+    private String jmskuCode;
+
+    private String skuComboRemark;
+
+    private String couponCode;
+
+    private BigDecimal lineTotal;
+
+    private BigDecimal lineUnitPrice;
+
+    private BigDecimal finalTotalActual;
+
+    private BigDecimal finalUnitPrice;
+
+    private BigDecimal totalPointUsed;
+
+    private String allocationType;
+
+    private Long platformSkuId;
+
+    private BigDecimal couponFee;
 }
+

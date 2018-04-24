@@ -2,7 +2,7 @@ package io.vitess.service.common;
 
 import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.model.base.ShopSkuWhRef;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.service.BaseManager;
 import io.vitess.service.BusinessException;
 

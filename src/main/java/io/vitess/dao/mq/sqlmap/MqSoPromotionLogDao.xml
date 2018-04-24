@@ -19,8 +19,8 @@
 	        	GIFT_ITEM_NUM as giftItemNum,
 	        	PLATFORM_ORDER_CODE as platformOrderCode,
 	        	VERSION as version,
-	        	SO_LINE_LOG_ID as soLineLogId,
-	        	SO_LOG_ID as soLogId,
+	        	SO_LINE_LOG_ID as soLineLog,
+	        	SO_LOG_ID as soLog,
 	        	DESCRIPTION as description,
 	        	PROMOTION_ID as promotionId,
 	        	SCOPE_TYPE as scopeType,
@@ -60,8 +60,8 @@
 		        	#{giftItemNum,javaType=Integer,jdbcType=INTEGER} ,
 		        	#{platformOrderCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
-		        	#{soLineLogId,javaType=Long,jdbcType=BIGINT} ,
-		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLineLog,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLog,javaType=Long,jdbcType=BIGINT} ,
 		        	#{description,javaType=String,jdbcType=VARCHAR} ,
 		        	#{promotionId,javaType=String,jdbcType=VARCHAR} ,
 		        	#{scopeType,javaType=Integer,jdbcType=INTEGER} ,
@@ -74,7 +74,7 @@
     <select id="findBySoLogIdAndType" resultType="io.vitess.model.mq.MqSoPromotionLog">
         select *
         from t_mq_so_promotion_log as ba
-        where ba.SO_LOG = #{soLogId} and ba.SCOPE_TYPE = #{scopeType} and ba.shop_Id = #{SHOP_ID}
+        where ba.SO_LOG = #{soLog} and ba.SCOPE_TYPE = #{scopeType} and ba.shop_Id = #{SHOP_ID}
     </select>
 
     <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoPromotionLogResult" flushCache="false">

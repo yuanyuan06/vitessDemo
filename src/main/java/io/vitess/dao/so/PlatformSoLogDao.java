@@ -2,7 +2,7 @@ package io.vitess.dao.so;
 
 
 import io.vitess.common.BaseDao;
-import io.vitess.model.mq.PlatformSoLog;
+import io.vitess.model.base.PlatformSoLog;
 
 /**
  * <p>

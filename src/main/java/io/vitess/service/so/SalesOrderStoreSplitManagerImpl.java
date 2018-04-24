@@ -9,7 +9,7 @@ import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.dao.base.ShoOutLetInfoDao;
 import io.vitess.model.base.Sku;
-import io.vitess.model.mq.CompanyShop;
+import io.vitess.model.base.CompanyShop;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;
 import io.vitess.service.BaseManagerImpl;

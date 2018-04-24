@@ -3,7 +3,7 @@ package io.vitess.dao.so;
 
 import io.vitess.common.BaseDao;
 import io.vitess.common.ShopWhCommand;
-import io.vitess.model.mq.ShopWh;
+import io.vitess.model.base.ShopWh;
 
 import java.util.List;
 

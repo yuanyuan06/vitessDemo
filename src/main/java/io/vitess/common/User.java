@@ -17,7 +17,7 @@ package io.vitess.common;
 
 
 
-import io.vitess.model.mq.OperationUnit;
+import io.vitess.model.base.OperationUnit;
 
 import java.util.Date;
 

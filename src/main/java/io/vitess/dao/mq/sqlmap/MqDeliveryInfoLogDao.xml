@@ -17,13 +17,13 @@
 	        	city as city,
 	        	district as district,
 	        	address as address,
-	        	zipcode as zipcode,
+	        	zipcode as zipCode,
 	        	receiver_phone as receiverPhone,
 	        	receiver_mobile as receiverMobile,
 	        	user_name as userName,
-	        	membre_email as membreEmail,
+	        	membre_email as memberEmail,
 	        	lp_code as lpCode,
-	        	so_log_id as soLogId,
+	        	so_log_id as soLog,
 	        	given_name as givenName,
 	        	family_name as familyName,
 	        	trans_service_type as transServiceType,
@@ -55,8 +55,8 @@
 			FROM
 				t_mq_delivery_info_log t
 			<where>
-                <if test="soLogId != null and soLogId != ''">
-				  and t.SO_LOG_ID = #{soLogId}
+                <if test="soLog != null and soLog != ''">
+				  and t.SO_LOG_ID = #{soLog}
                 </if>
 			    <if test="shopId != null and shopId != ''">
                   AND t.SHOP_ID = #{shopId}
@@ -101,13 +101,13 @@
 		        	#{city,javaType=String,jdbcType=VARCHAR} ,
 		        	#{district,javaType=String,jdbcType=VARCHAR} ,
 		        	#{address,javaType=String,jdbcType=VARCHAR} ,
-		        	#{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
 		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
 		        	#{userName,javaType=String,jdbcType=VARCHAR} ,
-		        	#{membreEmail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{memberEmail,javaType=String,jdbcType=VARCHAR} ,
 		        	#{lpCode,javaType=String,jdbcType=VARCHAR} ,
-		        	#{soLogId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{soLog,javaType=Long,jdbcType=BIGINT} ,
 		        	#{givenName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{familyName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{transServiceType,javaType=Integer,jdbcType=INTEGER} ,

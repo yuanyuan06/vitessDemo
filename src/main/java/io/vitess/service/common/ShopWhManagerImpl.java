@@ -2,7 +2,7 @@ package io.vitess.service.common;
 
 import io.vitess.common.ErrorCode;
 import io.vitess.dao.so.ShopWhDao;
-import io.vitess.model.mq.ShopWh;
+import io.vitess.model.base.ShopWh;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
