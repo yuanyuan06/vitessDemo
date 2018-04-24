@@ -28,7 +28,6 @@ import java.util.*;
  *
  */
 @Service("salesOrderStoreSplitManager")
-@Transactional
 public class SalesOrderStoreSplitManagerImpl extends BaseManagerImpl implements SalesOrderStoreSplitManager {
 
 	private static final long serialVersionUID = -3195602524317398894L;

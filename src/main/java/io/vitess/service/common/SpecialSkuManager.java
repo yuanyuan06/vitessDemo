@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @version: v1.0.0
  * @see
  */
-@Transactional(propagation= Propagation.REQUIRED, readOnly=true)
 public interface SpecialSkuManager extends BaseManager {
 	
 	/**

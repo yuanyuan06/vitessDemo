@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -44,6 +45,7 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
      * 淘宝创单
      */
     @Override
+    @Transactional
     public void createTaobaoSo() {
         //店铺的创单方式 1：独立线程；0：公共线程；fanht
         //List<CompanyShopCommand> shopIdsList = companyShopDao.findAllShopList();

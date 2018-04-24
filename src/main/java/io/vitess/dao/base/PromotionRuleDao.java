@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 public interface PromotionRuleDao extends BaseDao<PromotionRule> {
 	
     PromotionRule getPromotionRuleLevelIsExits(int ruleLevel,  Long promotionId);

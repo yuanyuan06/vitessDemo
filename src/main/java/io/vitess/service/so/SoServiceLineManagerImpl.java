@@ -30,7 +30,6 @@ import java.util.List;
  * @see
  */
 @Service("soServiceLineManager")
-@Transactional(propagation= Propagation.REQUIRED)
 public class SoServiceLineManagerImpl extends BaseManagerImpl implements SoServiceLineManager {
 
 	private static final long serialVersionUID = -5170972775706450529L;

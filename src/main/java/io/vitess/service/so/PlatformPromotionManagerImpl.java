@@ -35,7 +35,6 @@ public class PlatformPromotionManagerImpl implements PlatformPromotionManager{
 	private PlatformPromotionDao platformPromotionDao;
 	
 	@Override
-	@Transactional(propagation= Propagation.SUPPORTS)
 	public void constructSoPromotionInfo(CompanyShop shop, MqSoLog soLog, SalesOrderCommand soCmd) {
 		List<MqSoPromotionLog> mqSoPromotionLogs = mqSoPromotionLogDao.findBySoLogIdAndType(soLog.getId(), MqSoPromotionLog.SO_PLATFORM_PROMOTION_SCOPE_TYPE_ORDER,shop.getId());
 		List<PlatformPromotion> platformPromotions = new ArrayList<PlatformPromotion>();

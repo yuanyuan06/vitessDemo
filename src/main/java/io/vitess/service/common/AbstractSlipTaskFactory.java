@@ -46,7 +46,6 @@ public abstract class AbstractSlipTaskFactory<S> implements TaskFactory<S>{
 
 	public abstract void afterTaskCreation(WorkTask task, WorkFlowNode firstNode, User creator);
 
-	@Transactional
 	@Override
 	public WorkTask createTask(String workFlowCode, S slip, Long shopId) throws WorkFlowException{
 		WorkFlow workFlow = workFlowManager.findWorkFlowByCode(workFlowCode);

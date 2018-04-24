@@ -34,7 +34,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service("createTradeScheduler")
-@Transactional
 public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSoManager {
 		private static final long serialVersionUID = -8557389186447242809L;
 		private static final Logger loggerSoGet = LoggerFactory.getLogger(TbCreateSoManagerImpl.class);

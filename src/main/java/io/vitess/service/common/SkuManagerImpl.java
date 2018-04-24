@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Transactional
 @Service("skuManager")
 public class SkuManagerImpl extends BaseManagerImpl implements SkuManager {
     private static final long serialVersionUID = -1504861017273304643L;

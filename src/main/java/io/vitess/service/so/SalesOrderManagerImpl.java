@@ -33,7 +33,6 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
 
-@Transactional
 @Service("salesOrderManager")
 public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrderManager {
 
@@ -229,9 +228,9 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     	specialProcessAutoDeliverySo(soCmd);
     	String phone = soCmd.getReceiverPhone();
         String mobile = soCmd.getMobile();
-        if (!StringUtils.hasText(phone) && !StringUtils.hasText(mobile) ) {
-            throw new BusinessException(ErrorCode.SO_MOBILE_PHONE_NOT_NULL);
-        }
+//        if (!StringUtils.hasText(phone) && !StringUtils.hasText(mobile) ) {
+//            throw new BusinessException(ErrorCode.SO_MOBILE_PHONE_NOT_NULL);
+//        }
         
         List<SalesOrderLineCommand> solCmdList = soCmd.getSoLineCommandList();
         //o2o订单检查

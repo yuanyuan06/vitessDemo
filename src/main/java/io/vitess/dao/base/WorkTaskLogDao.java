@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-@Transactional
 public interface WorkTaskLogDao extends BaseDao<WorkTaskLog> {
 
     void addTaskLog(Long taskId, Long userId, String transitionCode, Integer fromNodeNo, Integer toNodeNo, Date enterTIme, Date transactionTime, String memo,  Long shopId);

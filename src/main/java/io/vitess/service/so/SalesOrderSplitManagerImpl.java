@@ -35,7 +35,6 @@ import java.util.Map.Entry;
  * @description SalesOrderSplitManagerImpl
  */
 @Service("salesOrderSplitManager")
-@Transactional
 public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements SalesOrderSplitManager {
 
 	private static final long serialVersionUID = -7644418434343247226L;

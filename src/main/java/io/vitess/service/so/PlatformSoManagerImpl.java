@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Transactional
 @Service("platformSoManager")
 public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSoManager{
 

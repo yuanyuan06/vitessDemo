@@ -1,9 +1,161 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.so.ShopWhDao">
+
+
+    <resultMap id="TmaShopWhResult" type="io.vitess.model.base.ShopWh">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmaShopWhColumns">
+        <![CDATA[
+	        	ID as id,
+	        	CREATE_TIME as createTime,
+	        	LAST_MODIFY_TIME as lastModifyTime,
+	        	VERSION as version,
+	        	WH_CODE as whCode,
+	        	WH_NAME as whName,
+	        	SHOP_ID as shopId,
+	        	IS_DEFAULT as isDefault,
+	        	IS_PLATFORM_DEFAULT as isPlatformDefault,
+	        	IS_RTN_DEFAULT as isRtnDefault,
+	        	DELIVERY_ADDRESS_DETAIL as deliveryAddressDetail,
+	        	CONSIGN_NAME as consignName,
+	        	CONSIGN_PHONE as consignPhone,
+	        	PROVINCE as province,
+	        	CITY as city,
+	        	AREA as area,
+	        	TOWN as town,
+	        	SYSTEM_NAME as systemName,
+	        	SYSTEM_CODE as systemCode,
+	        	ONE_BY_ONE_TO_WH_LEVEL as oneByOneToWhLevel,
+	        	IS_PRE_PACKAGE as isPrePackage,
+	        	IS_TRACKING_NO as isTrackingNo,
+	        	ADDRESS as address,
+	        	RECEIVER as receiver,
+	        	RECEIVER_PHONE as receiverPhone,
+	        	DISTRICT as district,
+	        	MOBILE as mobile,
+	        	ZIP_CODE as zipCode,
+	        	IS_INVOKE_DELIVERY_SERVICE as isInvokeDeliveryService
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.base.ShopWh"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_ma_shop_wh (
+		        id,
+		        	CREATE_TIME ,
+		        	LAST_MODIFY_TIME ,
+		        	VERSION ,
+		        	WH_CODE ,
+		        	WH_NAME ,
+		        	SHOP_ID ,
+		        	IS_DEFAULT ,
+		        	IS_PLATFORM_DEFAULT ,
+		        	IS_RTN_DEFAULT ,
+		        	DELIVERY_ADDRESS_DETAIL ,
+		        	CONSIGN_NAME ,
+		        	CONSIGN_PHONE ,
+		        	PROVINCE ,
+		        	CITY ,
+		        	AREA ,
+		        	TOWN ,
+		        	SYSTEM_NAME ,
+		        	SYSTEM_CODE ,
+		        	ONE_BY_ONE_TO_WH_LEVEL ,
+		        	IS_PRE_PACKAGE ,
+		        	IS_TRACKING_NO ,
+		        	ADDRESS ,
+		        	RECEIVER ,
+		        	RECEIVER_PHONE ,
+		        	DISTRICT ,
+		        	MOBILE ,
+		        	ZIP_CODE ,
+		        	IS_INVOKE_DELIVERY_SERVICE
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{whCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{whName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{isDefault,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isPlatformDefault,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isRtnDefault,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{deliveryAddressDetail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{consignName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{consignPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{area,javaType=String,jdbcType=VARCHAR} ,
+		        	#{town,javaType=String,jdbcType=VARCHAR} ,
+		        	#{systemName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{systemCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{oneByOneToWhLevel,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isPrePackage,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isTrackingNo,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{mobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isInvokeDeliveryService,javaType=Integer,jdbcType=TINYINT}
+		        )
+		    ]]>
+
+    </insert>
+
+
     <select id="findByShopIdAndProvince" resultType="io.vitess.common.ShopWhCommand"></select>
     <select id="findShopWhByShopIdAndWhCode" resultType="io.vitess.model.base.ShopWh"></select>
     <select id="findDefaultByShopId" resultType="io.vitess.model.base.ShopWh"></select>
-    <select id="findPlatformDefaultWhByShopId" resultType="io.vitess.model.base.ShopWh"></select>
+
+    <select id="findPlatformDefaultWhByShopId" resultType="io.vitess.model.base.ShopWh">
+        select
+            w.ID as id,
+            w.CREATE_TIME as createTime,
+            w.LAST_MODIFY_TIME as lastModifyTime,
+            w.VERSION as version,
+            w.WH_CODE as whCode,
+            w.WH_NAME as whName,
+            w.SHOP_ID as shopId,
+            w.IS_DEFAULT as isDefault,
+            w.IS_PLATFORM_DEFAULT as isPlatformDefault,
+            w.IS_RTN_DEFAULT as isRtnDefault,
+            w.DELIVERY_ADDRESS_DETAIL as deliveryAddressDetail,
+            w.CONSIGN_NAME as consignName,
+            w.CONSIGN_PHONE as consignPhone,
+            w.PROVINCE as province,
+            w.CITY as city,
+            w.AREA as area,
+            w.TOWN as town,
+            w.SYSTEM_NAME as systemName,
+            w.SYSTEM_CODE as systemCode,
+            w.ONE_BY_ONE_TO_WH_LEVEL as oneByOneToWhLevel,
+            w.IS_PRE_PACKAGE as isPrePackage,
+            w.IS_TRACKING_NO as isTrackingNo,
+            w.ADDRESS as address,
+            w.RECEIVER as receiver,
+            w.RECEIVER_PHONE as receiverPhone,
+            w.DISTRICT as district,
+            w.MOBILE as mobile,
+            w.ZIP_CODE as zipCode,
+            w.IS_INVOKE_DELIVERY_SERVICE as isInvokeDeliveryService
+        from
+          t_ma_shop_wh as w
+        where
+          w.SHOP_ID = #{shopId}
+        and
+          w.IS_PLATFORM_DEFAULT = #{isDefault}
+
+    </select>
+
     <select id="findShopWhList" resultType="io.vitess.model.base.ShopWh"></select>
 </mapper>

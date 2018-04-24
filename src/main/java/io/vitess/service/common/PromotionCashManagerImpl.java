@@ -21,7 +21,6 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Transactional
 @Service("promotionCashManager")
 public class PromotionCashManagerImpl extends BaseManagerImpl implements PromotionCashManager {
 	private static final long serialVersionUID = 5010724809503175805L;

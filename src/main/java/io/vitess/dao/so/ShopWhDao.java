@@ -4,6 +4,7 @@ package io.vitess.dao.so;
 import io.vitess.common.BaseDao;
 import io.vitess.common.ShopWhCommand;
 import io.vitess.model.base.ShopWh;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,16 +18,16 @@ import java.util.List;
  */
 public interface ShopWhDao extends BaseDao<ShopWh> {
 
-    List<ShopWhCommand> findByShopIdAndProvince( Long shopId, String province);
+    List<ShopWhCommand> findByShopIdAndProvince(@Param("shopId") Long shopId, @Param("province") String province);
 
 
-    ShopWh findShopWhByShopIdAndWhCode( Long shopId, String whCode);
+    ShopWh findShopWhByShopIdAndWhCode(@Param("shopId") Long shopId, @Param("whCode") String whCode);
 
 
-    ShopWh findDefaultByShopId(Long shopId,  boolean isDefault);
+    ShopWh findDefaultByShopId(@Param("shopId") Long shopId, @Param("isDefault") boolean isDefault);
 
-    ShopWh findPlatformDefaultWhByShopId(Long shopId,  boolean isDefault);
+    ShopWh findPlatformDefaultWhByShopId(@Param("shopId") Long shopId, @Param("isDefault") boolean isDefault);
 
-    List<ShopWh> findShopWhList(Long shopId);
+    List<ShopWh> findShopWhList(@Param("shopId") Long shopId);
     
 }
