@@ -7,7 +7,7 @@ public enum SkuSpecialType {
 
     private int value;
 
-    private SkuSpecialType(int value) {
+    SkuSpecialType(int value) {
         this.value = value;
     }
 

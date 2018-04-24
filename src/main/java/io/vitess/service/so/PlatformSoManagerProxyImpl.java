@@ -79,9 +79,10 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
     				//优化代码fanht
     				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
 
+                    log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
+
                 }catch (Exception e) {
                     mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
-                    log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------");
                     log.error("",e);
                 }
             }

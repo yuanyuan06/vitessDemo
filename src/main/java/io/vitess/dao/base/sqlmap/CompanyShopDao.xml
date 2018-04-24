@@ -15,7 +15,7 @@
 	        	BZ_SESSION_KEY as bzSessionKey,
 	        	COMPANY as company,
 	        	CREATE_TIME as createTime,
-	        	PAYMENT_TYPE as paymentType,
+	        	PAYMENT_TYPE as defPaymentType,
 	        	FENXIAO_NAME as fenxiaoName,
 	        	INDUSTRY as industry,
 	        	INNER_SHOP_CODE as innerShopCode,

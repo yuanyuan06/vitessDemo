@@ -8,6 +8,7 @@ import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.mq.TbTrade;
 import io.vitess.service.common.CompanyShopManager;
 import io.vitess.service.mq.TbTradeParsePorxyManager;
+import io.vitess.service.so.PlatformSoManagerProxy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class TestMybatis {
     private CompanyShopManager shopManager;
     @Autowired
     private CompanyShopDao companyShopDao;
+    @Autowired
+    private PlatformSoManagerProxy platformSoManagerProxy;
 
     @Test
     public void testInsertTrade(){
@@ -71,5 +74,10 @@ public class TestMybatis {
         MqSoLog log = new MqSoLog();
 //        log.getIsLgtype();
 //        log.getIsLgType();
+    }
+
+    @Test
+    public void testCreate(){
+        platformSoManagerProxy.createTaobaoSo();
     }
 }

@@ -52,13 +52,13 @@
           from t_mq_so_packing_info_log as c
          <where>
              <if test="soLineLogId != null and soLineLogId != ''">
-                  and c.MQ_SO_LINE_LOG=#{soLineLogId}
+                  and c.SO_LINE_LOG_ID=#{soLineLogId}
              </if>
              <if test="level != null and level != ''">
-                  and c.piLevel=#{level}
+                  and c.PI_LEVEL=#{level}
              </if>
              <if test="shopId != null and shopId != ''">
-                  and c.shopId = #{shopId}
+                  and c.SHOP_ID = #{shopId}
              </if>
 
          </where>

@@ -3,6 +3,7 @@ package io.vitess.dao.mq;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqPlatformMemberLog;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +15,5 @@ import io.vitess.model.mq.MqPlatformMemberLog;
  */
 public interface MqPlatformMemberLogDao extends BaseDao<MqPlatformMemberLog> {
 
-    MqPlatformMemberLog findMqPlatformMemberLog(Long id, Long shopId);
+    MqPlatformMemberLog findMqPlatformMemberLog(@Param("id") Long id, @Param("shopId") Long shopId);
 }

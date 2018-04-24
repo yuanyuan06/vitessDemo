@@ -35,7 +35,7 @@ public class Sku extends SuperEntity {
 
     private int version;
 
-    private Product product;
+    private Long product;
 
     private String color;
 
@@ -43,7 +43,8 @@ public class Sku extends SuperEntity {
 
     private String skuSize;
 
-    private SkuSpecialType specialType = SkuSpecialType.DEFAULT;
+//    private SkuSpecialType specialType = SkuSpecialType.DEFAULT;
+    private Integer specialType = SkuSpecialType.DEFAULT.getValue();
 
     private String itemId;
 

@@ -11,6 +11,7 @@ import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.dao.base.ComboSkuDetailDao;
 import io.vitess.dao.base.CompanyShopDao;
+import io.vitess.dao.base.ProductDao;
 import io.vitess.dao.base.ShoOutLetInfoDao;
 import io.vitess.dao.so.*;
 import io.vitess.enums.*;
@@ -76,6 +77,9 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 
     @Autowired
     private ComboSkuDetailDao comboSkuDetailDao;
+
+    @Autowired
+    private ProductDao productDao;
     
     @Autowired
     private SendSoDao sendSoDao;
@@ -1235,7 +1239,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         // 按product销售模式拆
         Map<SalesMode, List<SalesOrderLineCommand>> map = new HashMap<SalesMode, List<SalesOrderLineCommand>>();
         for (SalesOrderLineCommand originalSolCmd : originalSoCmd.getSoLineCommandList()) {
-            SalesMode salesMode = retainSalesModeByShopAndProduct(originalSolCmd.getSku().getProduct().getSalesModesStr(), originalSoCmd.getCompanyShop().getSalesModesStr());
+            Product byId = productDao.findById(originalSolCmd.getSku().getProduct());
+            SalesMode salesMode = retainSalesModeByShopAndProduct(byId.getSalesModesStr(), originalSoCmd.getCompanyShop().getSalesModesStr());
             List<SalesOrderLineCommand> solCmdListInMap = map.get(salesMode);
             if (solCmdListInMap == null) {
                 solCmdListInMap = new ArrayList<SalesOrderLineCommand>();

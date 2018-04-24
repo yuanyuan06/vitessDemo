@@ -65,7 +65,7 @@
 
     </select>
 
-	<insert id="insert" parameterType="io.vitess.model.mq.MqDeliveryInfoLog" flushCache="true">
+	<insert id="insert" parameterType="io.vitess.model.mq.MqDeliveryInfoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		        INSERT INTO
 		        t_mq_delivery_info_log (
 		        id,

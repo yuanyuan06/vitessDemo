@@ -1,7 +1,6 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.model.base.CompanyShop;
 import lombok.Data;
 
 import java.util.Date;
@@ -21,7 +20,8 @@ public class Trade extends SuperEntity {
 
     private Date platformOrderCreateTime;
 
-    private CompanyShop companyShop;
+//    private CompanyShop companyShop;
+    private Long companyShop;
 
     private Integer isSplit;
 

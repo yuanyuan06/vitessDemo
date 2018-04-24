@@ -1,7 +1,6 @@
 package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.enums.ProductType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -42,7 +41,8 @@ public class Product extends SuperEntity{
 
 	private String supplierSkuCode;
 
-	private ProductType type;
+//	private ProductType type;
+	private Integer type;
 
 	private String salesModesStr;
 

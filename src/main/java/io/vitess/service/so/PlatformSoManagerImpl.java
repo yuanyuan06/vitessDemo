@@ -6,10 +6,7 @@ import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SalesModelToTOMS;
 import io.vitess.constants.SysWmsStatus;
-import io.vitess.dao.base.ComBoSkuDao;
-import io.vitess.dao.base.ComboSkuDetailDao;
-import io.vitess.dao.base.CompanyShopDao;
-import io.vitess.dao.base.SpecifySkuAppointmentDao;
+import io.vitess.dao.base.*;
 import io.vitess.dao.mq.*;
 import io.vitess.dao.so.OrderLocationMappingDao;
 import io.vitess.dao.so.TradeDao;
@@ -40,6 +37,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	private static final long serialVersionUID = -7492482366382229324L;
 
 	private static final Logger loggerSoCreate = LoggerFactory.getLogger("logger-tb-so-create");
+
+	@Autowired
+	private ProductDao productDao;
 
 	@Autowired
 	private TradeDao tradeDao;
@@ -241,7 +241,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		soCmd.setSellerMemo(soLog.getSellerMemo());
 		soCmd.setNeededPacking((soLog.getIsNeededPacking() != null && soLog.getIsNeededPacking()) ? Constants.YES : Constants.NO);
 		soCmd.setAlipayId(soLog.getAlipayId());
-		soCmd.setCreditCardFee(new BigDecimal(soLog.getCreditCardFee()));
+		soCmd.setCreditCardFee(soLog.getCreditCardFee() == null ? BigDecimal.ZERO: new BigDecimal(soLog.getCreditCardFee()));
 		soCmd.setInvoiceType(InvoiceType.ORDINARY_COMMERCIAL);
 		soCmd.setIsBillingManual(Constants.NO);
 		soCmd.setOrderTaxFee(soLog.getOrderTaxFee());
@@ -398,7 +398,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				String[] shopModel = shopModelStr.split(",");
 				
 				Sku sku = lineCommand.getSku();
-				Integer salesMode = sku.getProduct().getSalesMode();
+				Product byId = productDao.findById(sku.getProduct());
+				Integer salesMode = byId.getSalesMode();
 				if(salesMode == null){
 					String errorMsg = "创建订单出错:"+sku.getId()+"该商品未初始化销售模式";
 					mqSoLogDao.updateStatusAndErrorMsgById(soLog.getId(), soLog.getShopId(), null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
@@ -422,7 +423,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		Trade trade = new Trade();
 		trade.setPlatformOrderCode(platformOrderCode);
 		trade.setPlatformOrderCreateTime(platformCreateTime);
-		trade.setCompanyShop(shop);
+		trade.setCompanyShop(shop.getId());
 		trade.setPayAccount(soCmd.getPayAccount());
 		trade.setPayNo(soCmd.getPayNo());
 		trade.setIsSplit(Constants.NO);
@@ -455,7 +456,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			tradeDao.insert(trade);
 			
 			// 销售模式设置为第一个订单行的第一个商品
-			SalesMode salesMode = salesOrderManager.retainSalesModeByShopAndProduct(soCmd.getSoLineCommandList().get(0).getSku().getProduct().getSalesModesStr(), shop.getSalesModesStr());
+			Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
+			SalesMode salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 			
 			List<String> platformOrderCodeNs = new ArrayList<String>();
 			List<String> soLineSkuList = new ArrayList<String>();
@@ -496,11 +498,12 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				soCmd.setPlatformOrderCodeN(platformOrderCode);
 				// 销售模式设置为第一个订单行的第一个商品 TODO 这个东西没啥用fanht
 				SalesMode salesMode ;
+					Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
 				try{
-					salesMode = salesOrderManager.retainSalesModeByShopAndProduct(soCmd.getSoLineCommandList().get(0).getSku().getProduct().getSalesModesStr(), shop.getSalesModesStr());
+					salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 					soCmd.setSalesModesStr(salesMode.getValue() + "");
 				}catch (Exception e) {
-					log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +soCmd.getSoLineCommandList().get(0).getSku().getProduct().getCode());
+					log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +byId.getCode());
 					throw new RuntimeException(e.getMessage());
 				}
 
@@ -551,11 +554,12 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			soCmd.setPlatformOrderCodeN(platformOrderCode);
 			// 销售模式设置为第一个订单行的第一个商品 TODO 这个东西没啥用fanht
 			SalesMode salesMode ;
+			Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
 			try{
-				salesMode = salesOrderManager.retainSalesModeByShopAndProduct(soCmd.getSoLineCommandList().get(0).getSku().getProduct().getSalesModesStr(), shop.getSalesModesStr());
+				salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 				soCmd.setSalesModesStr(salesMode.getValue() + "");
 			}catch (Exception e) {
-				log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +soCmd.getSoLineCommandList().get(0).getSku().getProduct().getCode());
+				log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +byId.getCode());
 				throw new RuntimeException(e.getMessage());
 			}
 
@@ -615,11 +619,13 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	}
 
 	private Integer checkProductType(Sku sku, Integer productType) {
-		ProductType type = sku.getProduct().getType();
+
+		Product byId = productDao.findById(sku.getProduct());
+		Integer type = byId.getType();
 		//判断虚拟商品有无库存
-		if (ProductType.VIRTUAL_GOODS.equals(type)) {
+		if (ProductType.VIRTUAL_GOODS.getValue() == type) {
 			productType = ProductType.VIRTUAL_GOODS.getValue();
-		} else if (ProductType.VIRTUAL_NO_GOODS.equals(type)) {
+		} else if (ProductType.VIRTUAL_NO_GOODS.getValue() == type) {
 			productType = ProductType.VIRTUAL_NO_GOODS.getValue();
 		}
 		
@@ -825,7 +831,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			solCmd.setSku(sku);
 			BigDecimal listPrice = soLineLog.getListPrice();
 			if (listPrice == null) {
-				listPrice = sku.getProduct().getListPrice();
+				Product byId = productDao.findById(sku.getProduct());
+				listPrice = byId.getListPrice();
 			}
 			solCmd.setListPrice(listPrice != null ? listPrice : BigDecimal.ZERO);
 			solCmd.setPlatformSkuName(soLineLog.getPlatformSkuName());
@@ -900,7 +907,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				isExistsStudentPriceSku = Boolean.TRUE;
 			}
 			//判断虚拟实物商品
-			if(Product.SP_TYPE_ETICKET_ACTUAL.equals(sku.getProduct().getSpType())){
+			Product byId = productDao.findById(sku.getProduct());
+			if(Product.SP_TYPE_ETICKET_ACTUAL.equals(byId.getSpType())){
 				isEticketActualSku = Boolean.TRUE;
 			}
 			productType = checkProductType(sku, productType);
@@ -995,7 +1003,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				}
 			} else {										
 				// 非组合商品
-				List<MqSoPackingInfoLog> linePackingInfoList = mqSoPackingInfoLogDao.findBySoLineLogIdAndLevel(soLineLog.getId(), MqSoPackingInfoLevel.BY_PRODUCT,shop.getId());
+				List<MqSoPackingInfoLog> linePackingInfoList = mqSoPackingInfoLogDao.findBySoLineLogIdAndLevel(soLineLog.getId(), MqSoPackingInfoLevel.BY_PRODUCT.getValue(), shop.getId());
 				//查询商品引入缓存机制fanht
 				//Sku sku = skuDao.findSkuByExtCodeBrtCode(extentionCode, shop.getBusinessRegionType(),shop.getWhCustomerCode());
 				Sku sku = skuManager.findSkuByExtCodeBrtCode(extentionCode, shop.getBusinessRegionType(),shop.getWhCustomerCode());

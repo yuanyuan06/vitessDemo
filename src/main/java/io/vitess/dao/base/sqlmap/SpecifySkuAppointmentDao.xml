@@ -2,5 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.SpecifySkuAppointmentDao">
 
-    <select id="queryAppointmentSku" resultType="io.vitess.model.base.SkuAppointment"></select>
+    <select id="queryAppointmentSku" resultType="io.vitess.model.base.SkuAppointment">
+        select
+            s.ID as id,
+            s.SHOP_ID as shopId,
+            s.ACTIVITY_NAME as activityName,
+            s.SKU_ID as skuId,
+            s.ACTIVITY_STATUS as activityStatus,
+            s.CREATE_USER_NO as createUserNo,
+            s.SUSPEND_START_TIME as suspendStartTime,
+            s.SUSPEND_END_TIME as suspendEndTime,
+            s.CREATE_TIME as createTime,
+            s.UPDATE_TIME as updateTime,
+            s.UPDATE_USER_NO as updateUserNo,
+            s.LOG_OFF_TYPE as logOffType,
+            s.TO_WH_TIME as toWhTime,
+            s.SKU_CODE as skuCode
+        from
+            t_ma_sku_appointment_wh s
+        where
+        s.SKU_ID = #{skuId}
+        and s.SHOP_ID = #{shopId}
+        and s.ACTIVITY_STATUS='Y'
+        and s.SUSPEND_START_TIME &lt; #{payTime}
+        and s.SUSPEND_END_TIME > #{payTime}
+    </select>
 </mapper>

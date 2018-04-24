@@ -20,7 +20,7 @@ public interface MqSoLogDao extends BaseDao<MqSoLog> {
 
     MqSoLog findMqSoLogByIdShopId(@Param("id") Long id, @Param("shopId") Long shopId);
 
-    List<Long> findMqSoForCreateSo(int platformType, Long shopId, int status, Date createTime);
+    List<Long> findMqSoForCreateSo(@Param("platformType") int platformType, @Param("shopId") Long shopId, @Param("status") int status, @Param("createTime") Date createTime);
 
     void updateStatusAndErrorMsgById(@Param("id") Long id, @Param("shopId") Long shopId, @Param("createTime") Date createTime, @Param("status") int status, @Param("errorMsg") String errorMsg, @Param("errorCount") Integer errorCount);
 

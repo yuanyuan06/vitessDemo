@@ -3,10 +3,9 @@ package io.vitess.dao.mq;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqSoPromotionLog;
-import org.springframework.jdbc.core.RowMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -18,5 +17,5 @@ import java.util.Map;
  */
 public interface MqSoPromotionLogDao extends BaseDao<MqSoPromotionLog> {
 
-    List<MqSoPromotionLog> findBySoLogIdAndType(Long soLogId, Integer scopeType, Long shopId);
+    List<MqSoPromotionLog> findBySoLogIdAndType(@Param("soLog") Long soLogId, @Param("scopeType") Integer scopeType, @Param("shopId") Long shopId);
 }

@@ -1,4 +1,137 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.ProductDao">
+
+    <resultMap id="TmaSkuResult" type="io.vitess.model.base.Product">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmaSkuColumns">
+        <![CDATA[
+	        	ID as id,
+	        	BRAND_CATEGORY1 as brandCategory1,
+	        	CODE as code,
+	        	CREATE_TIME as createTime,
+	        	EN_NAME as enName,
+	        	GROSS_WEIGHT as grossWeight,
+	        	HEIGHT as height,
+	        	IS_AVAILABLE as isAvailable,
+	        	IS_GIFT as isGift,
+	        	IS_RAILWAY as isRailway,
+	        	LAST_MODIFY_TIME as lastModifyTime,
+	        	LENGTH as length,
+	        	MANUFACTURE as manufacture,
+	        	NAME as name,
+	        	NET_WEIGHT as netWeight,
+	        	PROD_CATEGORY as prodCategory,
+	        	SALES_MODES as salesModes,
+	        	SUPPLIER_SKU_CODE as supplierSkuCode,
+	        	TYPE as type,
+	        	VERSION as version,
+	        	WARRANTY_CARD_TYPE as warrantyCardType,
+	        	WIDTH as width,
+	        	BRAND_CODE as brandCode,
+	        	BRAND_NAME as brandName,
+	        	SUPPLIER_CODE as supplierCode,
+	        	SUPPLIER_NAME as supplierName,
+	        	LIST_PRICE as listPrice,
+	        	BUSINESS_REGION_TYPE as businessRegionType,
+	        	SP_TYPE as spType,
+	        	BRAND_SPECIAL_TYPE as brandSpecialType,
+	        	IS_SN_SKU as isSnSku,
+	        	SALES_MODE as salesMode,
+	        	WH_CUSTOMER_CODE as whCustomerCode,
+	        	PROD_RATE as prodRate
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.base.Product"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_ma_sku (
+		        id,
+		        	BRAND_CATEGORY1 ,
+		        	CODE ,
+		        	CREATE_TIME ,
+		        	EN_NAME ,
+		        	GROSS_WEIGHT ,
+		        	HEIGHT ,
+		        	IS_AVAILABLE ,
+		        	IS_GIFT ,
+		        	IS_RAILWAY ,
+		        	LAST_MODIFY_TIME ,
+		        	LENGTH ,
+		        	MANUFACTURE ,
+		        	NAME ,
+		        	NET_WEIGHT ,
+		        	PROD_CATEGORY ,
+		        	SALES_MODES ,
+		        	SUPPLIER_SKU_CODE ,
+		        	TYPE ,
+		        	VERSION ,
+		        	WARRANTY_CARD_TYPE ,
+		        	WIDTH ,
+		        	BRAND_CODE ,
+		        	BRAND_NAME ,
+		        	SUPPLIER_CODE ,
+		        	SUPPLIER_NAME ,
+		        	LIST_PRICE ,
+		        	BUSINESS_REGION_TYPE ,
+		        	SP_TYPE ,
+		        	BRAND_SPECIAL_TYPE ,
+		        	IS_SN_SKU ,
+		        	SALES_MODE ,
+		        	WH_CUSTOMER_CODE ,
+		        	PROD_RATE
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{brandCategory1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{enName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{grossWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{height,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{isAvailable,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isGift,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isRailway,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{length,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{manufacture,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{netWeight,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{prodCategory,javaType=String,jdbcType=VARCHAR} ,
+		        	#{salesModes,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierSkuCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{type,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{warrantyCardType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{width,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{brandCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{brandName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{supplierName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{listPrice,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{businessRegionType,javaType=String,jdbcType=VARCHAR} ,
+		        	#{spType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{brandSpecialType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{isSnSku,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{salesMode,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{whCustomerCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL}
+		        )
+		    ]]>
+
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmaSkuResult" flushCache="false">
+        select <include refid="tmaSkuColumns" />
+        <![CDATA[
+			    from t_ma_sku
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

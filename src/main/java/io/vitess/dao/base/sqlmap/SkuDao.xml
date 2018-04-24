@@ -1,9 +1,129 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.SkuDao">
+
+    <resultMap id="TmaInvSkuResult" type="io.vitess.model.base.Sku">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmaInvSkuColumns">
+        <![CDATA[
+	        	ID as id,
+	        	BAR_CODE as barCode,
+	        	CODE as code,
+	        	COLOR as color,
+	        	COLOR_NAME as colorName,
+	        	EN_NAME as enName,
+	        	EXT_CODE1 as extCode1,
+	        	EXT_CODE2 as extCode2,
+	        	EXT_CODE3 as extCode3,
+	        	JM_CODE as jmCode,
+	        	KEY_PROPERTIES as keyProperties,
+	        	NAME as name,
+	        	SKU_SIZE as skuSize,
+	        	SPECIAL_TYPE as specialType,
+	        	SUPPLIER_CODE as supplierCode,
+	        	VERSION as version,
+	        	PRODUCT_ID as productId,
+	        	ITEM_ID as itemId,
+	        	SHIPPING_METHODS as shippingMethods,
+	        	IS_COMMON as isCommon,
+	        	PROD_RATE as prodRate,
+	        	NEED_QUALITYCHECK as needQualitycheck
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.base.Sku"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_ma_inv_sku (
+		        id,
+		        	BAR_CODE ,
+		        	CODE ,
+		        	COLOR ,
+		        	COLOR_NAME ,
+		        	EN_NAME ,
+		        	EXT_CODE1 ,
+		        	EXT_CODE2 ,
+		        	EXT_CODE3 ,
+		        	JM_CODE ,
+		        	KEY_PROPERTIES ,
+		        	NAME ,
+		        	SKU_SIZE ,
+		        	SPECIAL_TYPE ,
+		        	SUPPLIER_CODE ,
+		        	VERSION ,
+		        	PRODUCT_ID ,
+		        	ITEM_ID ,
+		        	SHIPPING_METHODS ,
+		        	IS_COMMON ,
+		        	PROD_RATE ,
+		        	NEED_QUALITYCHECK
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{barCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{color,javaType=String,jdbcType=VARCHAR} ,
+		        	#{colorName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{enName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode2,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode3,javaType=String,jdbcType=VARCHAR} ,
+		        	#{jmCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{keyProperties,javaType=String,jdbcType=VARCHAR} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{skuSize,javaType=String,jdbcType=VARCHAR} ,
+		        	#{specialType,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{supplierCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{productId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{itemId,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shippingMethods,javaType=String,jdbcType=VARCHAR} ,
+		        	#{isCommon,javaType=Integer,jdbcType=TINYINT} ,
+		        	#{prodRate,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
+		        	#{needQualitycheck,javaType=Integer,jdbcType=TINYINT}
+		        )
+		    ]]>
+    </insert>
+
+
     <select id="findByProductId" resultType="io.vitess.model.base.Sku"></select>
     <select id="findSkuByExtensionCode1" resultType="io.vitess.model.base.Sku"></select>
-    <select id="findSkuByExtCodeBrtCode" resultType="io.vitess.model.base.Sku"></select>
+
+    <select id="findSkuByExtCodeBrtCode" resultType="io.vitess.model.base.Sku">
+        select
+            sku.ID as id,
+            sku.BAR_CODE as barCode,
+            sku.CODE as code,
+            sku.COLOR as color,
+            sku.COLOR_NAME as colorName,
+            sku.EN_NAME as enName,
+            sku.EXT_CODE1 as extCode1,
+            sku.EXT_CODE2 as extCode2,
+            sku.EXT_CODE3 as extCode3,
+            sku.JM_CODE as jmCode,
+            sku.KEY_PROPERTIES as keyProperties,
+            sku.NAME as name,
+            sku.SKU_SIZE as skuSize,
+            sku.SPECIAL_TYPE as specialType,
+            sku.SUPPLIER_CODE as supplierCode,
+            sku.VERSION as version,
+            sku.PRODUCT_ID as product,
+            sku.ITEM_ID as itemId,
+            sku.SHIPPING_METHODS as shippingMethods,
+            sku.IS_COMMON as isCommon,
+            sku.PROD_RATE as prodRate,
+            sku.NEED_QUALITYCHECK as needQualitycheck
+        from
+            t_ma_inv_sku sku join t_ma_sku pd on sku.PRODUCT_ID = pd.ID
+        where
+            pd.BUSINESS_REGION_TYPE = #{brtCode}
+            and  sku.EXT_CODE1 = #{extCode}
+            and pd.WH_CUSTOMER_CODE = #{whCustomerCode}
+    </select>
     <select id="findByCodes" resultType="java.lang.String"></select>
     <select id="findByCode" resultType="io.vitess.model.base.Sku"></select>
 </mapper>

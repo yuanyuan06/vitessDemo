@@ -3,6 +3,7 @@ package io.vitess.dao.base;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.base.SkuAppointment;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
@@ -12,6 +13,6 @@ import java.util.Date;
  */
 public interface SpecifySkuAppointmentDao extends BaseDao<SkuAppointment> {
 
-    SkuAppointment queryAppointmentSku(Long skuId, Long shopId, Date payTime);
+    SkuAppointment queryAppointmentSku(@Param("skuId") Long skuId, @Param("shopId") Long shopId, @Param("payTime") Date payTime);
 
 }

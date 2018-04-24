@@ -137,7 +137,8 @@ public class PromotionManagerImpl implements PromotionManager{
                     skuCom.setLineTotal(sl.getTotalAmountAfterDiscount());
                     skuCom.setShopId(shopId);
                     if (sl.getSku().getProduct()!=null) {
-                        Long productId = sl.getSku().getProduct().getId();
+                        Product byId = productDao.findById(sl.getSku().getProduct());
+                        Long productId = byId.getId();
                         if (sl.getIsComboSku()) {
                             PromotionSkuCommand skuCom2 = skuInfoComboMap.get(productId);
                             // 同款合并
@@ -326,7 +327,7 @@ public class PromotionManagerImpl implements PromotionManager{
             // timedProMap01.size());
             for (SalesOrderLine line : soLines) {
                 // Long skuId = line.getProduct().getId();
-                Long skuId = line.getSku().getProduct().getId();
+                Long skuId = line.getSku().getProduct();
                 Collection<VmiTimedPromotion> timedPros = timedProMap01.get(skuId);
                 if (timedPros != null) {
                     for (VmiTimedPromotion timedPro : timedPros) {
@@ -353,7 +354,7 @@ public class PromotionManagerImpl implements PromotionManager{
         if (timedProMap03.size() > 0) {
             for (SalesOrderLine line : soLines) {
                 // Long skuId = line.getProduct().getId();
-                Long skuId = line.getSku().getProduct().getId();
+                Long skuId = line.getSku().getProduct();
                 VmiTimedPromotion pro = timedProMap03.get(skuId);
                 //04类型回退fanht
                 //if (pro != null && pro.getGiftQuota() >= line.getQuantity() && (payTime.compareTo(pro.getStartTime()) >= 0 && payTime.compareTo(pro.getEndTime()) < 0)) {
@@ -372,7 +373,7 @@ public class PromotionManagerImpl implements PromotionManager{
                 Integer qty = giftMaps.get(productId);
                 SalesOrderLineCommand li = new SalesOrderLineCommand();
                 Sku sku = skuDao.findByProductId(productId);
-                Product product = sku.getProduct();
+                Product product = productDao.findById(sku.getProduct());
 
                 li.setIsGift(Boolean.TRUE);
                 li.setOrderLineType(OrderLineType.GIFT);

@@ -4,6 +4,7 @@ package io.vitess.dao.mq;
 import io.vitess.common.BaseDao;
 import io.vitess.enums.MqSoPackingInfoLevel;
 import io.vitess.model.mq.MqSoPackingInfoLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ import java.util.List;
 public interface MqSoPackingInfoLogDao extends BaseDao<MqSoPackingInfoLog> {
 
 
-    List<MqSoPackingInfoLog> findBySoLineLogIdAndLevel(Long soLineLogId, MqSoPackingInfoLevel level, Long shopId);
+    List<MqSoPackingInfoLog> findBySoLineLogIdAndLevel(@Param("soLineLogId") Long soLineLogId, @Param("level") Integer level, @Param("shopId") Long shopId);
 
 }

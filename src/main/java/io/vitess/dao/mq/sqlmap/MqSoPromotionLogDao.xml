@@ -72,9 +72,24 @@
     </insert>
 
     <select id="findBySoLogIdAndType" resultType="io.vitess.model.mq.MqSoPromotionLog">
-        select *
+        select
+            ba.ID as id,
+            ba.PLATFORM_LINE_ID as platformLineId,
+            ba.PROMOTION_NAME as promotionName,
+            ba.GIFT_ITEM_NAME as giftItemName,
+            ba.GIFT_ITEM_ID as giftItemId,
+            ba.DISCOUNT_FEE as discountFee,
+            ba.GIFT_ITEM_NUM as giftItemNum,
+            ba.PLATFORM_ORDER_CODE as platformOrderCode,
+            ba.VERSION as version,
+            ba.SO_LINE_LOG_ID as soLineLog,
+            ba.SO_LOG_ID as soLog,
+            ba.DESCRIPTION as description,
+            ba.PROMOTION_ID as promotionId,
+            ba.SCOPE_TYPE as scopeType,
+            ba.SHOP_ID as shopId
         from t_mq_so_promotion_log as ba
-        where ba.SO_LOG = #{soLog} and ba.SCOPE_TYPE = #{scopeType} and ba.shop_Id = #{SHOP_ID}
+        where ba.SO_LOG_ID = #{soLog} and ba.SCOPE_TYPE = #{scopeType} and ba.shop_Id = #{shopId}
     </select>
 
     <select id="findById" parameterType="java.lang.Long" resultMap="TmqSoPromotionLogResult" flushCache="false">

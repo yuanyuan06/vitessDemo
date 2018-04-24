@@ -3,6 +3,7 @@ package io.vitess.dao.base;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.base.Sku;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -23,7 +24,7 @@ public interface SkuDao extends BaseDao<Sku> {
 
     Sku findSkuByExtensionCode1( String extensionCode1);
 
-    Sku findSkuByExtCodeBrtCode( String extCode, String brtCode, String whCustomerCode);
+    Sku findSkuByExtCodeBrtCode(@Param("extCode") String extCode, @Param("brtCode") String brtCode, @Param("whCustomerCode") String whCustomerCode);
 
     List<String> findByCodes(Set<String> newExtentionCodes, String businessRegionType, String whCustomerCode);
 

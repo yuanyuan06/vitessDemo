@@ -89,9 +89,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog"
-
-            flushCache="true">
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         <![CDATA[
 		        INSERT INTO
 		        t_mq_so_log (
@@ -257,19 +255,108 @@
 
 
     <select id="findMqSoLogByIdShopId" resultType="io.vitess.model.mq.MqSoLog">
-        select * from t_mq_so_log as c
+        select
+            c.id as id,
+            c.version as version,
+            c.shop_id as shopId,
+            c.code as code,
+            c.create_time as createTime,
+            c.outer_create_time as outerCreateTime,
+            c.payment_time as paymentTime,
+            c.payment_type as paymentType,
+            c.is_needed_invoice as isNeededInvoice,
+            c.invoice_title as invoiceTitle,
+            c.invoice_content as invoiceContent,
+            c.lp_code as lpCode,
+            c.actual_trans_fee as actualTransFee,
+            c.total_actual as totalActual,
+            c.remark as remark,
+            c.error_msg as errorMsg,
+            c.status as status,
+            c.account as account,
+            c.member_email as memberEmail,
+            c.delivery_remark as deliveryRemark,
+            c.is_member_order as isMemberOrder,
+            c.coupon_code as couponCode,
+            c.coupon_type as couponType,
+            c.coupon_discount_fee as couponDiscountFee,
+            c.is_needed_packing as isNeededPacking,
+            c.gc_amt as gcAmt,
+            c.sgc_amt as sgcAmt,
+            c.source as source,
+            c.oms_shop_id as omsShopId,
+            c.total_point_used as totalPointUsed,
+            c.platform_line_id as platformLineId,
+            c.total_outer_point as totalOuterPoint,
+            c.total_inner_point as totalInnerPoint,
+            c.total_vc as totalVc,
+            c.ext_prop1 as extProp1,
+            c.platform_order_type as platformOrderType,
+            c.seller_memo as sellerMemo,
+            c.bpc_amt as bpcAmt,
+            c.card_no as cardNo,
+            c.is_lg_type as isLgType,
+            c.platform_order_status as platformOrderStatus,
+            c.platform_type as platformType,
+            c.alipay_account as payAccount,
+            c.alipay_no as payNo,
+            c.direction as direction,
+            c.msg_batch_id as msgBatchId,
+            c.store_code as storeCode,
+            c.title_remark as titleRemark,
+            c.service_item_fee as serviceItemFee,
+            c.nike_service_level_code_type as nikeServiceLevelCodeType,
+            c.slip_code1 as slipCode1,
+            c.slip_code2 as slipCode2,
+            c.error_count as errorCount,
+            c.pay_discount as payDiscount,
+            c.total_discount as totalDiscount,
+            c.is_prezzie as isPrezzie,
+            c.is_platform_delivery as isPlatformDelivery,
+            c.cod_amt as codAmt,
+            c.special_type as specialType,
+            c.ext_vc1 as extVc1,
+            c.ext_vc2 as extVc2,
+            c.ext_vc3 as extVc3,
+            c.ALIPAY_ID as alipayId,
+            c.CREDIT_CARD_FEE as creditCardFee,
+            c.no_pay_status as noPayStatus,
+            c.ORDER_TAX_FEE as orderTaxFee,
+            c.IS_BUNDLE as isBundle,
+            c.CUSTOMIZATION_MEMO as customizationMemo,
+            c.CROSS_BONDED_DECLARE as crossBondedDeclare,
+            c.OMNICHANNEL_PARAM as omnichannelParam,
+            c.INVOICE_KIND as invoiceKind,
+            c.BUYER_TAX_NO as buyerTaxNO,
+            c.STEP_TRADE_STATUS as stepTradeStatus,
+            c.STEP_PAID_FEE as stepPaidFee,
+            c.ALLOCATION_TYPE as allocationType,
+            c.BUSINESS_TYPE as businessType
+        from t_mq_so_log as c
         <where>
             <if test="id != null and id != ''">
                 and c.id=#{id}
             </if>
             <if test="shopId != null and shopId != ''">
-                and c.shopId = #{shopId}
+                and c.SHOP_ID = #{shopId}
             </if>
         </where>
     </select>
 
 
-    <select id="findMqSoForCreateSo" resultType="java.lang.Long"></select>
+    <select id="findMqSoForCreateSo" resultType="java.lang.Long">
+        select
+            id
+        from
+            t_mq_so_log
+        where 1=1
+            and platform_type=#{platformType}
+            and shop_id=#{shopId}
+            and status=#{status}
+            and (error_count is null or error_count &lt;= 3)
+            and create_time >  #{createTime}
+            LIMIT 1000
+    </select>
 
 
     <update id="updateStatusAndErrorMsgById">

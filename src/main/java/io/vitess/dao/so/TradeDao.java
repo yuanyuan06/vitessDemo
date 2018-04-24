@@ -3,6 +3,7 @@ package io.vitess.dao.so;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.so.Trade;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +15,5 @@ import io.vitess.model.so.Trade;
  */
 public interface TradeDao extends BaseDao<Trade> {
 
-    Trade findByPlatformOrderCode(String platformOrderCode,Long shopId);
+    Trade findByPlatformOrderCode(@Param("platformOrderCode") String platformOrderCode, @Param("shopId") Long shopId);
 }
