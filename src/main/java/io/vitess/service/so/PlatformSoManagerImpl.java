@@ -84,9 +84,6 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	@Autowired
 	private SoServiceLineManager soServiceLineManager;
 	
-//	@Autowired
-//	private SmsDataParamManager smsDataParamManager;
-	
 	@Autowired
 	private PlatformPromotionManager platformPromotionManager;
 	

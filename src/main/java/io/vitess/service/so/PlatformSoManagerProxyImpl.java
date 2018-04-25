@@ -1,6 +1,6 @@
 package io.vitess.service.so;
 
-import io.vitess.common.ErrorCode;
+import com.alibaba.fastjson.JSON;
 import io.vitess.constants.PlatformSouceContant;
 import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.mq.MqSoLogDao;
@@ -11,7 +11,6 @@ import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 @Service("platformSoManagerProxy")
 public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements PlatformSoManagerProxy {
@@ -42,51 +42,43 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
     private int ThreadCount;
 
     /**
+     * 分组大小
+     */
+    private int maxDeal = 50;
+
+    private ExecutorService exec = Executors.newFixedThreadPool(ThreadCount);
+//    private ExecutorService exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
+//            0L, TimeUnit.MILLISECONDS,
+//            new LinkedBlockingQueue<Runnable>());
+
+    Map<String, String> map = PlatformSouceContant.loadPlatformSouceData();
+    /**
      * 淘宝创单
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {
-        //店铺的创单方式 1：独立线程；0：公共线程；fanht
-        //List<CompanyShopCommand> shopIdsList = companyShopDao.findAllShopList();
-    	// 查询店铺为开启状态,并采用公共线程创单的店铺
+
         List<CompanyShop> shopIdsList = companyShopDao.findShopListGeneralOrder();
-        
-        // 获取订单来源列表
-        Map<String, String> map = PlatformSouceContant.loadPlatformSouceData();
-        // 淘宝平台类型为1
         int platformType = PlatformType.TAOBAO_PLATFORM.getValue();
-        
         for (int i = 0; i < shopIdsList.size(); i++) {
             Long shopId = shopIdsList.get(i).getId();
-            //List<Long> mqSoLogIds = mqSoLogDao.findByShopAndStatusAndPlatformType(platformType, shopId, 2, new SingleColumnRowMapper<Long>());
-//            t_mq_so_log 获取 当前店铺, 平台为淘宝, 状态为等待转换, 七天内 的订单数据id			MQ_SO_STATUS_WAITING(2, "等待转换")
             List<Long> mqSoLogIds = mqSoLogDao.findMqSoForCreateSo(platformType, shopId, 2, getCreateTime());
-            for (int j = 0; j < mqSoLogIds.size(); j++) {
-                Long mqSoLogId = mqSoLogIds.get(j);
-                try {
-                    platformSoManager.createTbSoFromMqSoLog(mqSoLogId, SalesOrderType.PLATFORM_ONLINE_TB, map,shopId);
-                } catch(BusinessException be) {
-                	String errorMsg = super.getMessage(ErrorCode.BUSINESS_EXCEPTION + be.getErrorCode(), be.getArgs());
-                    if (StringUtils.isBlank(errorMsg) || StringUtils.contains(errorMsg, "business_exception_")) {
-                    	errorMsg = be.getMessage();
-                    } 
-    				
-//    				MqSoLog mqSoLog = mqSoLogDao.getByPrimaryKey(mqSoLogId);
-//    				// 将相对应的mqSoLog状态置成5,错误信息
-//    				mqSoLog.setStatus(MqSoLogStatus.MQ_SO_STATUS_ERROR);
-//    				mqSoLog.setErrorMsg(errorMsg);
-//    				mqSoLogDao.save(mqSoLog);
-    				
-    				//优化代码fanht
-    				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
 
-                    log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
+            int times = (mqSoLogIds.size() + maxDeal - 1) / maxDeal;
+            CountDownLatch countDownLatch = new CountDownLatch(times);
 
-                }catch (Exception e) {
-                    mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
-                    log.error("",e);
+            try {
+                for (int j = 0; j < times; j++) {
+                    if (i == times - 1) {
+                        exec.execute(new SoCreator(mqSoLogIds.subList(j * maxDeal, mqSoLogIds.size()), shopId, countDownLatch));
+                    } else {
+                        exec.execute(new SoCreator(mqSoLogIds.subList(j * maxDeal, (j + 1) * maxDeal), shopId, countDownLatch));
+                    }
                 }
+                countDownLatch.await();
+            } catch (InterruptedException e) {
+                log.error(Thread.currentThread().getName() + ":Interrupted");
             }
         }
     }
@@ -118,4 +110,39 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
         return date;
     }
 
+    class SoCreator implements  Runnable{
+
+        private List<Long> mqSoLogIds;
+        private Long shopId;
+        CountDownLatch countDownLatch;
+
+        public SoCreator(List<Long> mqSoLogIds, Long shopId, CountDownLatch countDownLatch) {
+            this.mqSoLogIds = mqSoLogIds;
+            this.shopId = shopId;
+            this.countDownLatch = countDownLatch;
+        }
+
+        @Override
+        public void run() {
+            try {
+                for (int j = 0; j < mqSoLogIds.size(); j++) {
+                    Long mqSoLogId = mqSoLogIds.get(j);
+                    try {
+                        platformSoManager.createTbSoFromMqSoLog(mqSoLogId, SalesOrderType.PLATFORM_ONLINE_TB, map,shopId);
+                    } catch(BusinessException be) {
+                        mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), JSON.toJSONString(be.getArgs()), null);
+                        log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
+                    }catch (Exception e) {
+                        mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
+                        log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------",e);
+                    }
+                }
+            }finally {
+                countDownLatch.countDown();
+            }
+
+        }
+    }
 }
+
+

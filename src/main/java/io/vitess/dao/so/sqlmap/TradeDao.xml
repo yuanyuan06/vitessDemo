@@ -21,13 +21,11 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.so.Trade"
-
-            flushCache="true">
+    <insert id="insert" parameterType="io.vitess.model.so.Trade" flushCache="true" useGeneratedKeys="true" keyProperty="id" >
         <![CDATA[
 		        INSERT INTO
 		        t_td_trade (
-		        id,
+		            id,
 		        	PLATFORM_ORDER_CODE ,
 		        	PLATFORM_ORDER_CREATE_TIME ,
 		        	ERP_SHOP_CODE ,
@@ -37,7 +35,7 @@
 		        	ORDER_COUNT ,
 		        	VERSION
 		        ) VALUES (
-		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		            #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
 		        	#{platformOrderCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{platformOrderCreateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
 		        	#{companyShop,javaType=Long,jdbcType=INTEGER} ,
