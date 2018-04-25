@@ -9,8 +9,9 @@ import io.vitess.enums.PlatformType;
 import io.vitess.enums.SalesOrderType;
 import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
-import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,9 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 @Service("platformSoManagerProxy")
-public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements PlatformSoManagerProxy {
+public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final long serialVersionUID = 2213885134142701455L;
 
@@ -38,7 +41,7 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
     @Autowired
     private PlatformSoManager platformSoManager;
     
-    @Value("${parametric.create.so.thread.count}")
+    @Value("${so.thread.count}")
     private int ThreadCount;
 
     /**
@@ -46,18 +49,21 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
      */
     private int maxDeal = 50;
 
-    private ExecutorService exec = Executors.newFixedThreadPool(ThreadCount);
-//    private ExecutorService exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
-//            0L, TimeUnit.MILLISECONDS,
-//            new LinkedBlockingQueue<Runnable>());
+//    private ExecutorService exec;
+    private ExecutorService exec;
 
-    Map<String, String> map = PlatformSouceContant.loadPlatformSouceData();
+    Map<String, String> map;
     /**
      * 淘宝创单
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {
+        map = PlatformSouceContant.loadPlatformSouceData();
+
+        exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
 
         List<CompanyShop> shopIdsList = companyShopDao.findShopListGeneralOrder();
         int platformType = PlatformType.TAOBAO_PLATFORM.getValue();
@@ -78,7 +84,7 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
                 }
                 countDownLatch.await();
             } catch (InterruptedException e) {
-                log.error(Thread.currentThread().getName() + ":Interrupted");
+                logger.error(Thread.currentThread().getName() + ":Interrupted");
             }
         }
     }
@@ -131,10 +137,10 @@ public class PlatformSoManagerProxyImpl extends BaseManagerImpl implements Platf
                         platformSoManager.createTbSoFromMqSoLog(mqSoLogId, SalesOrderType.PLATFORM_ONLINE_TB, map,shopId);
                     } catch(BusinessException be) {
                         mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), JSON.toJSONString(be.getArgs()), null);
-                        log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
+                        logger.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
                     }catch (Exception e) {
                         mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
-                        log.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------",e);
+                        logger.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------",e);
                     }
                 }
             }finally {

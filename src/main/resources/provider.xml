@@ -14,6 +14,6 @@
     <!--拼台销售数据解析-->
     <dubbo:service interface="io.vitess.service.mq.TbTradeParsePorxyManager" ref="tbTradeParsePorxyManager" />
     <!--创单-->
-    <dubbo:service interface="io.vitess.service.so.PlatformSoManagerProxy" ref="tbTradeParsePorxyManager" />
+    <dubbo:service interface="io.vitess.service.so.PlatformSoManagerProxy" ref="platformSoManagerProxy" />
 
 </beans>
