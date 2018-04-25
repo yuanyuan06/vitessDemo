@@ -5,13 +5,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
+    <context:property-placeholder location="cfg.prpoerties" file-encoding="utf-8"/>
+
     <context:component-scan base-package="io.vitess.service" />
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="jdbcUrl" value="jdbc:mysql://qdm208431549.my3w.com:3306/qdm208431549_db?" />
-        <property name="user" value="qdm208431549" />
-        <property name="password" value="yy632000046" />
+        <property name="jdbcUrl" value="${jdbcUrl}" />
+        <property name="user" value="${user}" />
+        <property name="password" value="${password}" />
     </bean>
 
     <bean  id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -21,7 +23,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="mapperLocations" value="classpath*:io/vitess/dao/mq/sqlmap/*Map.xml" />
+        <property name="mapperLocations" value="classpath*:io/vitess/dao/*/sqlmap/*Dao.xml" />
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -29,9 +31,5 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
-    <bean id="testMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="io.vitess.mybatis.TestMapper" />
-        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-    </bean>
-
+    <import resource="provider.xml"/>
 </beans>
