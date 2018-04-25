@@ -2,10 +2,10 @@ package io.vitess.service.common;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import io.vitess.common.User;
-import io.vitess.common.WorkFlowNode;
 import io.vitess.enums.Constants;
 import io.vitess.enums.SlipType;
+import io.vitess.model.base.User;
+import io.vitess.model.base.WorkFlowNode;
 import io.vitess.model.base.WorkTask;
 import io.vitess.model.so.SalesOrder;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
-import io.vitess.common.User;
+import io.vitess.model.base.User;
 import io.vitess.enums.SalesMode;
 import io.vitess.enums.SalesOrderType;
 import io.vitess.model.base.SkuAppointment;

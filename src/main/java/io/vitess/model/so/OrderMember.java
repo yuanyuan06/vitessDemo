@@ -10,7 +10,7 @@ public class OrderMember extends SuperEntity {
     private static final long serialVersionUID = 2593506430728481494L;
     
     /** 销售订单ID，关联SALES_ORDER_ID */
-    private SalesOrder salesOrder;
+    private Long salesOrder;
     
     /** 平台会员标识 */
     private String platformMemberCode;

@@ -149,7 +149,7 @@
 		        	#{targetType,javaType=String,jdbcType=VARCHAR} ,
 		        	#{allocationCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{fqgNum,javaType=Integer,jdbcType=INTEGER} ,
-		        	#{isFqgSFee,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{isFqgSFee,javaType=Boolean,jdbcType=INTEGER} ,
 		        	#{allocationType,javaType=String,jdbcType=VARCHAR} ,
 		        	#{platformSkuId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{couponFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL}

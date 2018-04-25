@@ -1,7 +1,7 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.common.User;
+import io.vitess.model.base.User;
 import io.vitess.enums.SoCreateLogType;
 import io.vitess.model.base.CompanyShop;
 

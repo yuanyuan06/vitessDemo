@@ -1,5 +1,86 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.WorkFlowDao">
-    <select id="findByCode" resultType="io.vitess.common.WorkFlow"></select>
+
+    <resultMap id="TwfWorkflowResult" type="io.vitess.model.base.WorkFlow">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="twfWorkflowColumns">
+        <![CDATA[
+	        	ID as id,
+	        	CODE as code,
+	        	CREATE_TIME as createTime,
+	        	DESCRIPTION as description,
+	        	IS_AVAILABLE as isAvailable,
+	        	LAST_MODIFY_TIME as lastModifyTime,
+	        	NAME as name,
+	        	SLIP_TYPE as slipType,
+	        	VERSION as version,
+	        	LAST_MODIFY_USER_ID as lastModifyUserId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.base.WorkFlow"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_wf_workflow (
+		        id,
+		        	CODE ,
+		        	CREATE_TIME ,
+		        	DESCRIPTION ,
+		        	IS_AVAILABLE ,
+		        	LAST_MODIFY_TIME ,
+		        	NAME ,
+		        	SLIP_TYPE ,
+		        	VERSION ,
+		        	LAST_MODIFY_USER_ID
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{code,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{description,javaType=String,jdbcType=LONGVARCHAR} ,
+		        	#{isAvailable,javaType=Boolean,jdbcType=BIT} ,
+		        	#{lastModifyTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{name,javaType=String,jdbcType=VARCHAR} ,
+		        	#{slipType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{lastModifyUserId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TwfWorkflowResult" flushCache="false">
+        select <include refid="twfWorkflowColumns" />
+        <![CDATA[
+			    from t_wf_workflow
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
+
+    <select id="findByCode" resultType="io.vitess.model.base.WorkFlow">
+        select
+            t.ID as id,
+            t.CODE as code,
+            t.CREATE_TIME as createTime,
+            t.DESCRIPTION as description,
+            t.IS_AVAILABLE as isAvailable,
+            t.LAST_MODIFY_TIME as lastModifyTime,
+            t.NAME as name,
+            t.SLIP_TYPE as slipType,
+            t.VERSION as version,
+            t.LAST_MODIFY_USER_ID as lastModifyUserId
+        from
+        t_wf_workflow t
+        where t.CODE = #{workFlowCode} and t.IS_AVAILABLE = true;
+    </select>
+
+    <select id="findAllAvailableFlow" resultType="io.vitess.model.base.WorkFlow">
+
+    </select>
 </mapper>

@@ -94,8 +94,8 @@ public class PlatformPromotionManagerImpl implements PlatformPromotionManager{
 		
 		List<PlatformPromotion> platformPromotionList = solCmd.getPlatformPromotionList();
 		for (PlatformPromotion platformPromotion : platformPromotionList) {
-			platformPromotion.setSalesOrderLine(sl);
-			platformPromotion.setSalesOrder(newSo);
+			platformPromotion.setSalesOrderLine(sl.getId());
+			platformPromotion.setSalesOrder(newSo.getId());
 		}
 		linePlatformPromotions.addAll(solCmd.getPlatformPromotionList());
 	}
@@ -116,7 +116,7 @@ public class PlatformPromotionManagerImpl implements PlatformPromotionManager{
 		for (PlatformPromotion platformPromotion : ppList) {
 			PlatformPromotion promotion = new PlatformPromotion();
 			BeanUtils.copyProperties(platformPromotion, promotion, new String[] {"id", "salesOrder"});
-			promotion.setSalesOrder(so);
+			promotion.setSalesOrder(so.getId());
 			promotion.setPlatformOrderCode(so.getPlatformOrderCode());
 			platformPromotionDao.insert(promotion);
 		}

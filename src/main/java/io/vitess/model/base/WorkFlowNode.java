@@ -1,10 +1,9 @@
-package io.vitess.common;
+package io.vitess.model.base;
 
 
 
+import io.vitess.common.SuperEntity;
 import io.vitess.enums.WorkFlowNodeType;
-import io.vitess.model.base.WorkFlowNodeActor;
-import io.vitess.model.base.WorkFlowTransition;
 import lombok.Data;
 
 import java.util.ArrayList;

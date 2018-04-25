@@ -7,12 +7,15 @@ import io.vitess.common.ErrorCode;
 import io.vitess.common.NumberUtils;
 import io.vitess.constants.Constants;
 import io.vitess.dao.base.ShoOutLetInfoDao;
-import io.vitess.dao.so.*;
+import io.vitess.dao.base.SkuDao;
+import io.vitess.dao.so.SalesOrderLineDao;
 import io.vitess.enums.OrderLineType;
-import io.vitess.model.base.PackageSkuNum;
-import io.vitess.model.base.SkuWarehouseRel;
 import io.vitess.model.base.CompanyShop;
-import io.vitess.model.so.*;
+import io.vitess.model.base.PackageSkuNum;
+import io.vitess.model.base.Sku;
+import io.vitess.model.base.SkuWarehouseRel;
+import io.vitess.model.so.SalesOrder;
+import io.vitess.model.so.SalesOrderLine;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
 import io.vitess.service.common.PackageSkuNumManager;
@@ -21,7 +24,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -49,7 +51,8 @@ public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements Sales
 
 	@Autowired
 	ShoOutLetInfoDao shoOutLetInfoDao;
-
+	@Autowired
+	private SkuDao skuDao;
 
 	/**
 	 * 验证组合商品
@@ -252,7 +255,8 @@ public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements Sales
 		List<SalesOrderLineCommand> noNeedSinglePackageSoLineList = new ArrayList<SalesOrderLineCommand>();//不需要单独打包发货的包裹
 		List<List<SalesOrderLineCommand>> allSoLineList = new ArrayList<List<SalesOrderLineCommand>>();//第一次List表示拆分订单后的数量，第二层List表示每个包裹包含的商品明细
 		for (SalesOrderLineCommand soLineCmd : soLineCmdList) {
-			String extentionCode = soLineCmd.getSku().getExtensionCode1();
+			Sku sku = skuDao.findById(soLineCmd.getSku());
+			String extentionCode = sku.getExtensionCode1();
 			PackageSkuNum packageSkuNum = packageSkuNumManager.findPackageSkuNum(shop, extentionCode);
 			//查询数量
 			if (packageSkuNum == null || packageSkuNum.getQty() <= 0) {
@@ -333,7 +337,7 @@ public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements Sales
 
 		List<List<SalesOrderLineCommand>> allSoLineList = new ArrayList<List<SalesOrderLineCommand>>();//第一次List表示拆分订单后的数量，第二层List表示每个包裹包含的商品明细
 		for (SalesOrderLineCommand soLineCmd : soLineCmdList) {
-			if (soLineCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(soLineCmd.getOrderLineType().getValue())) {//赠品
+			if (soLineCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(soLineCmd.getOrderLineType())) {//赠品
 				giftSoLineList.add(soLineCmd);
 				continue;
 			}
@@ -395,7 +399,9 @@ public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements Sales
 		List<SalesOrderLineCommand> salesOrderLineList = srcSoCmd.getSoLineCommandList();
 		Set<String> skuCodes = new HashSet<String>();
 		for(SalesOrderLineCommand line: salesOrderLineList){
-			skuCodes.add(line.getSku().getCode());
+
+			Sku sku = skuDao.findById(line.getSku());
+			skuCodes.add(sku.getCode());
 		}
 		// 获取该订单下所有的sku
 		String skuCodeStr = rmJsonBrackets(JSON.toJSONString(skuCodes));
@@ -412,7 +418,9 @@ public class SalesOrderSplitManagerImpl extends BaseManagerImpl implements Sales
 			}
 			List<SalesOrderLineCommand> soLines = new ArrayList<SalesOrderLineCommand>();
 			for(SalesOrderLineCommand saleLine: salesOrderLineList){
-				if(line.getSkuCode().equals(saleLine.getSku().getCode())){
+
+				Sku sku = skuDao.findById(saleLine.getSku());
+				if(line.getSkuCode().equals(sku.getCode())){
 					soLines.add(saleLine);
 				}
 			}

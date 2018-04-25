@@ -3,6 +3,7 @@ package io.vitess.service.common;
 import io.vitess.command.*;
 import io.vitess.common.DateUtil;
 import io.vitess.constants.Constants;
+import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.base.ProductDao;
 import io.vitess.dao.base.PromotionActivityDao;
 import io.vitess.dao.base.SkuDao;
@@ -41,6 +42,8 @@ public class PromotionManagerImpl implements PromotionManager{
     private SkuDao skuDao;
     @Autowired
     private VmiTimedPromotionDao vmiTimedPromotionDao;
+    @Autowired
+    private CompanyShopDao companyShopDao;
     /**
      * 赠品是否到sku标示 0 是不到 1是到
      */
@@ -54,7 +57,8 @@ public class PromotionManagerImpl implements PromotionManager{
     @Override
     public SalesOrderCommand applyPromotionAndAddGiftLine(SalesOrderCommand soc) {
         log.info("促销调用Start");
-        Long shopId = soc.getCompanyShop().getId();
+        CompanyShop byId = companyShopDao.findById(soc.getCompanyShop());
+        Long shopId = byId.getId();
         SalesOrder newSo = soc;
         Collection<SalesOrderLineCommand> slList = soc.getSoLineCommandList();
         // 促销应用
@@ -136,8 +140,9 @@ public class PromotionManagerImpl implements PromotionManager{
                     //折扣后行金额总计 
                     skuCom.setLineTotal(sl.getTotalAmountAfterDiscount());
                     skuCom.setShopId(shopId);
-                    if (sl.getSku().getProduct()!=null) {
-                        Product byId = productDao.findById(sl.getSku().getProduct());
+                    Sku sku = skuDao.findById(sl.getSku());
+                    if (sku !=null && sku.getProduct() != null) {
+                        Product byId = productDao.findById(sku.getProduct());
                         Long productId = byId.getId();
                         if (sl.getIsComboSku()) {
                             PromotionSkuCommand skuCom2 = skuInfoComboMap.get(productId);
@@ -207,14 +212,14 @@ public class PromotionManagerImpl implements PromotionManager{
                             soline.setKeyProperties(sku.getKeyProperties());
                             soline.setSkuCode(sku.getCode());
                             soline.setExtentionCode(sku.getExtensionCode1());
-                            soline.setSku(sku);
+                            soline.setSku(sku.getId());
                         }
                         soline.setQuantity(giftQyt);
                         if(null !=product){
                         	soline.setListPrice(product.getListPrice());
                         }
                         soline.setIsGift(Boolean.TRUE);
-                        soline.setOrderLineType(OrderLineType.GIFT);
+                        soline.setOrderLineType(OrderLineType.GIFT.getValue());
                         soline.setPlatformOrderLineCode("促销赠品_" + slComList.size());
                         soline.setUnitPrice(BigDecimal.ZERO);
                         soline.setTotalAmount(BigDecimal.ZERO);
@@ -226,7 +231,7 @@ public class PromotionManagerImpl implements PromotionManager{
                         soline.setInvoiceTotalAmount(BigDecimal.ZERO);
                         soline.setInvoiceUnitPrice(BigDecimal.ZERO);
                         soline.setTotalPointUsed(BigDecimal.ZERO);
-                        soline.setSalesOrder(newSo);
+                        soline.setSalesOrder(newSo.getId());
                         // 赠品日志内容添加
                         soline.setGiftQty(giftQyt);
                         soline.setGiftId(productGiftId);
@@ -249,7 +254,7 @@ public class PromotionManagerImpl implements PromotionManager{
      */
     @Override
     public SalesOrderCommand applyVmiPromotion(SalesOrderCommand soc) {
-        CompanyShop shop = soc.getCompanyShop();
+        CompanyShop shop = companyShopDao.findById(soc.getCompanyShop());
         Collection<SalesOrderLineCommand> slList = soc.getSoLineCommandList();
         //折前价
         BigDecimal lineSumTotal = soc.getAmountBeforeDiscount();
@@ -327,8 +332,10 @@ public class PromotionManagerImpl implements PromotionManager{
             // timedProMap01.size());
             for (SalesOrderLine line : soLines) {
                 // Long skuId = line.getProduct().getId();
-                Long skuId = line.getSku().getProduct();
-                Collection<VmiTimedPromotion> timedPros = timedProMap01.get(skuId);
+                Long skuId = line.getSku();
+                Sku sku = skuDao.findById(skuId);
+                Product proId = productDao.findById(sku.getProduct());
+                Collection<VmiTimedPromotion> timedPros = timedProMap01.get(proId.getId());
                 if (timedPros != null) {
                     for (VmiTimedPromotion timedPro : timedPros) {
                         // log.error("---start vmi price pro2---" + so.getCode()
@@ -354,8 +361,11 @@ public class PromotionManagerImpl implements PromotionManager{
         if (timedProMap03.size() > 0) {
             for (SalesOrderLine line : soLines) {
                 // Long skuId = line.getProduct().getId();
-                Long skuId = line.getSku().getProduct();
-                VmiTimedPromotion pro = timedProMap03.get(skuId);
+
+                Long skuId = line.getSku();
+                Sku sku = skuDao.findById(skuId);
+                Product proId = productDao.findById(sku.getProduct());
+                VmiTimedPromotion pro = timedProMap03.get(proId.getId());
                 //04类型回退fanht
                 //if (pro != null && pro.getGiftQuota() >= line.getQuantity() && (payTime.compareTo(pro.getStartTime()) >= 0 && payTime.compareTo(pro.getEndTime()) < 0)) {
                 if (pro != null && pro.getGiftQuota() > 0 && (payTime.compareTo(pro.getStartTime()) >= 0 && payTime.compareTo(pro.getEndTime()) < 0)) {
@@ -376,13 +386,13 @@ public class PromotionManagerImpl implements PromotionManager{
                 Product product = productDao.findById(sku.getProduct());
 
                 li.setIsGift(Boolean.TRUE);
-                li.setOrderLineType(OrderLineType.GIFT);
+                li.setOrderLineType(OrderLineType.GIFT.getValue());
                 li.setPlatformOrderLineCode("VMI促销赠品");
                 li.setKeyProperties(sku.getKeyProperties());
                 li.setBarCode(sku.getBarCode());
                 li.setExtentionCode(sku.getExtensionCode1());
                 li.setSkuCode(sku.getCode());
-                li.setSku(sku);
+                li.setSku(sku.getId());
                 li.setQuantity(qty);
                 li.setSkuName(product.getName());
                 li.setVmiDiscountCode(product.getSupplierSkuCode());
@@ -456,13 +466,13 @@ public class PromotionManagerImpl implements PromotionManager{
             Sku sku = skuDao.findByProductId(product.getId());
 
             li.setIsGift(Boolean.TRUE);
-            li.setOrderLineType(OrderLineType.GIFT);
+            li.setOrderLineType(OrderLineType.GIFT.getValue());
             li.setPlatformOrderLineCode("VMI促销赠品");
             li.setKeyProperties(sku.getKeyProperties());
             li.setBarCode(sku.getBarCode());
             li.setExtentionCode(sku.getExtensionCode1());
             li.setSkuCode(sku.getCode());
-            li.setSku(sku);
+            li.setSku(sku.getId());
             li.setQuantity(1);
             li.setSkuName(product.getName());
             li.setVmiDiscountCode(timedPro.getCode());

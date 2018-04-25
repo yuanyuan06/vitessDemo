@@ -115,7 +115,44 @@
 
     <select id="findByShopIdAndProvince" resultType="io.vitess.common.ShopWhCommand"></select>
     <select id="findShopWhByShopIdAndWhCode" resultType="io.vitess.model.base.ShopWh"></select>
-    <select id="findDefaultByShopId" resultType="io.vitess.model.base.ShopWh"></select>
+
+    <select id="findDefaultByShopId" resultType="io.vitess.model.base.ShopWh">
+            select
+              w.ID as id,
+                w.CREATE_TIME as createTime,
+                w.LAST_MODIFY_TIME as lastModifyTime,
+                w.VERSION as version,
+                w.WH_CODE as whCode,
+                w.WH_NAME as whName,
+                w.SHOP_ID as shopId,
+                w.IS_DEFAULT as isDefault,
+                w.IS_PLATFORM_DEFAULT as isPlatformDefault,
+                w.IS_RTN_DEFAULT as isRtnDefault,
+                w.DELIVERY_ADDRESS_DETAIL as deliveryAddressDetail,
+                w.CONSIGN_NAME as consignName,
+                w.CONSIGN_PHONE as consignPhone,
+                w.PROVINCE as province,
+                w.CITY as city,
+                w.AREA as area,
+                w.TOWN as town,
+                w.SYSTEM_NAME as systemName,
+                w.SYSTEM_CODE as systemCode,
+                w.ONE_BY_ONE_TO_WH_LEVEL as oneByOneToWhLevel,
+                w.IS_PRE_PACKAGE as isPrePackage,
+                w.IS_TRACKING_NO as isTrackingNo,
+                w.ADDRESS as address,
+                w.RECEIVER as receiver,
+                w.RECEIVER_PHONE as receiverPhone,
+                w.DISTRICT as district,
+                w.MOBILE as mobile,
+                w.ZIP_CODE as zipCode,
+                w.IS_INVOKE_DELIVERY_SERVICE as isInvokeDeliveryService
+            from
+              t_ma_shop_wh as w
+            where
+              w.SHOP_ID = #{shopId} and w.IS_DEFAULT = #{isDefault}
+
+    </select>
 
     <select id="findPlatformDefaultWhByShopId" resultType="io.vitess.model.base.ShopWh">
         select

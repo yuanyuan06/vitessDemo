@@ -1,8 +1,9 @@
-package io.vitess.common;
+package io.vitess.model.base;
 
 
 
 
+import io.vitess.common.SuperEntity;
 import io.vitess.enums.SlipType;
 import lombok.Data;
 

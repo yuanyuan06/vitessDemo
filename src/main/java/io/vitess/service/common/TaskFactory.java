@@ -1,11 +1,8 @@
 package io.vitess.service.common;
 
-import io.vitess.common.User;
 import io.vitess.enums.SlipType;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.model.base.WorkTask;
-
-import java.util.List;
 
 public interface TaskFactory<S> {
 

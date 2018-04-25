@@ -9,16 +9,11 @@ import io.vitess.common.*;
 import io.vitess.constants.AppleConstants;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
-import io.vitess.dao.base.ComboSkuDetailDao;
-import io.vitess.dao.base.CompanyShopDao;
-import io.vitess.dao.base.ProductDao;
-import io.vitess.dao.base.ShoOutLetInfoDao;
+import io.vitess.dao.base.*;
 import io.vitess.dao.so.*;
 import io.vitess.enums.*;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.model.base.*;
-import io.vitess.model.base.CompanyShop;
-import io.vitess.model.base.ShopWh;
 import io.vitess.model.so.*;
 import io.vitess.service.BaseManagerImpl;
 import io.vitess.service.BusinessException;
@@ -26,7 +21,6 @@ import io.vitess.service.common.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -119,6 +113,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     private PlatformPromotionManager platformPromotionManager;
     @Autowired
     ShoOutLetInfoDao shoOutLetInfoDao;
+    @Autowired
+    private SkuDao skuDao;
     
     private static final int ORDER_TO_WH_PAUSE_START_TIME = 0;
     private static final int ORDER_TO_WH_PAUSE_END_TIME = 22;
@@ -140,7 +136,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     private void dealInvoiceInfo(SalesOrder newSo, SalesOrderCommand soCmd, CompanyShop shop) {
     	// 物流宝订单不需要开票,店铺开票字段未设置开启的不开票
     	// 店铺订单类型
-    	int specialType = newSo.getSpecialType().getValue();
+    	int specialType = newSo.getSpecialType();
     	// 店铺是否设置开票
     	Boolean defaultInvoice = shop.getIsDefaultInvoice();
     	if(specialType == SoSpecialType.WLB_ORDER.getValue() && !shop.getInvoiceKind()){
@@ -160,9 +156,9 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
      
         // 发票类型
         try {
-            newSo.setInvoiceType(soCmd.getInvoiceTypeValue() == null ? InvoiceType.ORDINARY_COMMERCIAL : InvoiceType.valueOf(soCmd.getInvoiceTypeValue()));
+            newSo.setInvoiceType(soCmd.getInvoiceTypeValue() == null ? InvoiceType.ORDINARY_COMMERCIAL.getValue() : soCmd.getInvoiceTypeValue());
         } catch (IllegalArgumentException e) {
-            newSo.setInvoiceType(InvoiceType.ORDINARY_COMMERCIAL);
+            newSo.setInvoiceType(InvoiceType.ORDINARY_COMMERCIAL.getValue());
         }
         
         //放到发票处理里面fanht  如果订单上是否开具发票明细为空，则判断店是否默认开明细,如果“是”则订单上是否开具发票明细设置为true，否则设置为false
@@ -194,7 +190,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         String invoiceTitle = newSo.getInvoiceTitle();
         if(!StringUtils.hasText(invoiceTitle)){
 			if (null!=shop.getDefInvoiceTitleType()&&shop.getDefInvoiceTitleType().equals(DefInvoiceTitleType.RECEIVER)) {
-				SoDeliveryInfo delivery = newSo.getSoDeliveryInfo();
+
+				SoDeliveryInfo delivery = soDeliveryInfoDao.findById(newSo.getSoDeliveryInfo());;
 				invoiceTitle = delivery.getReceiver();
 			} else {
 				invoiceTitle = Constants.COMMON_SO_INVOICE_TAX_TITLE;
@@ -220,8 +217,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     	if(soCmd.getIsAssignWh() != null){
     		newSo.setIsAssignWh(soCmd.getIsAssignWh());
     	}
-    	
-        CompanyShop shop = soCmd.getCompanyShop();
+
+        CompanyShop shop = companyShopDao.findById(soCmd.getCompanyShop());;
     	specialProcessSoDeliveryInfo(soCmd);
     	
     	//电话 手机 校验 fanht
@@ -234,15 +231,15 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         
         List<SalesOrderLineCommand> solCmdList = soCmd.getSoLineCommandList();
         //o2o订单检查
-        checkO2oPostSalesServiceInfo(soCmd.getCompanyShop(), soCmd, solCmdList);
+        checkO2oPostSalesServiceInfo(shop, soCmd, solCmdList);
         // 企业税号
         newSo.setBuyerTaxNO(soCmd.getBuyerTaxNO());
         soCmd.generateSalesOrder(newSo);
-        newSo.setOrderType(orderType);
+        newSo.setOrderType(orderType.getValue());
         // omsOrderCode与子订单号同值
         newSo.setOmsOrderCode(newSo.getPlatformOrderCodeN());
-        newSo.setOrderStatus(SalesOrderStatus.CREATED);
-        newSo.setCreator(creator);
+        newSo.setOrderStatus(SalesOrderStatus.CREATED.getValue());
+        newSo.setCreator(creator == null ? null: creator.getId());
         newSo.setCreateTime(Calendar.getInstance().getTime());
         //直连库存共享逻辑fanht
         if(!(shop.getIsOpenDirectWms()==null||shop.getIsOpenDirectWms()==SysWmsStatus.UNWMS)&&shop.getIsShareInventory()){
@@ -279,7 +276,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         soDef.setReceiverPhone(soCmd.getReceiverPhone());
         soDef.setRemark(soCmd.getDeliveryRemark());
         soDef.setTransServiceType(soCmd.getTransServiceType() == null ? 1 : soCmd.getTransServiceType());// 设置运送方式(快递附加服务)
-        soDef.setTransTimeType(TransTimeType.valueOf(soCmd.getTransTimeType() == null ? 1 : soCmd.getTransTimeType()));// 设置当快递时间限制
+        soDef.setTransTimeType(soCmd.getTransTimeType() == null ? 1 : soCmd.getTransTimeType());// 设置当快递时间限制
         soDef.setShopId(shop.getId());
         String transExpCode = soCmd.getTransExpCode();
         if (StringUtils.hasText(transExpCode)) {
@@ -290,7 +287,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
                 soDef.setTransName(tp.getName());
             }
         }
-        newSo.setSoDeliveryInfo(soDef);
+
 
         // construct soline
         List<SalesOrderLine> slList = new ArrayList<SalesOrderLine>();
@@ -302,7 +299,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 
         // 订单行信息
         for (SalesOrderLineCommand solCmd : solCmdList) {
-            Sku sku = solCmd.getSku();
+            Sku sku = skuDao.findById(solCmd.getSku());
             SalesOrderLine sl = solCmd.generateSoLine();
             sl.setSkuName(sku.getName());
             sl.setBarCode(sku.getBarCode());
@@ -321,7 +318,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
             }else{
             	sl.setOutOwner(shop.getInterfaceShopCode());
             }
-            sl.setSalesOrder(newSo);
+            sl.setSalesOrder(newSo.getId());
 
             this.dealSoLineSourceType(newSo, sl);
 
@@ -343,15 +340,15 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         //选仓逻辑里面 若订单工作流分支标识字段为空则基于店铺仓储模式设置该字段值,同一家店铺基于商品或其它逻辑进行拆单时，所拆订单分别走不同工作流分支，则这类订单在进入该创单统一入口前已维护好wfBranch字段
         if (null == newSo.getWfBranch()) {
             if (CompanyShopWhModel.USE_BAOZUN_WMS.getValue() == shop.getWhModel()) { // 使用宝尊wms
-                newSo.setWfBranch(CompanyShopWhModel.USE_BAOZUN_WMS);
+                newSo.setWfBranch(CompanyShopWhModel.USE_BAOZUN_WMS.getValue());
             } else {
-                newSo.setWfBranch(CompanyShopWhModel.NOT_USE_BAOZUN_WMS);
+                newSo.setWfBranch(CompanyShopWhModel.NOT_USE_BAOZUN_WMS.getValue());
             }
         }
 
         //创单选仓逻辑 fanht
         // 有仓模式需维护发货仓库(若外部已指定仓库，则不再指定默认仓)
-        if (newSo.getWarehouseCode() == null && CompanyShopWhModel.USE_BAOZUN_WMS == newSo.getWfBranch()) {
+        if (newSo.getWarehouseCode() == null && CompanyShopWhModel.USE_BAOZUN_WMS.getValue() == newSo.getWfBranch()) {
         	String whCode = null;
         	if (soCmd.getSpecialType() != null && soCmd.getSpecialType().equals(SoSpecialType.WLB_ORDER)) {
         		/**
@@ -375,7 +372,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
                 // 匹配当前店铺是否为特殊店铺
                 if (shop.getId().equals(Constants.GODIVA_BS_SHOP_ID) || shop.getId().equals(Constants.TMALL_GDV_BS_SHOP_ID)) {
                     // GODIVA淘宝店及GODIVA官方商城店推荐最佳物理发货仓
-                    ShopWhCommand reCommentWh = recommendSendWh(newSo.getCompanyShop().getId(), soCmd.getProvince());
+                    ShopWhCommand reCommentWh = recommendSendWh(newSo.getCompanyShop(), soCmd.getProvince());
                     if (reCommentWh != null) {
                         whCode = reCommentWh.getWhCode();
                     }
@@ -427,7 +424,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
             pf2.setIsCompleted(Constants.YES);
             pf2.setPayAmount(virtualAmount);
             pf2.setPaymentTime(newSo.getPlatformPaymentTime());
-            pf2.setPaymentType(PaymentType.INTEGRAL_PAYMENT);
+            pf2.setPaymentType(PaymentType.INTEGRAL_PAYMENT.getValue());
             pf2.setPaymentAccount(newSo.getPayAccount());
             pf2.setShopId(shop.getId());
             salesOrderPaymentInfoList.add(pf2);
@@ -452,34 +449,34 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         SalesOrder s = newSo;
         //zhiyong.shi 如果开启依次过仓
         //zhiyong.shi 全渠道订单开启依次过仓需要插入，依次过仓表数据
-        if(soCmd.getIsOmnichannelParam() && soCmd.getCompanyShop().getIsOneByOneToWh()){
+        if(soCmd.getIsOmnichannelParam() && shop.getIsOneByOneToWh()){
         	//插入依次过仓表数据
 		 	SalesOrderOnebyOneTowh toWh = new SalesOrderOnebyOneTowh();
   			toWh.setSoId(s.getId());
   		 	 if(!(s.getIsDirectWmsOrder() == SysWmsStatus.SHOPDOG)){
       			toWh.setWarehouseCode(WmsConstants.SHOP_DOG_WHCODE);
   		 	 }
-  			toWh.setShopId(soCmd.getCompanyShop().getId());
+  			toWh.setShopId(shop.getId());
   			salesOrderOnebyOneTowhDao.insert(toWh);
         }
 
         // 基于订单类型维护平台来源
         // 订单工作流实例
         try {
-            soDef.setSalesOrder(s);
+            soDef.setSalesOrder(s.getId());
 
             OrderMember orderMember = soCmd.getOrderMember();
             if (orderMember != null) {
                 OrderMember om = new OrderMember();
                 BeanUtils.copyProperties(orderMember, om);
-                om.setSalesOrder(s);
+                om.setSalesOrder(s.getId());
                 orderMemberDao.insert(om);
             }
             
             // 订单行保存
             for (SalesOrderLine sl : slList) {
+                sl.setSalesOrder(s.getId());
                 soLineDao.insert(sl);
-                sl.setSalesOrder(s);
                 if (sl.getProLog() != null) {
                     for (SoPromotionApplyLog promLog : sl.getProLog()) {
                         promLog.setSoLine(sl);
@@ -530,34 +527,19 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
              }
              //保存发货信息迁移到这里fanht
              soDeliveryInfoDao.insert(soDef);
-            
+            newSo.setSoDeliveryInfo(soDef.getId());
            //新增shopId fanht
-            WorkTask task = factory.createTask(Constants.TASK_CODE_SO, newSo,shop.getId());
-            
-//            salesOrderDao.flush();
-//            soLineDao.flush();
-          //预约过仓订单，向预约过仓表插入预约过仓配置数据
-            if(newSo.getSpecialType() == SoSpecialType.APPOINTMENT_ORDER){
-            	saveSoAppointmentToWhTask(newSo, shop,skuAppointment);
-            }
-          //剥离依次过仓逻辑fanht
-//            /**=====依次过仓逻辑，匹配优先级最高的仓库====start==**/
-//            soDeliveryWhManager.saveSoDeliveryWhs(s.getId(), s.getWarehouseCode(), swpList,shop.getId());
-//            /**=====依次过仓逻辑，匹配优先级最高的仓库====end==**/
-            
-            processSalesOrderWorkflowNode(s, soCmd.getOrderMember(), soDef, shop, slList,
-					platformSLPackingInfos, salesOrderPaymentInfoList,
-					soServiceLineList, task);
-            
-        } catch (WorkFlowException e) {
-            BusinessException exp = workFlowExceptionConverter(e);
-            log.error("订单异常: "+soCmd.getPlatformOrderCodeN(), e);
-            throw exp;
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw e;
+//            WorkTask task = factory.createTask(Constants.TASK_CODE_SO, newSo,shop.getId());
+//
+////           约过仓订单，向预约过仓表插入预约过仓配置数据
+//            if(newSo.getSpecialType() == SoSpecialType.APPOINTMENT_ORDER.getValue()){
+//            	saveSoAppointmentToWhTask(newSo, shop,skuAppointment);
+//            }
+//            processSalesOrderWorkflowNode(s, soCmd.getOrderMember(), soDef, shop, slList,
+//					platformSLPackingInfos, salesOrderPaymentInfoList,
+//					soServiceLineList, task);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("创单异常!!", e);
             throw new BusinessException(ErrorCode.SALES_ORDER_CREATE_TASK_ERROR);
         }
 
@@ -571,7 +553,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 	 * @param soCmd
 	 */
 	private void specialProcessAutoDeliverySo(SalesOrderCommand soCmd) {
-		if (!SoSpecialType.isAutoDeliverySo(soCmd.getSpecialType())) {
+		if (!SoSpecialType.isAutoDeliverySo(SoSpecialType.valueOf(soCmd.getSpecialType()))) {
 			return;
 		}
 		
@@ -589,13 +571,13 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 	 * @return
 	 */
 	private String autoDeliveryOrderWh(SalesOrder newSo, String whCode) {
-		if (newSo.getWarehouseCode() == null && CompanyShopWhModel.USE_BAOZUN_WMS.getValue() == newSo.getWfBranch().getValue()) {
+		if (newSo.getWarehouseCode() == null && CompanyShopWhModel.USE_BAOZUN_WMS.getValue() == newSo.getWfBranch()) {
 			if (newSo.getSpecialType().equals(SoSpecialType.AUTO_DELIVERY_INV_ORDER)) {
-				ShopWh shopWh = shopWhManager.findPlatformDefaultWh(newSo.getCompanyShop().getId());
+				ShopWh shopWh = shopWhManager.findPlatformDefaultWh(newSo.getCompanyShop());
 				if (shopWh != null) {
 					whCode = shopWh.getWhCode();
 				} else {
-					 throw new BusinessException(ErrorCode.CUSTOMIZATION_TIP, new Object[]{"基础信息维护错误：该订单为微软自动发货订单，店铺[" + newSo.getCompanyShop().getId() + "]没有绑定[平台默认发货仓库]" });
+					 throw new BusinessException(ErrorCode.CUSTOMIZATION_TIP, new Object[]{"基础信息维护错误：该订单为微软自动发货订单，店铺[" + newSo.getCompanyShop() + "]没有绑定[平台默认发货仓库]" });
 				}
 			}
 		}
@@ -622,12 +604,12 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 			isAutoWh = shop.getIsAutoCommitToWhForO2o() == null ? Boolean.FALSE : shop.getIsAutoCommitToWhForO2o();
 		}else{
 			//其他订单
-			isAutoWh = soManager.getOrderAutoToWh(shop, soDef.getTransExpCode(), newSo.getSpecialType());
+			isAutoWh = soManager.getOrderAutoToWh(shop, soDef.getTransExpCode(), SoSpecialType.valueOf(newSo.getSpecialType()));
 		}
 		/**
 		 * 非挂起,自动过仓,非预约过仓订单 
 		 */
-		if(!isSuspend&&isAutoWh&&!(newSo.getSpecialType()==SoSpecialType.APPOINTMENT_ORDER)){
+		if(!isSuspend&&isAutoWh&&!(newSo.getSpecialType()==SoSpecialType.APPOINTMENT_ORDER.getValue())){
 			newSo.setIsAutoWh(Boolean.TRUE);
 		}
 		
@@ -896,7 +878,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     	
     	so.setHomeDeliveryFee(sumHomeDeliveryFee);
     	so.setInstallFee(sumInstallFee);
-    	so.setDeliveryType(isHomeDeliveryService ? SoDeliveryType.HOME_DELIVERY_SERVICE : (isCustomersFromcCarrying ? SoDeliveryType.CUSTOMERS_FROM_CARRYING : SoDeliveryType.DEFAULT));
+    	so.setDeliveryType(isHomeDeliveryService ? SoDeliveryType.HOME_DELIVERY_SERVICE.getValue() : (isCustomersFromcCarrying ? SoDeliveryType.CUSTOMERS_FROM_CARRYING.getValue() : SoDeliveryType.DEFAULT.getValue()));
     	so.setIsInstall(isInstallService);
     	ServiceInstallCompany sic = null;
     	//如果是安装服务，需要查到安装服务的公司
@@ -926,7 +908,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     		//如果订单明细行中，包含O2O有售后服务的商品和无售后服务的商品，则创单失败
     		Set<String> postSalesServiceSet = new HashSet<String>();
     		for (SalesOrderLineCommand solCmd : solCmdList) {
-    			if (solCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(solCmd.getOrderLineType().getValue())) {//如果是赠品则表示不做检查
+    			if (solCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(solCmd.getOrderLineType())) {//如果是赠品则表示不做检查
     				continue;
     			}
     			if (solCmd.getIsPostSalesServiceSku() != null && solCmd.getIsPostSalesServiceSku()) {//有售后服务
@@ -937,7 +919,7 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     		}
     		if (postSalesServiceSet.size() == 1) {
     			String postSalesService = postSalesServiceSet.iterator().next();
-    			soCmd.setSpecialType("postSalesService".equals(postSalesService) ? SoSpecialType.O2O_ORDER_POST_SALES_SERVICE : SoSpecialType.O2O_ORDER_NOT_POST_SALES_SERVICE);
+    			soCmd.setSpecialType("postSalesService".equals(postSalesService) ? SoSpecialType.O2O_ORDER_POST_SALES_SERVICE.getValue() : SoSpecialType.O2O_ORDER_NOT_POST_SALES_SERVICE.getValue());
     		} else {
     			throw new BusinessException(ErrorCode.CUSTOMIZATION_TIP, new Object[] {"该单为O2O订单，由于同时存在售后服务和无售后服务的商品，故需要进行拆单，请将店铺开关设置为【按O2O订单服务类型拆】"});
     		}
@@ -993,7 +975,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
         if (isUseDefTrans && tp != null) {
             tp = defaultTransTempleteManager.findDefaultTransTemplete(shop.getDeftransTemp().getId());
             Long transTempId = tp.getId();
-            SoDeliveryInfo soDeliveryInfo = so.getSoDeliveryInfo();
+
+            SoDeliveryInfo soDeliveryInfo = soDeliveryInfoDao.findBySoId(so.getSoDeliveryInfo());;
             if (!StringUtils.hasText(soDeliveryInfo.getTransExpCode())) {
                 String province = soDeliveryInfo.getProvince();
                 String city = soDeliveryInfo.getCity();
@@ -1235,11 +1218,16 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
     public List<SalesOrderCommand> splitTrade(SalesOrderCommand originalSoCmd) {
         List<SalesOrderCommand> res = new ArrayList<SalesOrderCommand>();
 
+        CompanyShop shop = companyShopDao.findById(originalSoCmd.getCompanyShop());
+
         // 按product销售模式拆
         Map<SalesMode, List<SalesOrderLineCommand>> map = new HashMap<SalesMode, List<SalesOrderLineCommand>>();
         for (SalesOrderLineCommand originalSolCmd : originalSoCmd.getSoLineCommandList()) {
-            Product byId = productDao.findById(originalSolCmd.getSku().getProduct());
-            SalesMode salesMode = retainSalesModeByShopAndProduct(byId.getSalesModesStr(), originalSoCmd.getCompanyShop().getSalesModesStr());
+
+
+            Sku sku = skuDao.findById(originalSolCmd.getSku());
+            Product byId = productDao.findById(sku.getProduct());
+            SalesMode salesMode = retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
             List<SalesOrderLineCommand> solCmdListInMap = map.get(salesMode);
             if (solCmdListInMap == null) {
                 solCmdListInMap = new ArrayList<SalesOrderLineCommand>();
@@ -1602,8 +1590,8 @@ public class SalesOrderManagerImpl extends BaseManagerImpl implements SalesOrder
 	
 	private void setOrderLineType(SalesOrderLine sl) {
 		// 当订单行为平台订单，且销售单价(折前单价)为0时，默认设为原订单赠品
-		if (sl.getOrderLineType() != null && OrderLineType.MAIN.getValue() == sl.getOrderLineType().getValue() && BigDecimal.ZERO.compareTo(sl.getUnitPrice()) == 0) {
-			sl.setOrderLineType(OrderLineType.TMALL_PLATFORM_GIFT);
+		if (sl.getOrderLineType() != null && OrderLineType.MAIN.getValue() == sl.getOrderLineType() && BigDecimal.ZERO.compareTo(sl.getUnitPrice()) == 0) {
+			sl.setOrderLineType(OrderLineType.TMALL_PLATFORM_GIFT.getValue());
 		}
 	}
 }

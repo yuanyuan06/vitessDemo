@@ -1,6 +1,6 @@
 package io.vitess.service.common;
 
-import io.vitess.common.WorkFlow;
+import io.vitess.model.base.WorkFlow;
 
 public interface WorkFlowManager {
 	

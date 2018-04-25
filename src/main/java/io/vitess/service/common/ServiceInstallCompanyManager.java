@@ -1,6 +1,5 @@
 package io.vitess.service.common;
 
-import io.vitess.common.User;
 import io.vitess.model.so.ServiceInstallCompany;
 import io.vitess.service.BaseManager;
 import io.vitess.service.BusinessException;

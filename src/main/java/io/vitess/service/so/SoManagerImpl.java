@@ -2,14 +2,15 @@ package io.vitess.service.so;
 
 import io.vitess.command.SoSuspend;
 import io.vitess.constants.AppleConstants;
+import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.so.OrderMemberDao;
 import io.vitess.dao.so.SalesOrderDao;
 import io.vitess.dao.so.SoDeliveryInfoDao;
 import io.vitess.enums.*;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.exception.WrongCurrentTaskNodeException;
-import io.vitess.model.base.WorkTask;
 import io.vitess.model.base.CompanyShop;
+import io.vitess.model.base.WorkTask;
 import io.vitess.model.so.OrderMember;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;
@@ -37,6 +38,8 @@ public class SoManagerImpl implements SoManager {
 
     @Autowired
     private OrderMemberDao omDao;
+    @Autowired
+    private CompanyShopDao companyShopDao;
 
     //必须处理的挂起
     private Integer[] suspendTypes = {null, 15, 10, 1, 9, 11};
@@ -77,7 +80,8 @@ public class SoManagerImpl implements SoManager {
         SalesOrder so = salesOrderDao.findSoByCodeShopId(task.getRefSlipCode(), task.getRefSlipShopId());
         SoDeliveryInfo sodi = soDeliveryInfoDao.findBySoIdShopId(so.getId(), task.getRefSlipShopId());
         OrderMember om = omDao.findBySoId(so.getId(), task.getRefSlipShopId());
-        CompanyShop shop = so.getCompanyShop();
+
+        CompanyShop shop = companyShopDao.findById(so.getCompanyShop());
         List<SalesOrderLine> soLine = so.getSalesOrderLineList();
 
         // 商品模式打标	验证店铺开关是否开启
@@ -107,7 +111,7 @@ public class SoManagerImpl implements SoManager {
             throw new WrongCurrentTaskNodeException(task.getWorkFlow().getCode(), task.getTaskNo(), nodeNo, task.getCurrentNodeNo());
         }
 
-        CompanyShop shop = so.getCompanyShop();
+        CompanyShop shop = companyShopDao.findById(so.getCompanyShop());
         //自动过仓订单直接跳过fanht	//apple订单不会挂起fanht//物流宝订单不会挂起fanht
         if ((so.getIsAutoWh() != null && so.getIsAutoWh()) || shop.getId().equals(AppleConstants.APPLE_SHOP_ID) || SoSpecialType.isWlbOrder(so.getSpecialType())) {
             return Boolean.FALSE;

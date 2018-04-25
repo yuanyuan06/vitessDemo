@@ -1,8 +1,6 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.enums.OrderLineType;
-import io.vitess.model.base.Sku;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -19,16 +17,19 @@ public class SalesOrderLine extends SuperEntity{
 	private Long splitSourceLineId;
 
 	/** 销售订单ID，关联SALES_ORDER_ID */
-	private SalesOrder salesOrder;
+//	private SalesOrder salesOrder;
+	private Long salesOrder;
 
 	/** 原外部平台订单行标识 */
 	private String platformOrderLineCode;
 
 	/** 行类型，主卖品行;赠品行 */
-	private OrderLineType orderLineType;
+//	private OrderLineType orderLineType;
+	private Integer orderLineType;
 
 	/** SKU */
-	private Sku sku;
+//	private Sku sku;
+	private Long sku;
 
 	/** EXTENTION_CODE（ERP的EXTENTION_CODE1） */
 	private String extentionCode;
@@ -181,4 +182,17 @@ public class SalesOrderLine extends SuperEntity{
      */
     private Boolean isFqgSFee;
   //------------- add by chenping 20170629 end
+
+//	没什么卵用的字段
+	private String locationCode;
+
+	private Long platformSkuId;
+
+	private String btachCode;
+
+	private Date mfgDate;
+
+	private Date expDate;
+
+	private BigDecimal couponFee;
 }

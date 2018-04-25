@@ -1,7 +1,6 @@
 package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.common.WorkFlowNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

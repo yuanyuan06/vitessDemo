@@ -1,11 +1,10 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.common.User;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
-import io.vitess.enums.*;
-import io.vitess.model.base.CompanyShop;
+import io.vitess.enums.SoDeliveryType;
+import io.vitess.enums.SoSpecialType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -19,7 +18,8 @@ public class SalesOrder extends SuperEntity{
 	private static final long serialVersionUID = -8346565385079726815L;
 
 	/** 交易ID */
-	private Trade trade;
+//	private Trade trade;
+	private Long trade;
 
 	/** 原外部平台订单标识 */
 	private String platformOrderCode;
@@ -46,13 +46,15 @@ public class SalesOrder extends SuperEntity{
 	private String erpOrderCode;
 
 	/** 订单状态 */
-	private SalesOrderStatus orderStatus;
-	
+//	private SalesOrderStatus orderStatus;
+	private Integer orderStatus;
+
 	/** 订单挂起原因    @see SalesOrderSuspendReasonType */
 	private Integer suspendReasonType;
 
 	/** 订单所属店铺 */
-	private CompanyShop companyShop;
+//	private CompanyShop companyShop;
+	private Long companyShop;
 
 	/** 销售模式，半角逗号分隔:默认0 */
 	private String salesModesStr = "0";
@@ -118,7 +120,8 @@ public class SalesOrder extends SuperEntity{
 	private BigDecimal installFee = BigDecimal.ZERO;
 
 	/** 主支付方式 */
-	private PaymentType mainPaymentType;
+//	private PaymentType mainPaymentType;
+	private Integer mainPaymentType;
 
 	/** 运费 */
 	private BigDecimal transFee;
@@ -149,8 +152,9 @@ public class SalesOrder extends SuperEntity{
 	private Integer isBillingManual;
 
 	/** 发票类型(1:普通商业零售发票、2:增值税专用发票) */
-	private InvoiceType invoiceType;
-	
+//	private InvoiceType invoiceType;
+	private Integer invoiceType;
+
 	/**  发票备注 */
     private String invoiceMemo;
 
@@ -212,14 +216,16 @@ public class SalesOrder extends SuperEntity{
 	private Integer isPresale = Constants.NO;
 
 	/** 平台业务类型 */
-	private SalesOrderType orderType;
-	
+//	private SalesOrderType orderType;
+	private Integer orderType;
+
 	/** 平台交易类型 */
 	private String platformTradeType;
 	
 	/** 服务自提或者送货上门(0 默认；1：自提；2：送货上门) **/
-	private SoDeliveryType deliveryType = SoDeliveryType.DEFAULT;
-	
+//	private SoDeliveryType deliveryType = SoDeliveryType.DEFAULT;
+	private Integer deliveryType = SoDeliveryType.DEFAULT.getValue();
+
 	/** 是否有安装服务 **/
 	private Boolean isInstall = Boolean.FALSE;
 	
@@ -230,7 +236,8 @@ public class SalesOrder extends SuperEntity{
 	private String installCompanyName;
 	
 	/** 财务状态 */
-    private SoFinanceStatus financeStatus;
+//    private SoFinanceStatus financeStatus;
+    private Integer financeStatus;
 
     /** 已付款金额 */
     private BigDecimal financeTotalAmount;
@@ -260,19 +267,23 @@ public class SalesOrder extends SuperEntity{
     /**
      * 订单类型
      */
-    private SoSpecialType specialType = SoSpecialType.DEFAULT;
-    
+//    private SoSpecialType specialType = SoSpecialType.DEFAULT;
+    private Integer specialType = SoSpecialType.DEFAULT.getValue();
+
     /** 仓储模式 1, "使用宝尊wms" ;  2, "不使用宝尊wms"*/
-    private CompanyShopWhModel wfBranch;
-    
+//    private CompanyShopWhModel wfBranch;
+    private Integer wfBranch;
+
     /** 创建人 */
-    private User creator;
+    private Long creator;
     
     /** 最后修改人 */
-    private User lastModifyUser;
-    
+//    private User lastModifyUser;
+    private Long lastModifyUser;
+
     /** 订单发货信息 */
-    private SoDeliveryInfo soDeliveryInfo;
+//    private SoDeliveryInfo soDeliveryInfo;
+    private Long soDeliveryInfo;
 
 	/** VERSION */
 	private Date version;
@@ -461,4 +472,15 @@ public class SalesOrder extends SuperEntity{
      */
     private String originalTargetCode;
 
+
+//    没什么卵用的字段
+    private BigDecimal deliveryAndInstallFee;
+
+    private Date updateRouteTime;
+
+    private String tagName;
+
+    private Integer transType;
+
+    private BigDecimal couponFee;
 }

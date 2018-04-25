@@ -1,6 +1,6 @@
 package io.vitess.exception;
 
-import io.vitess.common.User;
+import io.vitess.model.base.User;
 
 public class InvalidWorkTaskActorException extends WorkFlowException {
 

@@ -1,8 +1,6 @@
 package io.vitess.model.base;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.common.User;
-import io.vitess.common.WorkFlow;
 import lombok.Data;
 
 import java.util.Date;

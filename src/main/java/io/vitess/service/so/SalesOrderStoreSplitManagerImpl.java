@@ -2,14 +2,15 @@ package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
-import io.vitess.model.base.ShoOutLetInfo;
 import io.vitess.command.WmsConstants;
 import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.dao.base.ShoOutLetInfoDao;
-import io.vitess.model.base.Sku;
+import io.vitess.dao.base.SkuDao;
 import io.vitess.model.base.CompanyShop;
+import io.vitess.model.base.ShoOutLetInfo;
+import io.vitess.model.base.Sku;
 import io.vitess.model.so.SalesOrder;
 import io.vitess.model.so.SalesOrderLine;
 import io.vitess.service.BaseManagerImpl;
@@ -17,7 +18,6 @@ import io.vitess.service.BusinessException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -34,6 +34,8 @@ public class SalesOrderStoreSplitManagerImpl extends BaseManagerImpl implements 
 
 	@Autowired
 	private ShoOutLetInfoDao shoOutLetInfoDao;
+	@Autowired
+	private  SkuDao skuDao;
 
 	@Override
 	public List<SalesOrderCommand> splitOrderByStore(CompanyShop shop, SalesOrderCommand srcSoCmd) {
@@ -46,7 +48,7 @@ public class SalesOrderStoreSplitManagerImpl extends BaseManagerImpl implements 
 		  for (Iterator<SalesOrderLineCommand> it = salesOrderLineList.iterator(); it.hasNext();){
 			  SalesOrderLineCommand command  = (SalesOrderLineCommand) it.next();
 			  //全渠道订单如果是赠品则放入EC仓中
-			  if(command.getOrderLineType().getValue() != 1){
+			  if(command.getOrderLineType() != 1){
 				  command.setTargetCode(DEFAULT_WH);
 			  }else{
 				  if("WAREHOUSE".equals(command.getTargetType())){
@@ -161,7 +163,7 @@ public class SalesOrderStoreSplitManagerImpl extends BaseManagerImpl implements 
 		 //遍历集合以targetCode 为键，以SalesOrderLineCommand为值保存到mapList中
 		  for (Iterator<SalesOrderLineCommand> it = salesOrderLineList.iterator(); it.hasNext();){
 			  SalesOrderLineCommand command  = (SalesOrderLineCommand) it.next();
-			  Sku sku = command.getSku();
+			  Sku sku = skuDao.findById(command.getSku());
 			  //如果在这个map中包含有相同的键，这创建一个集合将其存起来
 			   if (mapList.containsKey(sku.getShippingMethods()))
 			   {

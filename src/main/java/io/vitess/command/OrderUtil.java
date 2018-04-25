@@ -65,7 +65,7 @@ public abstract class OrderUtil {
     public static BzOrder toBzOrder(SalesOrder so, List<BzOrderLine> orderLines,
                                     List<PlatformPromotion> promList, List<SalesOrderLinePackage> packList,
                                     List<SalesOrderPaymentInfo> payList, OrderMember mem, SoDeliveryInfo deli, List<SoServiceLine> soServiceLineList) {
-    	so.setSoDeliveryInfo(deli);
+    	so.setSoDeliveryInfo(deli.getId());
         BzOrder bz = toBzOrder(so);
         bz.setOrderLines(orderLines);
         if (promList != null && promList.size() > 0) {
@@ -98,6 +98,8 @@ public abstract class OrderUtil {
     }
     
     public static BzOrder toBzOrder(SalesOrder so) {
+
+
         BzOrder bz = new BzOrder();
         // 企业税号
         bz.setBuyerRegisterNo(so.getBuyerTaxNO());
@@ -106,8 +108,8 @@ public abstract class OrderUtil {
         bz.setOmsOrderCode(so.getOmsOrderCode());
         bz.setPfOrderCode(so.getPlatformOrderCodeN());
         bz.setPfOrderCodeSource(so.getPlatformOrderCode());
-        bz.setOrderType(so.getOrderType().getValue());
-        bz.setBzShopCode(so.getCompanyShop().getInnerShopCode());
+        bz.setOrderType(so.getOrderType());
+        bz.setBzShopCode(String.valueOf(so.getCompanyShop()));
         bz.setPfCreateTime(so.getPlatformCreateTime());
         bz.setTotalActualBfDisc(so.getAmountBeforeDiscount());
         bz.setTotalActualAfDisc(so.getAmountAfterDiscount());
@@ -127,7 +129,7 @@ public abstract class OrderUtil {
         bz.setUsedTotalPointAmt(bz.getUsedInnerPointAmt().add(bz.getUsedOuterPointAmt()).setScale(4)); 
         
         bz.setVirtualAmt(so.getVirtualAmount());
-        bz.setMainPaymentType(so.getMainPaymentType().getValue());
+        bz.setMainPaymentType(so.getMainPaymentType());
         // 给到pacs 的买家备注包含订单备注& 定制信息
         bz.setBuyerMemo((so.getCustomizationMemo() == null? "": so.getCustomizationMemo()) + (so.getBuyerMemo() == null? "": so.getBuyerMemo()));
         // 给到pacs 的卖家备注包含订单备注& 定制信息
@@ -142,11 +144,11 @@ public abstract class OrderUtil {
 //        if(so.getInvoiceKind()){
 //        	bz.setInvoiceType(3);
 //        }
-        if(so.getInvoiceType()!=null && so.getInvoiceType().getValue()==1 && Boolean.FALSE.equals(so.getInvoiceKind())){
+        if(so.getInvoiceType()!=null && so.getInvoiceType()==1 && Boolean.FALSE.equals(so.getInvoiceKind())){
         	bz.setInvoiceType(1);
-        }else if(so.getInvoiceType()!=null && so.getInvoiceType().getValue()==2){
+        }else if(so.getInvoiceType()!=null && so.getInvoiceType()==2){
         	bz.setInvoiceType(2);
-        }else if(so.getInvoiceType()!=null && so.getInvoiceType().getValue()==1 && Boolean.TRUE.equals(so.getInvoiceKind())){
+        }else if(so.getInvoiceType()!=null && so.getInvoiceType()==1 && Boolean.TRUE.equals(so.getInvoiceKind())){
         	bz.setInvoiceType(3);
         }
         
@@ -162,12 +164,12 @@ public abstract class OrderUtil {
         bz.setVaTaxTellphone(so.getVaTaxTelephone());
         bz.setTerminalSource(so.getTerminalSource());
         bz.setActivitySource(so.getActivitySource());
-        bz.setSpecialType(Integer.toString(SoSpecialType.convertToPacsSoSpecialType(so.getSpecialType())));
+        bz.setSpecialType(Integer.toString(SoSpecialType.convertToPacsSoSpecialType(SoSpecialType.valueOf(so.getSpecialType()))));
         bz.setIsO2oOrder(SoSpecialType.isO2oOrder(so.getSpecialType()));
         bz.setMainBranchWhCode(so.getMainBranchWhCode());
         //非直连（到pac）、直连：bzWms、奇门 fanhtso
         //如果是ag拆单并且是已经取消的订单，发送到pac的时候直接创取消状态的单子 sunshanshan
-        if (Constants.AGAUTO.equals(so.getSubOrderSource()) && SalesOrderStatus.CANCELED.getValue() == so.getOrderStatus().getValue()) {
+        if (Constants.AGAUTO.equals(so.getSubOrderSource()) && SalesOrderStatus.CANCELED.getValue() == so.getOrderStatus()) {
         	bz.setIsDirectWmsOrder(Boolean.TRUE);
         	bz.setStatementType(2);//无效的订单
         	bz.setIsNeededInvoice(Boolean.FALSE);//不需要发票信息
@@ -179,7 +181,7 @@ public abstract class OrderUtil {
         Map<String, Object> map = new HashMap<String, Object>(3);
         map.put("vmiPromotionCode", so.getVmiPromotionCode());
         map.put("posSales", so.getPosSales());
-        map.put("storeCode", so.getSoDeliveryInfo() == null ? "" : so.getSoDeliveryInfo().getStoreCode());
+        map.put("storeCode", so.getSoDeliveryInfo() == null ? "" : so.getSoDeliveryInfo());
         map.put("cancelReason", so.getIsCycle().toString());
         bz.setExtProp1(JSON.toJSONString(map, SerializerFeature.WriteMapNullValue));
         
@@ -257,7 +259,7 @@ public abstract class OrderUtil {
         bz.setVirtualAmt(line.getVirtualAmount());
         bz.setInvoicePrice(line.getInvoiceUnitPrice());
         bz.setInvoiceTotal(line.getInvoiceTotalAmount());
-        bz.setLineType(line.getOrderLineType().getValue());
+        bz.setLineType(line.getOrderLineType());
         bz.setWarrantyMonths(line.getWarrantyMonths());
         bz.setBranchWhCode(line.getPlatformWhCode());
         bz.setPfSkuName(line.getPlatformSkuName());
@@ -308,7 +310,7 @@ public abstract class OrderUtil {
         bz.setReceiverMobile(deli.getReceiverMobile());
         //BooleanUtils.isTrue(so.getIsDirectWmsOrder())
         bz.setTransportatorCode(so.getIsDirectWmsOrder()==SysWmsStatus.BZWMS ? deli.getActualTransExpCode() : deli.getTransExpCode());
-        bz.setTransTimeType(Integer.toString(deli.getTransTimeType().getValue()));
+        bz.setTransTimeType(String.valueOf(deli.getTransTimeType()));
 
         bz.setRemark(deli.getRemark());
         bz.setRemarkExt(deli.getRemarkEn());
@@ -317,7 +319,7 @@ public abstract class OrderUtil {
         bz.setGoodsWeight(so.getGoodsWeight());
 
         //设置相关订单是送货上门，还是非送货上门
-        bz.setSpecialServiceType((so.getDeliveryType() != null && SoDeliveryType.HOME_DELIVERY_SERVICE.getValue() == so.getDeliveryType().getValue()) ? 1 : 0);
+        bz.setSpecialServiceType((so.getDeliveryType() != null && SoDeliveryType.HOME_DELIVERY_SERVICE.getValue() == so.getDeliveryType()) ? 1 : 0);
 
         return bz;
     }
@@ -343,7 +345,7 @@ public abstract class OrderUtil {
     public static BzPaymentInfo toBzPaymentInfo(SalesOrderPaymentInfo pay, SalesOrder so) {
         BzPaymentInfo bz = new BzPaymentInfo();
         bz.setOmsOrderCode(so.getOmsOrderCode());
-        bz.setPaymentType(Integer.toString(pay.getPaymentType().getValue()));
+        bz.setPaymentType(String.valueOf(pay.getPaymentType()));
         bz.setPaymentBank(pay.getPaymentBank());
         bz.setPayTotal(pay.getPayAmount());
         bz.setPayNo(pay.getPayNo());

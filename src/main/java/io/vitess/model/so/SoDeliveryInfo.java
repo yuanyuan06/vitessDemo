@@ -2,7 +2,6 @@ package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
 import io.vitess.constants.Constants;
-import io.vitess.enums.TransTimeType;
 import lombok.Data;
 
 @Data
@@ -10,7 +9,9 @@ import lombok.Data;
 public class SoDeliveryInfo extends SuperEntity {
 
     private static final long serialVersionUID = 6490463075316045036L;
-    private SalesOrder salesOrder;
+
+//    private SalesOrder salesOrder;
+    private Long salesOrder;
 
     private String country;
 
@@ -48,7 +49,8 @@ public class SoDeliveryInfo extends SuperEntity {
 
     private Integer transServiceType = Constants.TRANS_SERVICE_TYPE_NORMAL;
 
-    private TransTimeType transTimeType;
+//    private TransTimeType transTimeType;
+    private Integer transTimeType;
 
     private String remark;
 
@@ -77,5 +79,8 @@ public class SoDeliveryInfo extends SuperEntity {
     private String transBigWord;
 
     private String packageCenterCode;
-	
+
+
+//    没什么卵用的字段
+    private String expressType;
 }

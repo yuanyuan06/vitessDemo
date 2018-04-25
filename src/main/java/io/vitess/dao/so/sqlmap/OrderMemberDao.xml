@@ -1,5 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.so.OrderMemberDao">
+
+    <resultMap id="TtdOrderMemberResult" type="io.vitess.model.so.OrderMember">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="ttdOrderMemberColumns">
+        <![CDATA[
+	        	SALES_ORDER_ID as salesOrder,
+	        	PLATFORM_MEMBER_CODE as platformMemberCode,
+	        	REAL_NAME as realName,
+	        	EMAIL as email,
+	        	MOBILE as mobile,
+	        	PHONE as phone,
+	        	COUNTRY as country,
+	        	PROVINCE as province,
+	        	CITY as city,
+	        	DISTRICT as district,
+	        	ADDRESS as address,
+	        	SHOP_ID as shopId
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.so.OrderMember"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_td_order_member (
+		            SALES_ORDER_ID,
+		        	PLATFORM_MEMBER_CODE ,
+		        	REAL_NAME ,
+		        	EMAIL ,
+		        	MOBILE ,
+		        	PHONE ,
+		        	COUNTRY ,
+		        	PROVINCE ,
+		        	CITY ,
+		        	DISTRICT ,
+		        	ADDRESS ,
+		        	SHOP_ID
+		        ) VALUES (
+		        #{salesOrder,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{platformMemberCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{realName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{email,javaType=String,jdbcType=VARCHAR} ,
+		        	#{mobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{phone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT}
+		        )
+		    ]]>
+
+    </insert>
+
+
+
     <select id="findBySoId" resultType="io.vitess.model.so.OrderMember"></select>
 </mapper>

@@ -14,9 +14,9 @@
 	        	COLOR as color,
 	        	COLOR_NAME as colorName,
 	        	EN_NAME as enName,
-	        	EXT_CODE1 as extCode1,
-	        	EXT_CODE2 as extCode2,
-	        	EXT_CODE3 as extCode3,
+	        	EXT_CODE1 as extensionCode1,
+	        	EXT_CODE2 as extensionCode2,
+	        	EXT_CODE3 as extensionCode3,
 	        	JM_CODE as jmCode,
 	        	KEY_PROPERTIES as keyProperties,
 	        	NAME as name,
@@ -24,7 +24,7 @@
 	        	SPECIAL_TYPE as specialType,
 	        	SUPPLIER_CODE as supplierCode,
 	        	VERSION as version,
-	        	PRODUCT_ID as productId,
+	        	PRODUCT_ID as product,
 	        	ITEM_ID as itemId,
 	        	SHIPPING_METHODS as shippingMethods,
 	        	IS_COMMON as isCommon,
@@ -69,9 +69,9 @@
 		        	#{color,javaType=String,jdbcType=VARCHAR} ,
 		        	#{colorName,javaType=String,jdbcType=VARCHAR} ,
 		        	#{enName,javaType=String,jdbcType=VARCHAR} ,
-		        	#{extCode1,javaType=String,jdbcType=VARCHAR} ,
-		        	#{extCode2,javaType=String,jdbcType=VARCHAR} ,
-		        	#{extCode3,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extentionCode1,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extentionCode2,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extentionCode3,javaType=String,jdbcType=VARCHAR} ,
 		        	#{jmCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{keyProperties,javaType=String,jdbcType=VARCHAR} ,
 		        	#{name,javaType=String,jdbcType=VARCHAR} ,
@@ -79,7 +79,7 @@
 		        	#{specialType,javaType=Integer,jdbcType=TINYINT} ,
 		        	#{supplierCode,javaType=String,jdbcType=VARCHAR} ,
 		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
-		        	#{productId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{product,javaType=Long,jdbcType=BIGINT} ,
 		        	#{itemId,javaType=String,jdbcType=VARCHAR} ,
 		        	#{shippingMethods,javaType=String,jdbcType=VARCHAR} ,
 		        	#{isCommon,javaType=Integer,jdbcType=TINYINT} ,
@@ -101,9 +101,9 @@
             sku.COLOR as color,
             sku.COLOR_NAME as colorName,
             sku.EN_NAME as enName,
-            sku.EXT_CODE1 as extCode1,
-            sku.EXT_CODE2 as extCode2,
-            sku.EXT_CODE3 as extCode3,
+            sku.EXT_CODE1 as extentionCode1,
+            sku.EXT_CODE2 as extentionCode2,
+            sku.EXT_CODE3 as extentionCode3,
             sku.JM_CODE as jmCode,
             sku.KEY_PROPERTIES as keyProperties,
             sku.NAME as name,
@@ -126,4 +126,13 @@
     </select>
     <select id="findByCodes" resultType="java.lang.String"></select>
     <select id="findByCode" resultType="io.vitess.model.base.Sku"></select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmaInvSkuResult" flushCache="false">
+        select <include refid="tmaInvSkuColumns" />
+        <![CDATA[
+			    from t_ma_inv_sku
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

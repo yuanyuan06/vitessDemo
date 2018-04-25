@@ -1,10 +1,10 @@
 package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
-import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SalesModelToTOMS;
+import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.dao.base.*;
 import io.vitess.dao.mq.*;
@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -99,6 +98,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	
 	@Autowired
 	private ComboSkuDetailDao comboSkuDetailDao;
+
+	@Autowired
+	private SkuDao skuDao;
 
 
 	//eticket：电子凭证订单fanht
@@ -216,12 +218,12 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		//处理支付宝积分、天猫点券卡fanht
 		this.copySoLogProperties(soCmd, soLog);
 		soCmd.setPlatformOrderCode(platformOrderCode);
-		soCmd.setOrderType(orderType);
-		soCmd.setCompanyShop(shop);
-		soCmd.setOrderStatus(SalesOrderStatus.CREATED); // 此处订单创建时订单新建未付款
-		soCmd.setFinanceStatus(SoFinanceStatus.FULLPAYMENT); //xin.feng 默认只接全额付款的订单，预售的订单会在后面重置此字段的值,淘宝无COD订单
+		soCmd.setOrderType(orderType.getValue());
+		soCmd.setCompanyShop(shop.getId());
+		soCmd.setOrderStatus(SalesOrderStatus.CREATED.getValue()); // 此处订单创建时订单新建未付款
+		soCmd.setFinanceStatus(SoFinanceStatus.FULLPAYMENT.getValue()); //xin.feng 默认只接全额付款的订单，预售的订单会在后面重置此字段的值,淘宝无COD订单
 		soCmd.setPlatformPaymentTime(soLog.getPaymentTime());
-		soCmd.setMainPaymentType(PaymentType.valueOf(shop.getDefPaymentType())); // 付款方式 取店铺默认支付方式
+		soCmd.setMainPaymentType(shop.getDefPaymentType()); // 付款方式 取店铺默认支付方式
 		soCmd.setPayAccount(soLog.getPayAccount());
 		soCmd.setPayNo(soLog.getPayNo());
 		soCmd.setPlatformCreateTime(platformCreateTime);
@@ -241,7 +243,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		soCmd.setNeededPacking((soLog.getIsNeededPacking() != null && soLog.getIsNeededPacking()) ? Constants.YES : Constants.NO);
 		soCmd.setAlipayId(soLog.getAlipayId());
 		soCmd.setCreditCardFee(soLog.getCreditCardFee() == null ? BigDecimal.ZERO: new BigDecimal(soLog.getCreditCardFee()));
-		soCmd.setInvoiceType(InvoiceType.ORDINARY_COMMERCIAL);
+		soCmd.setInvoiceType(InvoiceType.ORDINARY_COMMERCIAL.getValue());
 		soCmd.setIsBillingManual(Constants.NO);
 		soCmd.setOrderTaxFee(soLog.getOrderTaxFee());
 
@@ -325,7 +327,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		List<SkuAppointment> skuAppointmentList = new ArrayList<SkuAppointment>();
 		for(SalesOrderLineCommand soLineCommand: solCmdList){
 			//查询是否是预约过仓的订单  
-			 skuAppointment =  specifySkuAppointmentDao.queryAppointmentSku(soLineCommand.getSku().getId(), soLineCommand.getShopId(),soLog.getPaymentTime());
+			 skuAppointment =  specifySkuAppointmentDao.queryAppointmentSku(soLineCommand.getSku(), soLineCommand.getShopId(),soLog.getPaymentTime());
 			if(skuAppointment!=null){
 				skuAppointmentList.add(skuAppointment);
 			}
@@ -352,7 +354,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		soCmd.setStepPaidFee(soLog.getStepPaidFee());
 			
 		// 订单类型确定：soLog.getSpecialType() 普通订单、物流宝订单 yy 预售、预包装
-		soCmd.setSpecialType(getSoSpecialType(soLog, solCmdList, skuAppointment, shop, soCmd));
+		soCmd.setSpecialType(getSoSpecialType(soLog, solCmdList, skuAppointment, shop, soCmd).getValue());
 		
 		soCmd.setSoLineCommandList(solCmdList);
 		
@@ -369,10 +371,11 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
             if ((soCmd.getIsO2oOrder() != null && soCmd.getIsO2oOrder())) {
             	//判定O2O订单明细行，是否为有售后服务
             	for (SalesOrderLineCommand soLineCmd : soCmd.getSoLineCommandList()) {
-        			if (soLineCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(soLineCmd.getOrderLineType().getValue())) {//赠品
+        			if (soLineCmd.getOrderLineType() != null && OrderLineType.isNotTmallPlatformGift(soLineCmd.getOrderLineType())) {//赠品
         				continue;
         			}
-        			String exCode = soLineCmd.getSku().getExtensionCode1();
+					Sku sku = skuDao.findById(soLineCmd.getSku());
+					String exCode = sku.getExtensionCode1();
         			SpecialSku specialSku = specialSkuManager.findSpecialSku(shop.getId(), exCode, SpecialSkuType.O2O_POST_SALE_SERVICE);
         			soLineCmd.setIsPostSalesServiceSku(specialSku != null ? Boolean.TRUE : Boolean.FALSE);
         		}
@@ -395,8 +398,9 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				//获取店铺模式
 				String shopModelStr = SalesModelToTOMS.mappingSalesModel(shop.getSalesMode());
 				String[] shopModel = shopModelStr.split(",");
-				
-				Sku sku = lineCommand.getSku();
+
+
+				Sku sku = skuDao.findById(lineCommand.getSku());
 				Product byId = productDao.findById(sku.getProduct());
 				Integer salesMode = byId.getSalesMode();
 				if(salesMode == null){
@@ -455,14 +459,15 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			tradeDao.insert(trade);
 			
 			// 销售模式设置为第一个订单行的第一个商品
-			Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
+			Sku sku = skuDao.findById(soCmd.getSoLineCommandList().get(0).getSku());
+			Product byId = productDao.findById(sku.getProduct());
 			SalesMode salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 			
 			List<String> platformOrderCodeNs = new ArrayList<String>();
 			List<String> soLineSkuList = new ArrayList<String>();
 			for (int i = 1; i <= _socList.size(); i++) {
 				SalesOrderCommand _soc = _socList.get(i - 1);
-				_soc.setTrade(trade);
+				_soc.setTrade(trade.getId());
 				_soc.setPlatformOrderCodeN(_socList.size() == 1 ? platformOrderCode : platformOrderCode + Constants.PLATFORMORDERCODEN_TAG + i);
 				soCmd.setSalesModesStr(salesMode.getValue() + "");
 				SalesOrder newSo = new SalesOrder();
@@ -493,16 +498,17 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 				trade.setOrderCount(1);
 				tradeDao.insert(trade);
 				
-				soCmd.setTrade(trade);
+				soCmd.setTrade(trade.getId());
 				soCmd.setPlatformOrderCodeN(platformOrderCode);
 				// 销售模式设置为第一个订单行的第一个商品 TODO 这个东西没啥用fanht
 				SalesMode salesMode ;
-					Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
+					Sku sku = skuDao.findById(soCmd.getSoLineCommandList().get(0).getSku());
+					Product byId = productDao.findById(sku.getProduct());
 				try{
 					salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 					soCmd.setSalesModesStr(salesMode.getValue() + "");
 				}catch (Exception e) {
-					log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +byId.getCode());
+					log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +sku.getCode() + "productCode: " +byId.getCode());
 					throw new RuntimeException(e.getMessage());
 				}
 
@@ -523,7 +529,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			List<String> soLineSkuList = new ArrayList<String>();
 			for (int i = 1; i <= _socList.size(); i++) {
 				SalesOrderCommand _soc = _socList.get(i - 1);
-				_soc.setTrade(trade);
+				_soc.setTrade(trade.getId());
 				_soc.setPlatformOrderCodeN(platformOrderCode + Constants.PLATFORMORDERCODEN_TAG + i);
 				SalesOrder newSo = new SalesOrder();
 				Integer assignModel = Constants.NEEDED_ASSIGN;
@@ -549,16 +555,18 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			trade.setIsSplit(Constants.NO);
 			trade.setOrderCount(1);
 			tradeDao.insert(trade);
-			soCmd.setTrade(trade);
+			soCmd.setTrade(trade.getId());
 			soCmd.setPlatformOrderCodeN(platformOrderCode);
 			// 销售模式设置为第一个订单行的第一个商品 TODO 这个东西没啥用fanht
 			SalesMode salesMode ;
-			Product byId = productDao.findById(soCmd.getSoLineCommandList().get(0).getSku().getProduct());
+
+			Sku sku = skuDao.findById(soCmd.getSoLineCommandList().get(0).getSku());
+			Product byId = productDao.findById(sku.getProduct());
 			try{
 				salesMode = salesOrderManager.retainSalesModeByShopAndProduct(byId.getSalesModesStr(), shop.getSalesModesStr());
 				soCmd.setSalesModesStr(salesMode.getValue() + "");
 			}catch (Exception e) {
-				log.error(soCmd.getSoLineCommandList().size() + " skuCode: " +soCmd.getSoLineCommandList().get(0).getSku().getCode() + "productCode: " +byId.getCode());
+				log.error(soCmd.getSoLineCommandList().size() + " skuCode: " + sku.getCode() + "productCode: " +byId.getCode());
 				throw new RuntimeException(e.getMessage());
 			}
 
@@ -583,7 +591,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		List<String> soLineSkuList = new ArrayList<String>();
 		for (int i = 1; i <= _socList.size(); i++) {
 			SalesOrderCommand _soc = _socList.get(i - 1);
-			_soc.setTrade(trade);
+			_soc.setTrade(trade.getId());
 			_soc.setPlatformOrderCodeN(_socList.size() == 1 ? platformOrderCode : platformOrderCode + Constants.PLATFORMORDERCODEN_TAG + i);
 			SalesOrder newSo = new SalesOrder();
 			Integer assignModel = Constants.NEEDED_ASSIGN;
@@ -827,7 +835,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	 */
 	private SalesOrderLineCommand constructCommonSoLine(SalesOrderLineCommand solCmd, Sku sku, MqSoLineLog soLineLog, Integer rQty){
 			
-			solCmd.setSku(sku);
+			solCmd.setSku(sku.getId());
 			BigDecimal listPrice = soLineLog.getListPrice();
 			if (listPrice == null) {
 				Product byId = productDao.findById(sku.getProduct());
@@ -835,7 +843,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			}
 			solCmd.setListPrice(listPrice != null ? listPrice : BigDecimal.ZERO);
 			solCmd.setPlatformSkuName(soLineLog.getPlatformSkuName());
-			solCmd.setOrderLineType(OrderLineType.MAIN);
+			solCmd.setOrderLineType(OrderLineType.MAIN.getValue());
 			solCmd.setPlatformOrderLineCode(soLineLog.getPlatformLineId());
 			solCmd.setPlatformWhCode(soLineLog.getPlatformWhCode()); // 设定平台分仓编码
 			
@@ -900,7 +908,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		}
 		
 		for(SalesOrderLineCommand solCmd:solCmdList){
-			Sku sku = solCmd.getSku();
+			Sku sku = skuDao.findById(solCmd.getSku());
 			// 判断是否存在学生价商品
 			if (sku.getSpecialType() != null && sku.getSpecialType().equals(SkuSpecialType.STUDENT_PRICE_SKU)) {
 				isExistsStudentPriceSku = Boolean.TRUE;
@@ -947,7 +955,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			} else {
 				soSpecialType =  SoSpecialType.PRE_SALES_ORDER;
 			}
-			soCmd.setFinanceStatus(SoFinanceStatus.PARTPAYMENT);
+			soCmd.setFinanceStatus(SoFinanceStatus.PARTPAYMENT.getValue());
 		}
 		return soSpecialType;
 	}

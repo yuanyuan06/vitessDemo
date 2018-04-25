@@ -1,8 +1,5 @@
 package io.vitess.service.common;
 
-import io.vitess.common.User;
-import io.vitess.common.WorkFlow;
-import io.vitess.common.WorkFlowNode;
 import io.vitess.dao.base.WorkTaskDao;
 import io.vitess.dao.base.WorkTaskLogDao;
 import io.vitess.enums.WorkTaskStatus;
@@ -10,11 +7,13 @@ import io.vitess.exception.SlipTypeNotMatchException;
 import io.vitess.exception.WorkFlowDefinitionErrorException;
 import io.vitess.exception.WorkFlowException;
 import io.vitess.exception.WorkFlowNotExistsException;
+import io.vitess.model.base.User;
+import io.vitess.model.base.WorkFlow;
+import io.vitess.model.base.WorkFlowNode;
 import io.vitess.model.base.WorkTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;

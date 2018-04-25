@@ -65,7 +65,8 @@ public class ShopSkuWhRefManagerImpl extends BaseManagerImpl implements ShopSkuW
 		ShopWh shopWh = shopWhManager.getDefaultWarehouse(shop.getId());
     	for (SalesOrderLineCommand originalSolCmd : salesOrderLineCommandList) {
     		ShopSkuWhRef shopSkuWhRef = null;
-    		Sku sku = originalSolCmd.getSku();
+
+    		Sku sku = skuDao.findById(originalSolCmd.getSku());
     		if (sku != null) {
     			shopSkuWhRef = findByShopAndSku(shop, sku.getExtensionCode1(), new Date());
     		}

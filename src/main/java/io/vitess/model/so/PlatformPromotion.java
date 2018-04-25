@@ -14,11 +14,13 @@ public class PlatformPromotion extends SuperEntity {
     private Long id;
     
     /** 销售订单ID，关联SALES_ORDER_ID */
-    private SalesOrder salesOrder;
-    
+//    private SalesOrder salesOrder;
+    private Long salesOrder;
+
     /** 销售订单明细ID，关联SALES_ORDER_LINE_ID */
-    private SalesOrderLine salesOrderLine;
-    
+//    private SalesOrderLine salesOrderLine;
+    private Long salesOrderLine;
+
     /**
      * 平台订单号
      */

@@ -13,11 +13,11 @@
  * 
  */
 
-package io.vitess.common;
+package io.vitess.model.base;
 
 
 
-import io.vitess.model.base.OperationUnit;
+import io.vitess.common.SuperEntity;
 
 import java.util.Date;
 

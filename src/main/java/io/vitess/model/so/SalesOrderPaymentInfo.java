@@ -1,7 +1,6 @@
 package io.vitess.model.so;
 
 import io.vitess.common.SuperEntity;
-import io.vitess.enums.PaymentType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,7 +13,8 @@ public class SalesOrderPaymentInfo extends SuperEntity{
 
 	private static final long serialVersionUID = -6383761322403504203L;
 
-	private PaymentType paymentType;
+//	private PaymentType paymentType;
+	private Integer paymentType;
 
 	private String paymentBank;
 

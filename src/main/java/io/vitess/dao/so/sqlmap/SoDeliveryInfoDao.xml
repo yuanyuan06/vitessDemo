@@ -1,6 +1,144 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.so.SoDeliveryInfoDao">
+
+    <resultMap id="TtdSoDeliveryInfoResult" type="io.vitess.model.so.SoDeliveryInfo">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="ttdSoDeliveryInfoColumns">
+        <![CDATA[
+	        	SALES_ORDER_ID as salesOrder,
+	        	COUNTRY as country,
+	        	PROVINCE as province,
+	        	CITY as city,
+	        	DISTRICT as district,
+	        	ADDRESS as address,
+	        	ZIPCODE as zipcode,
+	        	CONTACT_PERSON as contactPerson,
+	        	RECEIVER as receiver,
+	        	RECEIVER_PHONE as receiverPhone,
+	        	RECEIVER_MOBILE as receiverMobile,
+	        	MEMBER_EMAIL as memberEmail,
+	        	TRANS_EXP_CODE as transExpCode,
+	        	TRANS_NAME as transName,
+	        	TRANS_SERVICE_TYPE as transServiceType,
+	        	TRANS_TIME_TYPE as transTimeType,
+	        	TRANS_NUMBER as transNumber,
+	        	ACTUAL_TRANS_EXP_CODE as actualTransExpCode,
+	        	ACTUAL_TRANS_NAME as actualTransName,
+	        	ACTUAL_TRANS_NUMBER as actualTransNumber,
+	        	REMARK as remark,
+	        	COUNTRY_EN as countryEn,
+	        	PROVINCE_EN as provinceEn,
+	        	CITY_EN as cityEn,
+	        	DISTRICT_EN as districtEn,
+	        	ADDRESS_EN as addressEn,
+	        	RECEIVER_EN as receiverEn,
+	        	ZIPCODE_EN as zipcodeEn,
+	        	REMARK_EN as remarkEn,
+	        	STORE_CODE as storeCode,
+	        	STORE_NAME as storeName,
+	        	SHOP_ID as shopId,
+	        	TRANS_BIG_WORD as transBigWord,
+	        	PACKAGE_CENTER_CODE as packageCenterCode,
+	        	EXPRESS_TYPE as expressType
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.so.SoDeliveryInfo"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_td_so_delivery_info (
+		            SALES_ORDER_ID,
+		        	COUNTRY ,
+		        	PROVINCE ,
+		        	CITY ,
+		        	DISTRICT ,
+		        	ADDRESS ,
+		        	ZIPCODE ,
+		        	CONTACT_PERSON ,
+		        	RECEIVER ,
+		        	RECEIVER_PHONE ,
+		        	RECEIVER_MOBILE ,
+		        	MEMBER_EMAIL ,
+		        	TRANS_EXP_CODE ,
+		        	TRANS_NAME ,
+		        	TRANS_SERVICE_TYPE ,
+		        	TRANS_TIME_TYPE ,
+		        	TRANS_NUMBER ,
+		        	ACTUAL_TRANS_EXP_CODE ,
+		        	ACTUAL_TRANS_NAME ,
+		        	ACTUAL_TRANS_NUMBER ,
+		        	REMARK ,
+		        	COUNTRY_EN ,
+		        	PROVINCE_EN ,
+		        	CITY_EN ,
+		        	DISTRICT_EN ,
+		        	ADDRESS_EN ,
+		        	RECEIVER_EN ,
+		        	ZIPCODE_EN ,
+		        	REMARK_EN ,
+		        	STORE_CODE ,
+		        	STORE_NAME ,
+		        	SHOP_ID ,
+		        	TRANS_BIG_WORD ,
+		        	PACKAGE_CENTER_CODE ,
+		        	EXPRESS_TYPE
+		        ) VALUES (
+		        #{salesOrder,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{country,javaType=String,jdbcType=VARCHAR} ,
+		        	#{province,javaType=String,jdbcType=VARCHAR} ,
+		        	#{city,javaType=String,jdbcType=VARCHAR} ,
+		        	#{district,javaType=String,jdbcType=VARCHAR} ,
+		        	#{address,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipcode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{contactPerson,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiver,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverPhone,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverMobile,javaType=String,jdbcType=VARCHAR} ,
+		        	#{memberEmail,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transExpCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{transServiceType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transTimeType,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{transNumber,javaType=String,jdbcType=VARCHAR} ,
+		        	#{actualTransExpCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{actualTransName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{actualTransNumber,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{countryEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{provinceEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{cityEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{districtEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{addressEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{receiverEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{zipcodeEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remarkEn,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{storeName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{transBigWord,javaType=String,jdbcType=VARCHAR} ,
+		        	#{packageCenterCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{expressType,javaType=String,jdbcType=VARCHAR}
+		        )
+		    ]]>
+
+    </insert>
+
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TtdSoDeliveryInfoResult" flushCache="false">
+        select <include refid="ttdSoDeliveryInfoColumns" />
+        <![CDATA[
+			    from t_td_so_delivery_info
+		        where
+		        SALES_ORDER_ID = #{id}
+		    ]]>
+    </select>
+
     <select id="findBySoIdShopId" resultType="io.vitess.model.so.SoDeliveryInfo"></select>
     <select id="loadSoAddressByPoc" resultType="io.vitess.command.SalesOrderCommand"></select>
     <select id="findBySoId" resultType="io.vitess.model.so.SoDeliveryInfo"></select>

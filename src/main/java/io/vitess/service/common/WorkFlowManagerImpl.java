@@ -1,7 +1,7 @@
 package io.vitess.service.common;
 
-import io.vitess.common.WorkFlow;
 import io.vitess.dao.base.WorkFlowDao;
+import io.vitess.model.base.WorkFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
