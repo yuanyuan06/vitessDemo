@@ -52,10 +52,7 @@ public class TestMybatis {
         shopManager.findShopInfoByShopId(1L);
     }
 
-    @Test
-    public void testMqParse(){
-        tbTradeParsePorxyManager.tbTradeParse();
-    }
+
 
     @Test
     public void testShop(){
@@ -74,6 +71,11 @@ public class TestMybatis {
         MqSoLog log = new MqSoLog();
 //        log.getIsLgtype();
 //        log.getIsLgType();
+    }
+
+    @Test
+    public void testMqParse(){
+        tbTradeParsePorxyManager.tbTradeParse();
     }
 
     @Test

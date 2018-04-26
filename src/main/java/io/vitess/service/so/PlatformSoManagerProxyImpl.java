@@ -12,8 +12,10 @@ import io.vitess.model.mq.MqSoLog;
 import io.vitess.service.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +28,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 @Service("platformSoManagerProxy")
-public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy {
+public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, InitializingBean {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -56,15 +58,10 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy {
     /**
      * 淘宝创单
      */
+    @Scheduled(fixedRate = 1000*5)
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {
-        map = PlatformSouceContant.loadPlatformSouceData();
-
-        exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>());
-
         List<CompanyShop> shopIdsList = companyShopDao.findShopListGeneralOrder();
         int platformType = PlatformType.TAOBAO_PLATFORM.getValue();
         for (int i = 0; i < shopIdsList.size(); i++) {
@@ -76,7 +73,7 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy {
 
             try {
                 for (int j = 0; j < times; j++) {
-                    if (i == times - 1) {
+                    if (j == times - 1) {
                         exec.execute(new SoCreator(mqSoLogIds.subList(j * maxDeal, mqSoLogIds.size()), shopId, countDownLatch));
                     } else {
                         exec.execute(new SoCreator(mqSoLogIds.subList(j * maxDeal, (j + 1) * maxDeal), shopId, countDownLatch));
@@ -114,6 +111,14 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy {
         Date date = Date.from(zdt.toInstant());
 
         return date;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        map = PlatformSouceContant.loadPlatformSouceData();
+        exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
     }
 
     class SoCreator implements  Runnable{

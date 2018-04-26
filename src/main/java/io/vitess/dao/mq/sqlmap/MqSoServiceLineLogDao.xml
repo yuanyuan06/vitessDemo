@@ -58,8 +58,20 @@
 
 
     <select id="findMqSoServiceLineLogList" resultType="io.vitess.model.mq.MqSoServiceLineLog">
-        select t from t_mq_so_service_line_log t
-               	where t.SO_LOG = #{soLogId}
+        select
+                t.ID as id,
+                t.SO_LOG_ID as soLog,
+                t.PLATFORM_LINE_ID as platformLineId,
+                t.SERVICE_ID as serviceId,
+                t.QTY as qty,
+                t.UNIT_PRICE as unitPrice,
+                t.TOTAL_ACTUAL as totalActual,
+                t.PAYMENT as payment,
+                t.TITLE as title,
+                t.TMSER_SPU_CODE as tmserSpuCode,
+                t.SHOP_ID as shopId
+         from t_mq_so_service_line_log t
+               	where t.SO_LOG_ID = #{soLogId}
                	and t.SHOP_ID = #{shopId}
     </select>
 

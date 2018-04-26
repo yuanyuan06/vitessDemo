@@ -4,6 +4,7 @@ package io.vitess.dao.base;
 import io.vitess.command.ShopSkuWhRefCommand;
 import io.vitess.common.BaseDao;
 import io.vitess.model.base.ShopSkuWhRef;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -17,14 +18,14 @@ public interface ShopSkuWhRefDao extends BaseDao<ShopSkuWhRef> {
 	 * @param createTime
 	 * @return
 	 */
-	ShopSkuWhRef findByShopAndSku( Long shopId,  String extCode,  Date createTime);
+	ShopSkuWhRef findByShopAndSku(@Param("shopId") Long shopId, @Param("extCode") String extCode, @Param("createTime") Date createTime);
 
-	ShopSkuWhRef findShopSkuWhRefByShopIdAndExtCode( Long shopId,  String extCode);
+	ShopSkuWhRef findShopSkuWhRefByShopIdAndExtCode(@Param("shopId") Long shopId, @Param("extCode") String extCode);
 	
-    void updateActiveOff( Long shopId,  String extCode,  Date updateTime,  String updateUserNo);
+    void updateActiveOff(@Param("shopId") Long shopId, @Param("extCode") String extCode, @Param("updateTime") Date updateTime, @Param("updateUserNo") String updateUserNo);
 	
-	void deleteShopSkuWhRefByShopId( Long shopId);
+	void deleteShopSkuWhRefByShopId(@Param("shopId") Long shopId);
 	
-    List<ShopSkuWhRefCommand> findShopSkuWhRefByShopId(Long shopId);
+    List<ShopSkuWhRefCommand> findShopSkuWhRefByShopId(@Param("shopId") Long shopId);
 	
 }

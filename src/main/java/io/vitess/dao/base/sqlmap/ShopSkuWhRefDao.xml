@@ -1,9 +1,122 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.vitess.dao.base.ShopSkuWhRefDao">
+
+
+    <resultMap id="TmaShopSkuWhRefResult" type="io.vitess.model.base.ShopSkuWhRef">
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="tmaShopSkuWhRefColumns">
+        <![CDATA[
+	        	ID as id,
+	        	VERSION as version,
+	        	SHOP_ID as shopId,
+	        	SHOP_NAME as shopName,
+	        	EXT_CODE as extCode,
+	        	WH_CODE as whCode,
+	        	WH_NAME as whName,
+	        	EFFECTIVE_TIME_BEGIN as effectiveTimeBegin,
+	        	EFFECTIVE_TIME_END as effectiveTimeEnd,
+	        	ACTIVE_OFF as activeOff,
+	        	REMARK as remark,
+	        	CREATE_TIME as createTime,
+	        	CREATE_USER_NO as createUserNo,
+	        	UPDATE_TIME as updateTime,
+	        	UPDATE_USER_NO as updateUserNo
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" parameterType="io.vitess.model.base.ShopSkuWhRef"
+
+            flushCache="true">
+        <![CDATA[
+		        INSERT INTO
+		        t_ma_shop_sku_wh_ref (
+		        id,
+		        	VERSION ,
+		        	SHOP_ID ,
+		        	SHOP_NAME ,
+		        	EXT_CODE ,
+		        	WH_CODE ,
+		        	WH_NAME ,
+		        	EFFECTIVE_TIME_BEGIN ,
+		        	EFFECTIVE_TIME_END ,
+		        	ACTIVE_OFF ,
+		        	REMARK ,
+		        	CREATE_TIME ,
+		        	CREATE_USER_NO ,
+		        	UPDATE_TIME ,
+		        	UPDATE_USER_NO
+		        ) VALUES (
+		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		        	#{version,javaType=Integer,jdbcType=INTEGER} ,
+		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
+		        	#{shopName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{extCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{whCode,javaType=String,jdbcType=VARCHAR} ,
+		        	#{whName,javaType=String,jdbcType=VARCHAR} ,
+		        	#{effectiveTimeBegin,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{effectiveTimeEnd,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{activeOff,javaType=String,jdbcType=VARCHAR} ,
+		        	#{remark,javaType=String,jdbcType=VARCHAR} ,
+		        	#{createTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{createUserNo,javaType=String,jdbcType=VARCHAR} ,
+		        	#{updateTime,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
+		        	#{updateUserNo,javaType=String,jdbcType=VARCHAR}
+		        )
+		    ]]>
+
+    </insert>
+
     <update id="updateActiveOff"></update>
-    <delete id="deleteShopSkuWhRefByShopId"></delete>
-    <select id="findByShopAndSku" resultType="io.vitess.model.base.ShopSkuWhRef"></select>
-    <select id="findShopSkuWhRefByShopIdAndExtCode" resultType="io.vitess.model.base.ShopSkuWhRef"></select>
-    <select id="findShopSkuWhRefByShopId" resultType="io.vitess.command.ShopSkuWhRefCommand"></select>
+
+    <delete id="deleteShopSkuWhRefByShopId">
+
+    </delete>
+
+    <select id="findByShopAndSku" resultType="io.vitess.model.base.ShopSkuWhRef">
+        select
+            o.ID as id,
+            o.VERSION as version,
+            o.SHOP_ID as shopId,
+            o.SHOP_NAME as shopName,
+            o.EXT_CODE as extCode,
+            o.WH_CODE as whCode,
+            o.WH_NAME as whName,
+            o.EFFECTIVE_TIME_BEGIN as effectiveTimeBegin,
+            o.EFFECTIVE_TIME_END as effectiveTimeEnd,
+            o.ACTIVE_OFF as activeOff,
+            o.REMARK as remark,
+            o.CREATE_TIME as createTime,
+            o.CREATE_USER_NO as createUserNo,
+            o.UPDATE_TIME as updateTime,
+            o.UPDATE_USER_NO as updateUserNo
+        from
+          t_ma_shop_sku_wh_ref as o
+        where
+          o.ACTIVE_OFF = 'Y'
+        and o.SHOP_ID = #{shopId}
+        and o.EXT_CODE = #{extCode}
+        and (o.EFFECTIVE_TIME_BEGIN &lt;= #{createTime}
+        and o.EFFECTIVE_TIME_END > #{createTime})
+    </select>
+
+    <select id="findShopSkuWhRefByShopIdAndExtCode" resultType="io.vitess.model.base.ShopSkuWhRef">
+
+    </select>
+
+    <select id="findShopSkuWhRefByShopId" resultType="io.vitess.command.ShopSkuWhRefCommand">
+
+    </select>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="TmaShopSkuWhRefResult" flushCache="false">
+        select <include refid="tmaShopSkuWhRefColumns" />
+        <![CDATA[
+			    from t_ma_shop_sku_wh_ref
+		        where
+		        ID = #{id}
+		    ]]>
+    </select>
 </mapper>

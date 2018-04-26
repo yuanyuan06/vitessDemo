@@ -3,6 +3,7 @@ package io.vitess.dao.mq;
 
 import io.vitess.common.BaseDao;
 import io.vitess.model.mq.MqSoServiceLineLog;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,6 +18,6 @@ import java.util.List;
 public interface MqSoServiceLineLogDao extends BaseDao<MqSoServiceLineLog> {
 
 
-    public List<MqSoServiceLineLog> findMqSoServiceLineLogList(Long soLogId, Long shopId);
+    public List<MqSoServiceLineLog> findMqSoServiceLineLogList(@Param("soLogId") Long soLogId, @Param("shopId") Long shopId);
 
 }

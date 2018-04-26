@@ -4,8 +4,10 @@ import io.vitess.dao.so.TbTradeDao;
 import io.vitess.model.mq.TbTrade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 @Service("tbTradeParsePorxyManager")
-public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager {
+public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, InitializingBean {
 
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -31,20 +33,13 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager {
      * 分组大小
      */
     private int maxDeal = 50;
-    /**
-     * 线程池
-     */
-//  private ExecutorService exec = Executors.newFixedThreadPool(ThreadCount);
 
     private ExecutorService exec;
 
+    @Scheduled(fixedRate = 1000*5)
 	@Override
     @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse() {
-
-        exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>());
 
 		List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
 		if (list == null || list.size() <= 0) {
@@ -68,8 +63,15 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager {
         }
 
 	}
-	
-	private class ProcessRunnable implements Runnable {
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        exec = new ThreadPoolExecutor(ThreadCount, ThreadCount,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>());
+    }
+
+    private class ProcessRunnable implements Runnable {
         private List<TbTrade> list;
         private CountDownLatch countDownLatch;
         

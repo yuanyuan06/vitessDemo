@@ -162,7 +162,7 @@
 		        	#{estConTime,javaType=String,jdbcType=VARCHAR} ,
 		        	#{splitSourceLineId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{picPath,javaType=String,jdbcType=VARCHAR} ,
-		        	#{salesModel,javaType=String,jdbcType=VARCHAR} ,
+		        	#{salesModel,javaType=Integer,jdbcType=TINYINT} ,
 		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{subOrderTaxFee,javaType=java.math.BigDecimal,jdbcType=DECIMAL} ,
 		        	#{outOwner,javaType=String,jdbcType=VARCHAR} ,
