@@ -1,14 +1,15 @@
 package io.vitess.service.so;
 
 import io.vitess.command.SalesOrderCommand;
+import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.common.ErrorCode;
 import io.vitess.constants.Constants;
 import io.vitess.constants.SalesModelToTOMS;
-import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.constants.SysWmsStatus;
 import io.vitess.dao.base.*;
 import io.vitess.dao.mq.*;
 import io.vitess.dao.so.OrderLocationMappingDao;
+import io.vitess.dao.so.SoInvFlowDao;
 import io.vitess.dao.so.TradeDao;
 import io.vitess.enums.*;
 import io.vitess.model.base.*;
@@ -99,6 +100,8 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 
 	@Autowired
 	private SkuDao skuDao;
+	@Autowired
+	private SoInvFlowDao soInvFlowDao;
 
 
 	//eticket：电子凭证订单fanht
@@ -878,6 +881,11 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			solCmd.setFqgNum(soLineLog.getFqgNum());
 			solCmd.setIsFqgSFee(soLineLog.getIsFqgSFee());
 			//分期 add by chenping 20170629 end
+
+//			FIXME 库存扣减
+			soInvFlowDao.updateSkuInv(sku.getCode(), solCmd.getQuantity());
+
+
 			
 		return solCmd;
 	}
