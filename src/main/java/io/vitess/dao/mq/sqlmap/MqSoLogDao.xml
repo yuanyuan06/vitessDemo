@@ -89,7 +89,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="io.vitess.model.mq.MqSoLog" flushCache="true" keyProperty="id" useGeneratedKeys="true">
         <![CDATA[
 		        INSERT INTO
 		        t_mq_so_log (
@@ -170,7 +170,7 @@
 		        	ALLOCATION_TYPE ,
 		        	BUSINESS_TYPE
 		        ) VALUES (
-		        #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
+		            #{id,javaType=java.lang.Long,jdbcType=BIGINT} ,
 		        	#{version,javaType=java.util.Date,jdbcType=TIMESTAMP} ,
 		        	#{shopId,javaType=Long,jdbcType=BIGINT} ,
 		        	#{code,javaType=String,jdbcType=VARCHAR} ,

@@ -48,7 +48,7 @@
 			 t.SYNC_STATUS = #{syncStatus},
 			 t.SYNC_COUNTER = IFNULL(t.SYNC_COUNTER, 0) + 1
 			WHERE
-				t.ID = #{id}
+				t.ID = #{id} and t.oms_shop_id = #{shopId}
 	</update>
 
 
@@ -94,7 +94,7 @@
 		AND t.SYNC_COUNTER &lt; 4
 		ORDER BY
 		t.ID
-		LIMIT 6000
+		LIMIT 1
 	</select>
 
 

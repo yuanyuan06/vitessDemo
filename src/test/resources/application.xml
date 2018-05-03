@@ -12,8 +12,8 @@
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="jdbcUrl" value="${jdbcUrl}" />
-        <property name="user" value="${user}" />
-        <property name="password" value="${password}" />
+        <!--<property name="user" value="${user}" />-->
+        <!--<property name="password" value="${password}" />-->
     </bean>
 
     <bean  id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

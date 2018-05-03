@@ -1,4 +1,10 @@
 so.thread.count=10
-jdbcUrl=jdbc:mysql://qdm208431549.my3w.com:3306/qdm208431549_db?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
-user=qdm208431549
-password=hD0oaK6H0zQ
+#jdbcUrl=jdbc:mysql://qdm208431549.my3w.com:3306/qdm208431549_db?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+#user=qdm208431549
+#password=hD0oaK6H0zQ
+
+
+
+jdbcUrl=jdbc:vitess://10.11.104.154:15991/toms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+#user=qdm208431549
+#password=hD0oaK6H0zQ

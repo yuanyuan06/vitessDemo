@@ -7,14 +7,13 @@ import io.vitess.constants.TopRdsConstants;
 import io.vitess.dao.so.PlatformSoLogDao;
 import io.vitess.dao.so.TbTradeDao;
 import io.vitess.exception.SoGetTradeException;
-import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.base.PlatformSoLog;
+import io.vitess.model.mq.MqSoLog;
 import io.vitess.model.mq.TbTrade;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service("tbTradeParseManager")
 public class TbTradeParseManagerImpl implements TbTradeParseManager {
@@ -34,7 +33,7 @@ public class TbTradeParseManagerImpl implements TbTradeParseManager {
 		if(result){
 			syncStatus = TopRdsConstants.PROCESS_STATUS_COMPLET;
 		}
-		tbTradeDao.updateTbTrade(bean.getId(), syncStatus);
+		tbTradeDao.updateTbTrade(bean.getId(), syncStatus, bean.getOmsShopId());
 
 	}
 	
