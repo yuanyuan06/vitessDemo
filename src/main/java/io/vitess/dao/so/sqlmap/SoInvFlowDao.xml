@@ -3,7 +3,7 @@
 <mapper namespace="io.vitess.dao.so.SoInvFlowDao">
     
     <update id="updateSkuInv">
-        update t_td_so_inv_flow e set e.QTY = (e.QTY - #{qty}) where e.SKU_CODE = #{sku}
+        update t_td_so_inv_flow e set e.QTY = (e.QTY - #{qty}) where e.SKU_CODE = #{sku} and id = 1
     </update>
 
 

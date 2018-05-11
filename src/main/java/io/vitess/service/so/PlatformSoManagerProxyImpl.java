@@ -54,14 +54,16 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
 //    private ExecutorService exec;
     private ExecutorService exec;
 
+    private ThreadLocal<Long> startTime = new ThreadLocal<>();
     Map<String, String> map;
     /**
      * 淘宝创单
      */
-    @Scheduled(fixedRate = 1000*5)
+    @Scheduled(fixedRate = 1000*1)
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {
+        startTime.set(System.currentTimeMillis());
         List<CompanyShop> shopIdsList = companyShopDao.findShopListGeneralOrder();
         int platformType = PlatformType.TAOBAO_PLATFORM.getValue();
         for (int i = 0; i < shopIdsList.size(); i++) {
@@ -82,6 +84,9 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 logger.error(Thread.currentThread().getName() + ":Interrupted");
+            }finally {
+                Long interval = System.currentTimeMillis() - startTime.get();
+                logger.warn("one order create task interval {} s", interval/1000);
             }
         }
     }

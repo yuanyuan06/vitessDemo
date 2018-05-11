@@ -66,10 +66,10 @@
         <!--</Root>-->
 
 
-        <asyncLogger name="AsyncLogger" level="debug" includeLocation="true">
+        <asyncLogger name="AsyncLogger" level="warn" includeLocation="true">
         </asyncLogger>
 
-        <asyncRoot level="debug" includeLocation="true">
+        <asyncRoot level="warn" includeLocation="true">
             <AppenderRef ref="Console" />
         </asyncRoot>
     </Loggers>

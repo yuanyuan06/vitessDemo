@@ -191,7 +191,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		
 		//增加创单日志fanht
 		Long tmpt = System.currentTimeMillis();
-		log.warn("[Thread-{}]Create One TB shopId[{}] Order[{}] within {}ms", tId, shopId, soLog.getCode(), tmpt-cct);
+		log.info("[Thread-{}]Create One TB shopId[{}] Order[{}] within {}ms", tId, shopId, soLog.getCode(), tmpt-cct);
 		
 	}
 	

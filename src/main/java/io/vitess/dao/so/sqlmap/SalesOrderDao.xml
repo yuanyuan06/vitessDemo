@@ -131,7 +131,7 @@
     </sql>
 
     <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-    <insert id="insert" parameterType="io.vitess.model.so.SalesOrder" flushCache="true" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insert" parameterType="io.vitess.model.so.SalesOrder" flushCache="true" useGeneratedKeys="true" keyProperty="id">
         <![CDATA[
 		        INSERT INTO
 		        t_td_sales_order (

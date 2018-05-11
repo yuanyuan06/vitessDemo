@@ -36,11 +36,15 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
 
     private ExecutorService exec;
 
-    @Scheduled(fixedRate = 1000*5)
+    private ThreadLocal<Long> startTime = new ThreadLocal<>();
+    private ThreadLocal<Long> endTime;
+
+    @Scheduled(fixedRate = 1000*1)
 	@Override
     @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse() {
 
+        startTime.set(System.currentTimeMillis());
 		List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
 		if (list == null || list.size() <= 0) {
             return;
@@ -60,6 +64,10 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
             countDownLatch.await();
         } catch (InterruptedException e) {
             log.error(Thread.currentThread().getName() + ":Interrupted");
+        }finally {
+            Long interval = System.currentTimeMillis() - startTime.get();
+            startTime.remove();
+            log.warn("one order create task interval: {} s", interval/1000);
         }
 
 	}
