@@ -5,5 +5,5 @@ jdbcUrl=jdbc:vitess://10.11.104.154:15991/toms?useUnicode=true&characterEncoding
 
 dubbo.register.flag=false
 dubbo.registry.address=
-dubbo.app.port=20880
+dubbo.app.port=20881
 dubbo.default.version=1.0

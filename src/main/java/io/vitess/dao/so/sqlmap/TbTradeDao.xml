@@ -94,7 +94,7 @@
 		AND t.SYNC_COUNTER &lt; 4
 		ORDER BY
 		t.ID
-		LIMIT 1
+		LIMIT 6000
 	</select>
 
 
