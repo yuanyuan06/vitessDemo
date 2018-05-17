@@ -19,7 +19,7 @@ public class MqSoPromotionLog extends SuperEntity {
     public static Integer SO_PLATFORM_PROMOTION_SCOPE_TYPE_ORDER = new Integer(1); //整单金额促销
     public static Integer SO_PLATFORM_PROMOTION_SCOPE_TYPE_LINE = new Integer(2);  //单行金额促销
 
-    private Date version;
+    private Date version = new Date();
 
     /**
      * 平台订单号

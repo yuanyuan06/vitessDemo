@@ -16,7 +16,7 @@ public class MqSoLineLog extends SuperEntity {
     private static final long serialVersionUID = -3491854187095045360L;
 
 
-    private Date version;
+    private Date version = new Date();
 
     /**
      * 条码(供应商到颜色尺码)

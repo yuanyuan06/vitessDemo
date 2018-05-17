@@ -31,7 +31,7 @@ public class Trade extends SuperEntity {
 
     private String payNo;
 
-    private Date version;
+    private Date version = new Date();
 
     
 }

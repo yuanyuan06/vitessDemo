@@ -11,7 +11,7 @@ public class MqPlatformMemberLog extends SuperEntity {
 
     private static final long serialVersionUID = 2978802053164027969L;
 
-    private Date version;
+    private Date version = new Date();
 
     private Date createTime;
 

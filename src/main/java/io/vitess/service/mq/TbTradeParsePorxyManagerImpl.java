@@ -67,7 +67,7 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
         }finally {
             Long interval = System.currentTimeMillis() - startTime.get();
             startTime.remove();
-            log.warn("one order create task interval: {} s", interval/1000);
+            log.warn("one order parse task interval: {} s", interval/1000);
         }
 
 	}

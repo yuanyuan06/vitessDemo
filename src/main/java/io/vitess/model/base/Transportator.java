@@ -39,7 +39,7 @@ public class Transportator extends SuperEntity {
     /**
      * Version
      */
-    private Date version;
+    private Date version = new Date();
 
     /**
      * 物流商名称（平台名称）

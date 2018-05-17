@@ -286,7 +286,7 @@ public class SalesOrder extends SuperEntity{
     private Long soDeliveryInfo;
 
 	/** VERSION */
-	private Date version;
+	private Date version = new Date();
 	
     /**
      * vmi促销fanht

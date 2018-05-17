@@ -110,7 +110,7 @@ public class SalesOrderLine extends SuperEntity{
 	private List<SoPromotionApplyLog> proLog;
 
 	/** VERSION */
-	private Date version;
+	private Date version = new Date();
 	
     /**
      * vmi促销fanht

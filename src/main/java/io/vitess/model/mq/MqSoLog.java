@@ -12,7 +12,7 @@ import java.util.Date;
 public class MqSoLog extends SuperEntity {
     private static final long serialVersionUID = 6640950308239023560L;
 
-    private Date version;
+    private Date version = new Date();
 
     /**
      * 店铺ID

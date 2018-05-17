@@ -16,7 +16,7 @@ public class MqDeliveryInfoLog extends SuperEntity {
     private static final long serialVersionUID = -7082656645969758992L;
 
 
-    private Date version;
+    private Date version = new Date();
 
     /**
      * 收货人

@@ -17,7 +17,7 @@ import java.util.Date;
 public class ComboSku extends SuperEntity {
     private static final long serialVersionUID = 6451767353501050808L;
 
-    private Date version;
+    private Date version = new Date();
 
     private String code;
 
