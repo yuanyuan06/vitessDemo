@@ -39,21 +39,28 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
     private ThreadLocal<Long> endTime;
 
+//    private Semaphore semaphore = new Semaphore(1);
+//
+//    private ArrayBlockingQueue<Long> queue = new ArrayBlockingQueue(100);
+
     @Scheduled(fixedRate = 1000*1)
 	@Override
     @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse() {
 
-        startTime.set(System.currentTimeMillis());
-		List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
-		if (list == null || list.size() <= 0) {
-            return;
-        }
-		
+        try {
+//            log.warn("队列等待{}", queue.size());
+//            queue.add(Thread.currentThread().getId());
+//            semaphore.acquire();
+            startTime.set(System.currentTimeMillis());
+            List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
+            if (list == null || list.size() <= 0) {
+                return;
+            }
+
 		int times = (list.size() + maxDeal - 1) / maxDeal;
         CountDownLatch countDownLatch = new CountDownLatch(times);
-        
-        try {
+
             for (int i = 0; i < times; i++) {
                 if (i == times - 1) {
                     exec.execute(new ProcessRunnable(list.subList(i * maxDeal, list.size()), countDownLatch));
@@ -68,6 +75,8 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
             Long interval = System.currentTimeMillis() - startTime.get();
             startTime.remove();
             log.warn("one order parse task interval: {} s", interval/1000);
+//            semaphore.release();
+//            queue.remove(Thread.currentThread().getId());
         }
 
 	}

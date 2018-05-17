@@ -55,23 +55,23 @@
     </Appenders>
 
     <Loggers>
-        <!--<logger name="io" includeLocation="true">-->
-            <!--<priority value ="debug"/>-->
-            <!--<appender-ref ref="Console" />-->
-            <!--<appender-ref ref="RollingFileInfo" />-->
-        <!--</logger>-->
+        <logger name="io" includeLocation="true">
+            <priority value ="debug"/>
+            <appender-ref ref="Console" />
+            <appender-ref ref="RollingFileInfo" />
+        </logger>
 
-        <!--<Root level="debug">-->
-            <!--<AppenderRef ref="Console" />-->
-        <!--</Root>-->
-
-
-        <asyncLogger name="AsyncLogger" level="warn" includeLocation="true">
-        </asyncLogger>
-
-        <asyncRoot level="warn" includeLocation="true">
+        <Root level="debug">
             <AppenderRef ref="Console" />
-        </asyncRoot>
+        </Root>
+
+
+        <!--<asyncLogger name="AsyncLogger" level="debug" includeLocation="true">-->
+        <!--</asyncLogger>-->
+
+        <!--<asyncRoot level="debug" includeLocation="true">-->
+            <!--<AppenderRef ref="Console" />-->
+        <!--</asyncRoot>-->
     </Loggers>
 
 </Configuration>

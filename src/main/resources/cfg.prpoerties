@@ -1,6 +1,6 @@
 so.thread.count=10
 
-jdbcUrl=jdbc:mysql://10.11.104.153:4008/toms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+jdbcUrl=jdbc:mysql://10.11.104.153:4008/toms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&&useSSL=false
 user=u_toms
 password=root1234
 c3p0.minPoolSize=30
@@ -8,7 +8,7 @@ c3p0.maxPoolSize=30
 c3p0.initialPoolSize=30
 c3p0.maxIdleTime=25000
 c3p0.acquireIncrement=20
-c3p0.idleConnectionTestPeriod=18000
+c3p0.idleConnectionTestPeriod=60
 c3p0.maxStatements=0
 
 
