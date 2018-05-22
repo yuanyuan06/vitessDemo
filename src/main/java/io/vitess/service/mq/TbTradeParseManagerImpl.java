@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("tbTradeParseManager")
 public class TbTradeParseManagerImpl implements TbTradeParseManager {
@@ -27,6 +28,7 @@ public class TbTradeParseManagerImpl implements TbTradeParseManager {
 	private TbTradeDao tbTradeDao;
 	
 	@Override
+    @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse(TbTrade bean) {
 		boolean result = saveHubTrade(bean.getOmsShopId(),bean.getContent());
 		Integer syncStatus = TopRdsConstants.PROCESS_STATUS_NO;

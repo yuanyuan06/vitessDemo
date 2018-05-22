@@ -59,7 +59,7 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
     /**
      * 淘宝创单
      */
-    @Scheduled(fixedRate = 1000*30)
+    @Scheduled(fixedDelay = 1000)
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {

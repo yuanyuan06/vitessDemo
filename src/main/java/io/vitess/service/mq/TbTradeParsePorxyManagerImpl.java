@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -39,11 +40,11 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
     private ThreadLocal<Long> endTime;
 
-    @Scheduled(fixedRate = 1000*30)
+    @Scheduled(fixedDelay = 1000)
 	@Override
-    @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse() {
 
+        log.warn("thread {}, tbTradeParse start time {}", Thread.currentThread().getName(), new Date());
         try {
             startTime.set(System.currentTimeMillis());
 //            List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
@@ -68,7 +69,8 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
         }finally {
             Long interval = System.currentTimeMillis() - startTime.get();
             startTime.remove();
-            log.warn("one order parse task interval: {} s", interval/1000);
+            log.warn("thread {}, one order parse task interval: {} s", Thread.currentThread().getName(), interval/1000);
+            log.warn("thread {}, tbTradeParse end time {}", Thread.currentThread().getName(), new Date());
 //            semaphore.release();
 //            queue.remove(Thread.currentThread().getId());
         }

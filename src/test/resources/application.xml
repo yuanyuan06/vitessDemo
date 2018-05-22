@@ -8,8 +8,13 @@
 
     <context:property-placeholder location="cfg.properties" file-encoding="utf-8"/>
 
-    <task:annotation-driven />
     <context:component-scan base-package="io.vitess.service" />
+
+
+    <!--<task:annotation-driven />-->
+
+    <task:annotation-driven scheduler="scheduler"/>
+    <task:scheduler id="scheduler" pool-size="20"/>
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
