@@ -14,8 +14,8 @@
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="jdbcUrl" value="${jdbcUrl}" />
-        <property name="user" value="${user}" />
-        <property name="password" value="${password}" />
+        <property name="user" value="${db.user}" />
+        <property name="password" value="${db.password}" />
         <property name="minPoolSize" value="${c3p0.minPoolSize}"></property>
         <property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>
         <property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>
@@ -25,6 +25,7 @@
         <property name="maxStatements" value="${c3p0.maxStatements}"></property>
         <property name="preferredTestQuery" value="select 1"/>
         <property name="testConnectionOnCheckin" value="true"/>
+        <property name="testConnectionOnCheckout" value="true"/>
 
     </bean>
 

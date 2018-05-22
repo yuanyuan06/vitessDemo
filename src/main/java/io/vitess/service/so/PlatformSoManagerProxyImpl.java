@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +59,7 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
     /**
      * 淘宝创单
      */
-//    @Scheduled(fixedRate = 1000*1)
+    @Scheduled(fixedRate = 1000*30)
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {

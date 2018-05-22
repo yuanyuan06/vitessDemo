@@ -32,28 +32,22 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
     /**
      * 分组大小
      */
-    private int maxDeal = 50;
+    private int maxDeal = 100;
 
     private ExecutorService exec;
 
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
     private ThreadLocal<Long> endTime;
 
-//    private Semaphore semaphore = new Semaphore(1);
-//
-//    private ArrayBlockingQueue<Long> queue = new ArrayBlockingQueue(100);
-
-    @Scheduled(fixedRate = 1000*1)
+    @Scheduled(fixedRate = 1000*30)
 	@Override
     @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse() {
 
         try {
-//            log.warn("队列等待{}", queue.size());
-//            queue.add(Thread.currentThread().getId());
-//            semaphore.acquire();
             startTime.set(System.currentTimeMillis());
-            List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
+//            List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
+            List<Long> list = tbTradeDao.findTbTradeNotSyncTradeId();
             if (list == null || list.size() <= 0) {
                 return;
             }
@@ -89,10 +83,10 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
     }
 
     private class ProcessRunnable implements Runnable {
-        private List<TbTrade> list;
+        private List<Long> list;
         private CountDownLatch countDownLatch;
         
-        public ProcessRunnable(List<TbTrade> list, CountDownLatch countDownLatch) {
+        public ProcessRunnable(List<Long> list, CountDownLatch countDownLatch) {
             this.list = list;
             this.countDownLatch = countDownLatch;
         }
@@ -103,7 +97,8 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
         			ct = System.currentTimeMillis(),
         			cct = ct;
             try {
-            	for(TbTrade bean : list){
+                List<TbTrade> tradeList = tbTradeDao.findTbTradeNotSyncByTradeId(list);
+            	for(TbTrade bean : tradeList){
             		tbTradeParseManager.tbTradeParse(bean);
             		Long tmpt = System.currentTimeMillis();
                     log.info("[Thread-{}]Parse One Trade within {}ms", tId, tmpt-cct);

@@ -80,6 +80,8 @@ public class TestMybatis {
 
     @Test
     public void testCreate(){
-        platformSoManagerProxy.createTaobaoSo();
+        while (true){
+            platformSoManagerProxy.createTaobaoSo();
+        }
     }
 }

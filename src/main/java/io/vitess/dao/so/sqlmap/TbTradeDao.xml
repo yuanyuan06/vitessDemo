@@ -43,12 +43,14 @@
 
 
     <update id="updateTbTrade">
-		UPDATE t_top_tb_trade t
-			SET t.CONFIRM_TIME = SYSDATE(),
-			 t.SYNC_STATUS = #{syncStatus},
-			 t.SYNC_COUNTER = IFNULL(t.SYNC_COUNTER, 0) + 1
-			WHERE
-				t.ID = #{id} and t.oms_shop_id = #{shopId}
+		UPDATE
+			t_top_tb_trade
+		SET
+			CONFIRM_TIME = SYSDATE(),
+			SYNC_STATUS = #{syncStatus},
+			SYNC_COUNTER = IFNULL(SYNC_COUNTER, 0) + 1
+		WHERE
+			ID = #{id} and oms_shop_id = #{shopId}
 	</update>
 
 
@@ -172,5 +174,63 @@
 			    from t_top_tb_trade
 		        where
 		        ID = #{id}
+	</select>
+
+
+	<select id="findTbTradeNotSyncTradeId" resultType="java.lang.Long">
+		SELECT
+			t.ID as id
+		FROM
+		t_top_tb_trade t,
+		t_ma_tb_shop_info i
+		WHERE
+		t.SHOP_ID = i.ID
+		AND i.IS_AUTO_ORDER = 1
+		AND t.`STATUS` = 1
+		AND t.SYNC_STATUS = 0
+		AND t.SYNC_COUNTER &lt; 4
+		ORDER BY
+		t.ID
+		LIMIT 1000
+	</select>
+
+
+	<select id="findTbTradeNotSyncByTradeId" resultType="io.vitess.model.mq.TbTrade">
+		SELECT
+			t.ID as id,
+			t.CONFIRM_TIME as confirmTime,
+			t.CONTENT as content,
+			t.COUNTER as counter,
+			t.CREATE_TIME as createTime,
+			t.DESCRIPTION as description,
+			t.ERROR_CODE as errorCode,
+			t.ERROR_MESSAGE as errorMessage,
+			t.FULLINFO_GET_TIME as fullinfoGetTime,
+			t.FULLINFO_STATUS as fullinfoStatus,
+			t.JDP_MODIFIED as jdpModified,
+			t.LAST_CALL_TIME as lastCallTime,
+			t.LOAD_TIME as loadTime,
+			t.NEXT_RUN_TIME as nextRunTime,
+			t.NOTIFY_TRADE_STATUS as notifyTradeStatus,
+			t.SHOP_ID as shopId,
+			t.STATUS as status,
+			t.STEP_TRADE_STATUS as stepTradeStatus,
+			t.SYNC_COUNTER as syncCounter,
+			t.SYNC_STATUS as syncStatus,
+			t.SYNC_TIME as syncTime,
+			t.TID as tid,
+			t.TRADE_CREATE_TIME as tradeCreateTime,
+			t.TRADE_PAY_TIME as tradePayTime,
+			t.TRADE_TYPE as tradeType,
+			t.VERSION as version,
+			t.OMS_SHOP_ID as omsShopId,
+			t.NO_PAY_STATUS as noPayStatus,
+			t.NO_PAY_PROCESS_TIME as noPayProcessTime
+		FROM
+			t_top_tb_trade t where t.ID in
+		<foreach collection="pklist" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+
 	</select>
 </mapper>

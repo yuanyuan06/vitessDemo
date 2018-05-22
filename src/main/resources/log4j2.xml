@@ -53,7 +53,6 @@
             </Policies>
         </RollingFile>
     </Appenders>
-
     <Loggers>
         <!--<logger name="io" includeLocation="true">-->
             <!--<priority value ="debug"/>-->
@@ -68,6 +67,7 @@
 
         <asyncLogger name="AsyncLogger" level="warn" includeLocation="true">
         </asyncLogger>
+
 
         <asyncRoot level="warn" includeLocation="true">
             <AppenderRef ref="Console" />

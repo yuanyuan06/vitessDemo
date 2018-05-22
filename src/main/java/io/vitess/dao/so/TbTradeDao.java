@@ -19,6 +19,10 @@ public interface TbTradeDao extends BaseDao<TbTrade> {
 
     List<TbTrade> findTbTradeNotSync();
 
+    List<Long> findTbTradeNotSyncTradeId();
+
+    List<TbTrade> findTbTradeNotSyncByTradeId(@Param("pklist") List<Long> pklist);
+
     void updateTbTrade(@Param("id") Long id, @Param("syncStatus") Integer syncStatus, @Param("shopId") Long shopId);
 
 }
