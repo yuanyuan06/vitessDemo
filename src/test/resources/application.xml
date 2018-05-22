@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 
-    <context:property-placeholder location="cfg.prpoerties" file-encoding="utf-8"/>
+    <context:property-placeholder location="cfg.properties" file-encoding="utf-8"/>
 
     <task:annotation-driven />
     <context:component-scan base-package="io.vitess.service" />

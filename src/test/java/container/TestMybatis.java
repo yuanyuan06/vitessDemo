@@ -75,12 +75,14 @@ public class TestMybatis {
 
     @Test
     public void testMqParse(){
-        tbTradeParsePorxyManager.tbTradeParse();
+        while (true){
+            tbTradeParsePorxyManager.tbTradeParse();
+        }
     }
 
     @Test
     public void testCreate(){
-        while (true){
+        while(true){
             platformSoManagerProxy.createTaobaoSo();
         }
     }
