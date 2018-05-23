@@ -1,15 +1,12 @@
 package io.vitess.service.so;
 
-import com.alibaba.fastjson.JSON;
 import io.vitess.constants.PlatformSouceContant;
 import io.vitess.dao.base.CompanyShopDao;
 import io.vitess.dao.mq.MqSoLogDao;
-import io.vitess.enums.MqSoLogStatus;
 import io.vitess.enums.PlatformType;
 import io.vitess.enums.SalesOrderType;
 import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.MqSoLog;
-import io.vitess.service.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -49,9 +45,8 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
     /**
      * 分组大小
      */
-    private int maxDeal = 50;
+    private int maxDeal = 100;
 
-//    private ExecutorService exec;
     private ExecutorService exec;
 
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
@@ -61,7 +56,6 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
      */
     @Scheduled(fixedDelay = 1000)
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void createTaobaoSo() {
         startTime.set(System.currentTimeMillis());
         List<CompanyShop> shopIdsList = companyShopDao.findShopListGeneralOrder();
@@ -91,22 +85,7 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
         }
     }
 
-    /**
-     * 记录错误次数,不允许超过3次
-     * @param mqSoLogId
-     */
-    private void mqCreateSoErrorCount(Long mqSoLogId, Long shopId, String msg) {
-        MqSoLog mqSoLog = mqSoLogDao.findMqSoLogByIdShopId(mqSoLogId, shopId);
-        Integer initCount = new Integer(1);
-        Integer errorCount = mqSoLog.getErrorCount() == null ? initCount : initCount + mqSoLog.getErrorCount();
-        int orderStatus = mqSoLog.getStatus();
-        if(errorCount >= 3){
-        	orderStatus = MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue();
-        	msg = mqSoLog.getErrorMsg() + "(创单错误次数超过3次)";
-        }
-        
-        mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, orderStatus, msg, errorCount);
-    }
+
 
     private Date getCreateTime(){
 
@@ -141,22 +120,13 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
         @Override
         public void run() {
             try {
-                for (int j = 0; j < mqSoLogIds.size(); j++) {
-                    Long mqSoLogId = mqSoLogIds.get(j);
-                    try {
-                        platformSoManager.createTbSoFromMqSoLog(mqSoLogId, SalesOrderType.PLATFORM_ONLINE_TB, map,shopId);
-                    } catch(BusinessException be) {
-                        mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), JSON.toJSONString(be.getArgs()), null);
-                        logger.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
-                    }catch (Exception e) {
-                        mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
-                        logger.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------",e);
-                    }
+                List<MqSoLog> mqSoLogs = mqSoLogDao.queryMqByIds(mqSoLogIds);
+                for (MqSoLog mqSoLog : mqSoLogs) {
+                    platformSoManager.createTbSoFromMqSoLog(mqSoLog, SalesOrderType.PLATFORM_ONLINE_TB, map,shopId);
                 }
             }finally {
                 countDownLatch.countDown();
             }
-
         }
     }
 }

@@ -1,7 +1,7 @@
 package io.vitess.service.so;
 
 import io.vitess.enums.SalesOrderType;
-import io.vitess.exception.WorkFlowException;
+import io.vitess.model.mq.MqSoLog;
 
 import java.util.Map;
 
@@ -12,10 +12,10 @@ public interface PlatformSoManager {
 	 * 
 	 * 创建淘宝订单
 	 * 
-	 * @param mqSoLogId
+	 * @param mqSoLog
 	 * @param orderType
 	 * @param sourceMap
 	 */
-	void createTbSoFromMqSoLog(Long mqSoLogId, SalesOrderType orderType, Map<String, String> sourceMap, Long shopId);
+	void createTbSoFromMqSoLog(MqSoLog mqSoLog, SalesOrderType orderType, Map<String, String> sourceMap, Long shopId);
 	
 }

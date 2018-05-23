@@ -395,4 +395,16 @@
             id = #{id}
     </select>
 
+
+    <select id="queryMqByIds" resultType="io.vitess.model.mq.MqSoLog">
+        select
+          <include refid="tmqSoLogColumns" />
+        from
+          t_mq_so_log
+        where id in
+        <foreach collection="pklist" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

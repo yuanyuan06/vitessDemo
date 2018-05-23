@@ -1,5 +1,6 @@
 package io.vitess.service.so;
 
+import com.alibaba.fastjson.JSON;
 import io.vitess.command.SalesOrderCommand;
 import io.vitess.command.SalesOrderLineCommand;
 import io.vitess.common.ErrorCode;
@@ -108,47 +109,47 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 	private String PLATFORM_TRADE_TYPE_ETICKET = "eticket";
 	// 各种校验
 
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void createTbSoFromMqSoLog(Long mqSoLogId, SalesOrderType orderType, Map<String, String> sourceMap, Long shopId){
-		//增加创单日志fanht
-		Long tId= Thread.currentThread().getId(),
-				cct = System.currentTimeMillis();
-		
-		MqSoLog soLog = mqSoLogDao.findMqSoLogByIdShopId(mqSoLogId, shopId);
-		String errorMsg = null;
-		if(soLog.getShopId() == null){
-			errorMsg = "创建订单出错：所属店铺为null";
-			//优化代码fanht
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
-		}
-		String platformOrderCode = soLog.getCode();
-		loggerSoCreate.debug("create mq so with platform_order_code{" + platformOrderCode + "} start........");
-		CompanyShop shop = null;
+	public void createTbSoFromMqSoLog(MqSoLog soLog, SalesOrderType orderType, Map<String, String> sourceMap, Long shopId){
+		Long mqSoLogId = soLog.getId();
+		try {
+			//增加创单日志fanht
+			Long tId= Thread.currentThread().getId(),
+					cct = System.currentTimeMillis();
+			String errorMsg = null;
+			if(soLog.getShopId() == null){
+				errorMsg = "创建订单出错：所属店铺为null";
+				//优化代码fanht
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
+			String platformOrderCode = soLog.getCode();
+			loggerSoCreate.debug("create mq so with platform_order_code{" + platformOrderCode + "} start........");
+			CompanyShop shop = null;
 
-		//当前订单所属店铺是否存在
-		if (shopId == null || (shop = companyShopDao.findById(shopId)) == null) {
-			errorMsg = "创建订单出错：所属店铺不存在，店铺Id[ " + shopId + " ]";
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
-		}
+			//当前订单所属店铺是否存在
+			if (shopId == null || (shop = companyShopDao.findById(shopId)) == null) {
+				errorMsg = "创建订单出错：所属店铺不存在，店铺Id[ " + shopId + " ]";
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
 
-		Collection<MqDeliveryInfoLog> dfLogList = mqDeliveryInfoLogDao.getMqDeliveryInfoLogsBySoLogId(soLog.getId(),shopId);
-		MqDeliveryInfoLog deliveryInfoLog = null;
-		if (CollectionUtils.isNotEmpty(dfLogList)) {
-			deliveryInfoLog = dfLogList.iterator().next(); // 发货信息集中默认取第一条为当前订单发货信息
-		}
-		// 判断发货信息是否空
-		if (deliveryInfoLog == null) {
-			// 发货信息为空
-			errorMsg = "发货信息为空";
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
-		}
+			List<MqDeliveryInfoLog> dfLogList = mqDeliveryInfoLogDao.getMqDeliveryInfoLogsBySoLogId(soLog.getId(),shopId);
+			MqDeliveryInfoLog deliveryInfoLog = null;
+			// 发货信息集中默认取第一条为当前订单发货信息
+			deliveryInfoLog = CollectionUtils.isNotEmpty(dfLogList) ? dfLogList.get(0): null;
+
+			// 判断发货信息是否空
+			if (deliveryInfoLog == null) {
+				// 发货信息为空
+				errorMsg = "发货信息为空";
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
 
 //		  A.等待付款的  						WAIT_BUYER_PAY
 //	      B.付款前被取消的订单 				TRADE_CLOSED_BY_TAOBAO
@@ -158,41 +159,64 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 //	 	  F.经销采购单关闭					TRADE_CLOSED
 //		  G.???								WAIT_FOR_APPLIER_STORAGE
 //		  H.???								WAIT_FOR_SUPPLIER_DELIVER
-		// 校验订单平台状态: 各订单平台状态含义
-		String platformOrderStatus = soLog.getPlatformOrderStatus();
-		//校验淘宝订单当前状态是否符合创建oms订单条件 fanht
-		//boolean isLgType = soLog.getIsLgtype() == null ? Boolean.FALSE : soLog.getIsLgtype();
-		boolean statusFlag = validateStatusForMqSoLog(platformOrderStatus, shop, soLog.getPlatformType(), soLog);
-		if (!statusFlag) {
-			errorMsg = "创建订单出错：订单状态不对";
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
+			// 校验订单平台状态: 各订单平台状态含义
+			String platformOrderStatus = soLog.getPlatformOrderStatus();
+			//校验淘宝订单当前状态是否符合创建oms订单条件 fanht
+			//boolean isLgType = soLog.getIsLgtype() == null ? Boolean.FALSE : soLog.getIsLgtype();
+			boolean statusFlag = validateStatusForMqSoLog(platformOrderStatus, shop, soLog.getPlatformType(), soLog);
+			if (!statusFlag) {
+				errorMsg = "创建订单出错：订单状态不对";
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
+
+			// 校验平台订单号是否存在（自动拆单前）
+			Trade existedTd = tradeDao.findByPlatformOrderCode(platformOrderCode, shopId);
+			if (existedTd != null) {
+				errorMsg = " 创建订单出错：订单已存在";
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
+			// 校验该订单所属店铺是否初始化销售模式
+			if(shop.getIsApplySalesMode() != null && shop.getIsApplySalesMode() &&  shop.getSalesMode() == null){
+				errorMsg = "创建订单出错:"+shop.getId()+"该店铺未初始化销售模式";
+				mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
+				loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
+				return;
+			}
+
+			//创建
+			createTbSoFromMqSoLog(shop, soLog, deliveryInfoLog, orderType, sourceMap);
+
+			//增加创单日志fanht
+			Long tmpt = System.currentTimeMillis();
+			log.info("[Thread-{}]Create One TB shopId[{}] Order[{}] within {}ms", tId, shopId, soLog.getCode(), tmpt-cct);
+		}catch(BusinessException be) {
+			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), JSON.toJSONString(be.getArgs()), null);
+			loggerSoCreate.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------", be);
+		}catch (Exception e) {
+			mqCreateSoErrorCount(mqSoLogId, shopId, e.getMessage());
+			loggerSoCreate.error("---------createTaobaoSo Error, mqSoLogId:" + mqSoLogId + "------------",e);
+		}
+	}
+
+	/**
+	 * 记录错误次数,不允许超过3次
+	 * @param mqSoLogId
+	 */
+	private void mqCreateSoErrorCount(Long mqSoLogId, Long shopId, String msg) {
+		MqSoLog mqSoLog = mqSoLogDao.findMqSoLogByIdShopId(mqSoLogId, shopId);
+		Integer initCount = new Integer(1);
+		Integer errorCount = mqSoLog.getErrorCount() == null ? initCount : initCount + mqSoLog.getErrorCount();
+		int orderStatus = mqSoLog.getStatus();
+		if(errorCount >= 3){
+			orderStatus = MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue();
+			msg = mqSoLog.getErrorMsg() + "(创单错误次数超过3次)";
 		}
 
-		// 校验平台订单号是否存在（自动拆单前）
-		Trade existedTd = tradeDao.findByPlatformOrderCode(platformOrderCode, shopId);
-		if (existedTd != null) {
-			errorMsg = " 创建订单出错：订单已存在";
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
-		}
-		// 校验该订单所属店铺是否初始化销售模式
-		if(shop.getIsApplySalesMode() != null && shop.getIsApplySalesMode() &&  shop.getSalesMode() == null){
-			errorMsg = "创建订单出错:"+shop.getId()+"该店铺未初始化销售模式";
-			mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, MqSoLogStatus.MQ_SO_STATUS_ERROR.getValue(), errorMsg, null);
-			loggerSoCreate.error("create so with error: shopId is {} order code {} errorMsg {}", shopId, soLog.getCode(), errorMsg);
-			return;
-		}
-		
-		//创建
-		createTbSoFromMqSoLog(shop, soLog, deliveryInfoLog, orderType, sourceMap);
-		
-		//增加创单日志fanht
-		Long tmpt = System.currentTimeMillis();
-		log.info("[Thread-{}]Create One TB shopId[{}] Order[{}] within {}ms", tId, shopId, soLog.getCode(), tmpt-cct);
-		
+		mqSoLogDao.updateStatusAndErrorMsgById(mqSoLogId, shopId, null, orderStatus, msg, errorCount);
 	}
 	
 	private void copySoLogProperties(SalesOrderCommand soCmd, MqSoLog soLog) {
@@ -427,13 +451,13 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 		
 		//构建交易头Trade
 		Trade trade = new Trade();
-		trade.setPlatformOrderCode(platformOrderCode);
-		trade.setPlatformOrderCreateTime(platformCreateTime);
-		trade.setCompanyShop(shop.getId());
-		trade.setPayAccount(soCmd.getPayAccount());
-		trade.setPayNo(soCmd.getPayNo());
-		trade.setIsSplit(Constants.NO);
-		trade.setOrderCount(1);
+			trade.setPlatformOrderCode(platformOrderCode);
+			trade.setPlatformOrderCreateTime(platformCreateTime);
+			trade.setCompanyShop(shop.getId());
+			trade.setPayAccount(soCmd.getPayAccount());
+			trade.setPayNo(soCmd.getPayNo());
+			trade.setIsSplit(Constants.NO);
+			trade.setOrderCount(1);
 		
 		if (shop.getSkuSplitType() != null 
 				&& (SkuSplitType.NO_SPLIT_BY_SKU_DEFAULT_WH.getValue() == shop.getSkuSplitType()

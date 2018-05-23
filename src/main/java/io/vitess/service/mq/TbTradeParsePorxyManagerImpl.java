@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +37,6 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
     private ExecutorService exec;
 
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
-    private ThreadLocal<Long> endTime;
 
     @Scheduled(fixedDelay = 1000)
 	@Override
@@ -47,7 +45,6 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
         log.warn("thread {}, tbTradeParse start time {}", Thread.currentThread().getName(), new Date());
         try {
             startTime.set(System.currentTimeMillis());
-//            List<TbTrade> list = tbTradeDao.findTbTradeNotSync();
             List<Long> list = tbTradeDao.findTbTradeNotSyncTradeId();
             if (list == null || list.size() <= 0) {
                 return;
@@ -71,8 +68,6 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
             startTime.remove();
             log.warn("thread {}, one order parse task interval: {} s", Thread.currentThread().getName(), interval/1000);
             log.warn("thread {}, tbTradeParse end time {}", Thread.currentThread().getName(), new Date());
-//            semaphore.release();
-//            queue.remove(Thread.currentThread().getId());
         }
 
 	}
@@ -103,12 +98,12 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
             	for(TbTrade bean : tradeList){
             		tbTradeParseManager.tbTradeParse(bean);
             		Long tmpt = System.currentTimeMillis();
-                    log.info("[Thread-{}]Parse One Trade within {}ms", tId, tmpt-cct);
+                    log.warn("[Thread-{}]Parse One Trade within {}ms", tId, tmpt-cct);
                     cct = tmpt;
             	}
             } finally {
                 countDownLatch.countDown();
-                log.info("[Thread-{}]Parse Trade End within {}ms", tId, System.currentTimeMillis()-ct);
+                log.warn("[Thread-{}]Parse Trade End within {}ms", tId, System.currentTimeMillis()-ct);
             }
         }
     }

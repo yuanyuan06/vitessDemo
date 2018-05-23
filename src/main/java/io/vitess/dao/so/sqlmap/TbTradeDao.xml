@@ -189,8 +189,6 @@
 		AND t.`STATUS` = 1
 		AND t.SYNC_STATUS = 0
 		AND t.SYNC_COUNTER &lt; 4
-		ORDER BY
-		t.ID
 		LIMIT 1000
 	</select>
 
