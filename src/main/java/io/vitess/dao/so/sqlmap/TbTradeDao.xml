@@ -189,7 +189,7 @@
 		AND t.`STATUS` = 1
 		AND t.SYNC_STATUS = 0
 		AND t.SYNC_COUNTER &lt; 4
-		LIMIT 1000
+		LIMIT 5000
 	</select>
 
 

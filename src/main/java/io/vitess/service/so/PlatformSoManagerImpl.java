@@ -907,10 +907,7 @@ public class PlatformSoManagerImpl extends BaseManagerImpl implements PlatformSo
 			//分期 add by chenping 20170629 end
 
 //			FIXME 库存扣减
-			soInvFlowDao.updateSkuInv(sku.getCode(), solCmd.getQuantity());
-
-
-			
+//			soInvFlowDao.updateSkuInv(sku.getCode(), solCmd.getQuantity());
 		return solCmd;
 	}
 	
