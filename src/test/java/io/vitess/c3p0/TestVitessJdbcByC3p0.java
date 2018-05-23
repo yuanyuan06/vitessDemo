@@ -1,6 +1,5 @@
 package io.vitess.c3p0;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.joda.time.Instant;
 import org.junit.Test;
 
@@ -21,44 +20,44 @@ public class TestVitessJdbcByC3p0 {
     @Test
     public void testVitessJdbc() throws SQLException {
 
-        ComboPooledDataSource cds = new ComboPooledDataSource();
-        String dbURL = "jdbc:vitess://10.88.27.50:15991";
-        cds.setJdbcUrl(dbURL);
-
-        Connection conn = cds.getConnection();
-        // Setting AutoCommit to false as VTTablet was not up with enable-autocommit
-        // Not Required if enable-autocommit flag is set in VTTablet
-        conn.setAutoCommit(false);
-
-        // Insert some messages on random pages.
-        System.out.println("Inserting into master...");
-        insertData(conn);
-
-        // To Commit Open Transaction
-        conn.commit();
-
-        // Read it back from master.
-        System.out.println("Reading from master...");
-        readData(conn);
-
-        // To Commit Open Transaction,
-        // as select was made on master with autocommit false a transaction was open
-        conn.commit();
-
-        // Read it back from replica.
-        dbURL += "?target=test_keyspace@replica";
-        try (Connection connReplica = DriverManager.getConnection(dbURL, null)) {
-            System.out.println("Reading from replica...");
-            readData(connReplica);
-        }
-
-        // Execute DML Queries in a Batch
-        batchedQueries(conn);
-
-        // To Commit Open Transaction
-        conn.commit();
-
-        System.out.println("hello");
+//        ComboPooledDataSource cds = new ComboPooledDataSource();
+//        String dbURL = "jdbc:vitess://10.88.27.50:15991";
+//        cds.setJdbcUrl(dbURL);
+//
+//        Connection conn = cds.getConnection();
+//        // Setting AutoCommit to false as VTTablet was not up with enable-autocommit
+//        // Not Required if enable-autocommit flag is set in VTTablet
+//        conn.setAutoCommit(false);
+//
+//        // Insert some messages on random pages.
+//        System.out.println("Inserting into master...");
+//        insertData(conn);
+//
+//        // To Commit Open Transaction
+//        conn.commit();
+//
+//        // Read it back from master.
+//        System.out.println("Reading from master...");
+//        readData(conn);
+//
+//        // To Commit Open Transaction,
+//        // as select was made on master with autocommit false a transaction was open
+//        conn.commit();
+//
+//        // Read it back from replica.
+//        dbURL += "?target=test_keyspace@replica";
+//        try (Connection connReplica = DriverManager.getConnection(dbURL, null)) {
+//            System.out.println("Reading from replica...");
+//            readData(connReplica);
+//        }
+//
+//        // Execute DML Queries in a Batch
+//        batchedQueries(conn);
+//
+//        // To Commit Open Transaction
+//        conn.commit();
+//
+//        System.out.println("hello");
 
     }
 

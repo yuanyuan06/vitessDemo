@@ -2,7 +2,6 @@ package io.vitess.c3p0;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.UnsignedLong;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import io.vitess.client.Context;
 import io.vitess.client.RpcClient;
 import io.vitess.client.VTGateBlockingConnection;
