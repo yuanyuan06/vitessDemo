@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -54,7 +53,7 @@ public class PlatformSoManagerProxyImpl implements PlatformSoManagerProxy, Initi
     /**
      * 淘宝创单
      */
-    @Scheduled(fixedDelay = 1000)
+//    @Scheduled(fixedDelay = 1000)
     @Override
     public void createTaobaoSo() {
         startTime.set(System.currentTimeMillis());
