@@ -170,10 +170,12 @@
 
 
 	<select id="findById" parameterType="java.lang.Long" resultMap="TtopTbTradeResult" flushCache="false">
-		select <include refid="ttopTbTradeColumns" />
-			    from t_top_tb_trade
-		        where
-		        ID = #{id}
+		select 
+			<include refid="ttopTbTradeColumns" />
+		from 
+			t_top_tb_trade
+		where
+		    ID = #{id}
 	</select>
 
 
@@ -181,15 +183,15 @@
 		SELECT
 			t.ID as id
 		FROM
-		t_top_tb_trade t,
-		t_ma_tb_shop_info i
+			t_top_tb_trade t,
+			t_ma_tb_shop_info i
 		WHERE
-		t.SHOP_ID = i.ID
-		AND i.IS_AUTO_ORDER = 1
-		AND t.`STATUS` = 1
-		AND t.SYNC_STATUS = 0
-		AND t.SYNC_COUNTER &lt; 4
-		LIMIT 5000
+			t.SHOP_ID = i.ID
+			AND i.IS_AUTO_ORDER = 1
+			AND t.`STATUS` = 1
+			AND t.SYNC_STATUS = 0
+			AND t.SYNC_COUNTER &lt; 4
+		LIMIT 7000
 	</select>
 
 
@@ -229,6 +231,5 @@
 		<foreach collection="pklist" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
-
 	</select>
 </mapper>

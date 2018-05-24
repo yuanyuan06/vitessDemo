@@ -89,4 +89,9 @@ public class TestCommon {
         }
         return null;
     }
+
+    @Test
+    public void tee(){
+        System.out.println(10000>>3);
+    }
 }

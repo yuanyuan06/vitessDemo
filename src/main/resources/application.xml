@@ -12,20 +12,20 @@
     <!--<task:annotation-driven />-->
 
     <task:annotation-driven scheduler="scheduler"/>
-    <task:scheduler id="scheduler" pool-size="20"/>
+    <task:scheduler id="scheduler" pool-size="30"/>
 
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="jdbcUrl" value="${jdbcUrl}" />
         <property name="user" value="${db.user}" />
         <property name="password" value="${db.password}" />
-        <property name="minPoolSize" value="${c3p0.minPoolSize}"></property>
-        <property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>
-        <property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>
-        <property name="maxIdleTime" value="${c3p0.maxIdleTime}"></property>
-        <property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property>
-        <property name="idleConnectionTestPeriod" value="${c3p0.idleConnectionTestPeriod}"></property>
-        <property name="maxStatements" value="${c3p0.maxStatements}"></property>
+        <property name="minPoolSize" value="${pool.minPoolSize}"></property>
+        <property name="maxPoolSize" value="${pool.maxPoolSize}"></property>
+        <property name="initialPoolSize" value="${pool.initialPoolSize}"></property>
+        <property name="maxIdleTime" value="${pool.maxIdleTime}"></property>
+        <property name="acquireIncrement" value="${pool.acquireIncrement}"></property>
+        <property name="idleConnectionTestPeriod" value="${pool.idleConnectionTestPeriod}"></property>
+        <property name="maxStatements" value="${pool.maxStatements}"></property>
         <property name="preferredTestQuery" value="select 1"/>
         <property name="testConnectionOnCheckin" value="true"/>
         <property name="testConnectionOnCheckout" value="true"/>
@@ -52,6 +52,43 @@
     </bean>-->
 
 
+
+   <!-- <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver " />
+        <property name="url" value="${jdbcUrl}" />
+        <property name="username" value="${db.user}" />
+        <property name="password" value="${db.password}" />
+        &lt;!&ndash; 配置初始化大小、最小、最大 &ndash;&gt;
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" />
+        <property name="maxActive" value="10" />
+
+        &lt;!&ndash; 配置获取连接等待超时的时间 &ndash;&gt;
+        <property name="maxWait" value="10000" />
+
+        &lt;!&ndash; 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 &ndash;&gt;
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+
+        &lt;!&ndash; 配置一个连接在池中最小生存的时间，单位是毫秒 &ndash;&gt;
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+
+        <property name="testWhileIdle" value="true" />
+
+        &lt;!&ndash; 这里建议配置为TRUE，防止取到的连接不可用 &ndash;&gt;
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="false" />
+
+        &lt;!&ndash; 打开PSCache，并且指定每个连接上PSCache的大小 &ndash;&gt;
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="20" />
+
+        &lt;!&ndash; 验证连接有效与否的SQL，不同的数据配置不同 &ndash;&gt;
+        <property name="validationQuery" value="select 1 " />
+        <property name="filters" value="stat" />
+
+    </bean>
+-->
 
 
     <bean  id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

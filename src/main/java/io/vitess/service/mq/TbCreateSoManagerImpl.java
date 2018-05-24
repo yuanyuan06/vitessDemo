@@ -3,6 +3,9 @@ package io.vitess.service.mq;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.taobao.api.domain.Order;
 import com.taobao.api.domain.PromotionDetail;
 import com.taobao.api.domain.ServiceOrder;
@@ -12,7 +15,6 @@ import io.vitess.constants.Constants;
 import io.vitess.constants.PlatformConstants;
 import io.vitess.dao.mq.*;
 import io.vitess.enums.*;
-import io.vitess.exception.SoGetTradeException;
 import io.vitess.model.base.CompanyShop;
 import io.vitess.model.mq.*;
 import io.vitess.service.BaseManagerImpl;
@@ -23,13 +25,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,19 +58,29 @@ public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSo
 		private CompanyShopManager shopManager;
 		private static final String E_INVOICE_KIND = "1";
 		private final long BBR_SHOP_ID = 4402L;						// bbr 店铺id,围巾定制
-		
-		// 物流宝发货店铺fanht(gnc健安喜官方海外旗舰店)
-//		private static final Long[] WlB_SHOP = {6016L, 6111L, 6946L, 9241L, 9240L};
+
+	LoadingCache<Long, CompanyShop> shopInfoCache =
+			CacheBuilder.newBuilder()
+					.maximumSize(100)
+					.expireAfterAccess(30, TimeUnit.MINUTES)
+					.build(new CacheLoader<Long, CompanyShop>(){
+						@Override
+						public CompanyShop load(Long key) throws Exception {
+							return shopManager.findShopInfoByShopId(key);
+						}
+					});
+
 		
 		@Override
-		public MqSoLog convertTradeToMqSo(com.taobao.api.domain.Trade tbTrade, Long shopId) throws SoGetTradeException {
-			CompanyShop shopInfo = shopManager.findShopInfoByShopId(shopId);
+		public MqSoLog convertTradeToMqSo(com.taobao.api.domain.Trade tbTrade, Long shopId) throws Exception {
+
+			CompanyShop shopInfo = shopInfoCache.get(shopId);
 			MqSoLog soLog = new MqSoLog();
 				soLog.setShopId(shopId);
 				soLog.setRemark(tbTrade.getBuyerMessage());	 // 买家备注
 			// 一, 数据封装
 				// 1. 行 & 行包装
-				List<MqSoLineLog> slLogs = new ArrayList<MqSoLineLog>();
+				List<MqSoLineLog> slLogs = new ArrayList<>();
 				constructMqLine(tbTrade, soLog, slLogs, shopInfo);
 				// 2. 促销活动 依赖行, 需后置
 				// 3.delivery
@@ -78,7 +90,7 @@ public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSo
 				MqPlatformMemberLog memLog = new MqPlatformMemberLog();
 				constructMqMember(tbTrade, soLog, memLog);
 				// 5. 服务
-				List<MqSoServiceLineLog> serviceOrderLineList = new ArrayList<MqSoServiceLineLog>();
+				List<MqSoServiceLineLog> serviceOrderLineList = new ArrayList<>();
 				constructMqService(tbTrade, soLog, serviceOrderLineList);
 				// 6. 头
 				constructMqSo(tbTrade, soLog);
@@ -402,7 +414,7 @@ public class TbCreateSoManagerImpl extends BaseManagerImpl implements TbCreateSo
 		String duihuanCity = tbLine.getSkuPropertiesName();
 		if (StringUtils.hasText(duihuanCity) && duihuanCity.contains("兑换城市")) {
 			String oldMemo = soLog.getRemark() == null ? "" : soLog.getRemark();
-			Integer lineQty = Integer.valueOf(tbLine.getNum().intValue());
+			Integer lineQty = tbLine.getNum().intValue();
 			String duihuanRemark = duihuanCity + "*" + lineQty;
 			// 记录兑换城市到买家备注中
 			soLog.setRemark(duihuanRemark + " / " + oldMemo);

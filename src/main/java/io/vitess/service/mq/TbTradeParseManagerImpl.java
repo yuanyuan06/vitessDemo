@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service("tbTradeParseManager")
 public class TbTradeParseManagerImpl implements TbTradeParseManager {
@@ -31,7 +32,7 @@ public class TbTradeParseManagerImpl implements TbTradeParseManager {
     @Transactional(rollbackFor = Exception.class)
 	public void tbTradeParse(TbTrade bean) {
 		boolean result = saveHubTrade(bean.getOmsShopId(),bean.getContent());
-		Integer syncStatus = TopRdsConstants.PROCESS_STATUS_NO;
+		int syncStatus = TopRdsConstants.PROCESS_STATUS_NO;
 		if(result){
 			syncStatus = TopRdsConstants.PROCESS_STATUS_COMPLET;
 		}
@@ -47,14 +48,13 @@ public class TbTradeParseManagerImpl implements TbTradeParseManager {
             saveTrade(shopId, trade, message);
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("trade json: " + message + ":" + e.getMessage());
         }
         return result;
     }
 	
     private void saveTrade(Long shopId, com.taobao.api.domain.Trade trade, String message) throws SoGetTradeException {
-        if (trade.getPayment() == null || "".equals(trade.getPayment())) {
+        if (!StringUtils.hasText(trade.getPayment())) {
             return;
         }
         // gnc健安喜宝尊专卖店淘宝的店铺 的淘宝类型订单暂时不处理 先处理它的分销平台数据
@@ -68,20 +68,16 @@ public class TbTradeParseManagerImpl implements TbTradeParseManager {
         }
         try {
 
-            MqSoLog soLog = (MqSoLog) createTaoBaoSoManager.convertTradeToMqSo(trade, shopId);
+            MqSoLog soLog = createTaoBaoSoManager.convertTradeToMqSo(trade, shopId);
             // 生成trade源数据日志
             PlatformSoLog psl = new PlatformSoLog();
-            psl.setShopId(shopId);
-            psl.setSourceMsg(message);
-            psl.setCode(trade.getTid().toString());
-            if (soLog != null) {
+                psl.setShopId(shopId);
+                psl.setSourceMsg(message);
+                psl.setCode(trade.getTid().toString());
                 psl.setMqSoLogId(soLog.getId());
-            }
             platformSoLogDao.insert(psl);
         } catch (Exception ie) {
-            ie.printStackTrace();
-            log.error(ie.getMessage());
-            log.error("获取数据错误：SESSION ERROR");
+            log.error("获取数据错误：SESSION ERROR", ie);
             throw new SoGetTradeException(PlatformConstants.TAOBAO_PLATFORM);
         }
     }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
 
     private ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedRate = 1000*50)
 	@Override
 	public void tbTradeParse() {
 
@@ -46,13 +47,12 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
         try {
             startTime.set(System.currentTimeMillis());
             List<Long> list = tbTradeDao.findTbTradeNotSyncTradeId();
-            if (list == null || list.size() <= 0) {
+            if (CollectionUtils.isEmpty(list)) {
                 return;
             }
 
-		int times = (list.size() + maxDeal - 1) / maxDeal;
-        CountDownLatch countDownLatch = new CountDownLatch(times);
-
+            int times = (list.size() - 1) / maxDeal + 1;
+            CountDownLatch countDownLatch = new CountDownLatch(times);
             for (int i = 0; i < times; i++) {
                 if (i == times - 1) {
                     exec.execute(new ProcessRunnable(list.subList(i * maxDeal, list.size()), countDownLatch));
@@ -61,7 +61,7 @@ public class TbTradeParsePorxyManagerImpl implements TbTradeParsePorxyManager, I
                 }
             }
             countDownLatch.await();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             log.error(Thread.currentThread().getName() + ":Interrupted");
         }finally {
             Long interval = System.currentTimeMillis() - startTime.get();
